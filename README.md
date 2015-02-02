@@ -21,7 +21,7 @@ __Introducing Abracadabra!__
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To use Abracadabra in your own projects, simply wrap secure code.saf
+To use Abracadabra in your own projects, simply wrap secure code.
 
 Lets say you have some code like this:
 
