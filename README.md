@@ -8,13 +8,13 @@
 ## What is it?
 
 A simple and easy to use library for securing your code. 
-The name refers to the magical nature or its implementation as well as the fact a passcode (or magical phrase) is required. ;)
+The name refers to the magical nature of its implementation as well as the fact a passcode (_or magical phrase_) is required ;)
 
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To use Abracadabra in your own projects, simple wrap secure code.
+To use Abracadabra in your own projects, simply wrap secure code.
 
 Lets say you have some code like this:
 
