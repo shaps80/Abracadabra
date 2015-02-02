@@ -14,6 +14,26 @@ The name refers to the magical nature or its implementation as well as the fact 
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
+To use Abracadabra in your own projects, simple wrap secure code:
+
+```objc
+// before
+NSURLSession *session = [NSURLSession sharedSession];
+NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
+NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+[task resume];
+
+// after
+SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
+  NSURLSession *session = [NSURLSession sharedSession];
+  NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
+  NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+  NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+  [task resume];
+})
+```
+
 ## Installation
 
 Abracadabra is available through [CocoaPods](http://cocoapods.org). To install

@@ -17,6 +17,12 @@
     NSLog(@"Nothing");
   });
   
+//  NSURLSession *session = [NSURLSession sharedSession];
+//  NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
+//  NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+//  NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+//  [task resume];
+  
   return YES;
 }
 
