@@ -37,14 +37,14 @@
 
 - (void)restartMachine
 {
-  SPXSecure(SPXSecurityPolicyConfirmationOnly, {
+  SPXSecure(SPXSecurityPolicyTimedSessionWithPIN, {
     // restart code
   });
 }
 
 - (void)changePassword
 {
-  SPXSecure(SPXSecurityPolicyTimedSessionWithPIN, {
+  SPXSecure(SPXSecurityPolicyConfirmationOnly, {
     // change password code
   });
 }
