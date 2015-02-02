@@ -41,6 +41,25 @@
 		1FD8FC7F3B970812F22E94BE /* libPods-Abracadabra.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Abracadabra.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26BACFF3AAAAFF23CAD472A6 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		374BB517A932D47FDAFF363C /* Pods-Abracadabra.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abracadabra.release.xcconfig"; path = "Pods/Target Support Files/Pods-Abracadabra/Pods-Abracadabra.release.xcconfig"; sourceTree = "<group>"; };
+		546E079B1A7F2C4B00AEF796 /* Abracadabra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Abracadabra.h; sourceTree = "<group>"; };
+		546E079D1A7F2C4B00AEF796 /* SPXDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXDispatch.h; sourceTree = "<group>"; };
+		546E079E1A7F2C4B00AEF796 /* SPXDispatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXDispatch.m; sourceTree = "<group>"; };
+		546E07A01A7F2C4B00AEF796 /* SPXSecurityInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecurityInternal.h; sourceTree = "<group>"; };
+		546E07A11A7F2C4B00AEF796 /* SPXSecurityInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecurityInternal.m; sourceTree = "<group>"; };
+		546E07A31A7F2C4B00AEF796 /* SPXSecureCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureCredential.h; sourceTree = "<group>"; };
+		546E07A41A7F2C4B00AEF796 /* SPXSecureCredential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureCredential.m; sourceTree = "<group>"; };
+		546E07A51A7F2C4B00AEF796 /* SPXSecureDomain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureDomain.h; sourceTree = "<group>"; };
+		546E07A61A7F2C4B00AEF796 /* SPXSecureDomain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureDomain.m; sourceTree = "<group>"; };
+		546E07A71A7F2C4B00AEF796 /* SPXSecureDomainSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureDomainSettings.h; sourceTree = "<group>"; };
+		546E07A81A7F2C4B00AEF796 /* SPXSecureDomainSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureDomainSettings.m; sourceTree = "<group>"; };
+		546E07A91A7F2C4B00AEF796 /* SPXSecureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureSession.h; sourceTree = "<group>"; };
+		546E07AA1A7F2C4B00AEF796 /* SPXSecureSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureSession.m; sourceTree = "<group>"; };
+		546E07AC1A7F2C4B00AEF796 /* SPXSecureEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEvent.h; sourceTree = "<group>"; };
+		546E07AD1A7F2C4B00AEF796 /* SPXSecureEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEvent.m; sourceTree = "<group>"; };
+		546E07AE1A7F2C4B00AEF796 /* SPXSecureEventsGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsGroup.h; sourceTree = "<group>"; };
+		546E07AF1A7F2C4B00AEF796 /* SPXSecureEventsGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsGroup.m; sourceTree = "<group>"; };
+		546E07B01A7F2C4B00AEF796 /* SPXSecureEventsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsStore.h; sourceTree = "<group>"; };
+		546E07B11A7F2C4B00AEF796 /* SPXSecureEventsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStore.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Abracadabra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abracadabra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -106,9 +125,77 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		546E07991A7F2C4B00AEF796 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				546E079B1A7F2C4B00AEF796 /* Abracadabra.h */,
+				546E079C1A7F2C4B00AEF796 /* Helpers */,
+				546E079F1A7F2C4B00AEF796 /* Internal */,
+				546E07A21A7F2C4B00AEF796 /* Logic */,
+				546E07AB1A7F2C4B00AEF796 /* Model */,
+				546E07B21A7F2C4B00AEF796 /* User Interface */,
+			);
+			name = Classes;
+			path = ../Pod/Classes;
+			sourceTree = "<group>";
+		};
+		546E079C1A7F2C4B00AEF796 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				546E079D1A7F2C4B00AEF796 /* SPXDispatch.h */,
+				546E079E1A7F2C4B00AEF796 /* SPXDispatch.m */,
+			);
+			path = Helpers;
+			sourceTree = "<group>";
+		};
+		546E079F1A7F2C4B00AEF796 /* Internal */ = {
+			isa = PBXGroup;
+			children = (
+				546E07A01A7F2C4B00AEF796 /* SPXSecurityInternal.h */,
+				546E07A11A7F2C4B00AEF796 /* SPXSecurityInternal.m */,
+			);
+			path = Internal;
+			sourceTree = "<group>";
+		};
+		546E07A21A7F2C4B00AEF796 /* Logic */ = {
+			isa = PBXGroup;
+			children = (
+				546E07A31A7F2C4B00AEF796 /* SPXSecureCredential.h */,
+				546E07A41A7F2C4B00AEF796 /* SPXSecureCredential.m */,
+				546E07A51A7F2C4B00AEF796 /* SPXSecureDomain.h */,
+				546E07A61A7F2C4B00AEF796 /* SPXSecureDomain.m */,
+				546E07A71A7F2C4B00AEF796 /* SPXSecureDomainSettings.h */,
+				546E07A81A7F2C4B00AEF796 /* SPXSecureDomainSettings.m */,
+				546E07A91A7F2C4B00AEF796 /* SPXSecureSession.h */,
+				546E07AA1A7F2C4B00AEF796 /* SPXSecureSession.m */,
+			);
+			path = Logic;
+			sourceTree = "<group>";
+		};
+		546E07AB1A7F2C4B00AEF796 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				546E07AC1A7F2C4B00AEF796 /* SPXSecureEvent.h */,
+				546E07AD1A7F2C4B00AEF796 /* SPXSecureEvent.m */,
+				546E07AE1A7F2C4B00AEF796 /* SPXSecureEventsGroup.h */,
+				546E07AF1A7F2C4B00AEF796 /* SPXSecureEventsGroup.m */,
+				546E07B01A7F2C4B00AEF796 /* SPXSecureEventsStore.h */,
+				546E07B11A7F2C4B00AEF796 /* SPXSecureEventsStore.m */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
+		546E07B21A7F2C4B00AEF796 /* User Interface */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "User Interface";
+			sourceTree = "<group>";
+		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
+				546E07991A7F2C4B00AEF796 /* Classes */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Abracadabra */,
 				6003F5B5195388D20070C39A /* Tests */,

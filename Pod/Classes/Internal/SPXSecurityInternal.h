@@ -23,8 +23,9 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SPXSecureEventsStore.h"
 #import "SPXDefinesCommon.h"
+#import "SPXSecureEventsStore.h"
+
 
 #define _SPXSecuritySegmentName "__DATA"
 #define _SPXSecuritySectionName "SPXSecurity"
@@ -40,10 +41,15 @@ typedef struct {
 extern NSString *_SPXSecurityIdentifier(spx_secure_entry *entry);
 
 #define _SPXSecureInternal(group_, name_, policy_, code_, action_) ({ \
+  if (!group_ && !name_) { \
+    if (policy_ == SPXSecurityPolicyNone) code_ \
+  } else { \
+  \
   SPXSecureEvent *event = _SPXSecureEventInternal(group_, name_, policy_); \
-  if (event.currentPolicy == SPXSecurityPolicyNone) code_ \
-  else {\
-   \
+    if (event.currentPolicy == SPXSecurityPolicyNone) code_ \
+    else {\
+     \
+    } \
   } \
 });
 
