@@ -28,25 +28,23 @@
 
 @implementation SPXSecurityTestClass
 
-- (void)shutdownMachine
+- (void)secureCode
 {
-//  SPXSecure(@"Machine", @"Shutdown", SPXSecurityPolicyAlwaysWithPIN, {
-//    // shutdown code
-//  });
-}
-
-- (void)restartMachine
-{
-  SPXSecure(SPXSecurityPolicyTimedSessionWithPIN, {
-    // restart code
-  });
-}
-
-- (void)changePassword
-{
-  SPXSecure(SPXSecurityPolicyConfirmationOnly, {
-    // change password code
-  });
+  SPXSecure(SPXSecurityPolicyNone, {
+    /* this code will execute if access is allowed */
+  })
+  
+  SPXSecure(@"Security", @"Event 1", SPXSecurityPolicyNone, {
+    /* this code will execute if access is allowed */
+  })
+  
+  SPXSecure(SPXSecurityPolicyNone, {
+    /* this code will execute if access is allowed */
+  }, /* this code will execute if access is disallowed */ )
+  
+  SPXSecure(@"Security", @"Event 2", SPXSecurityPolicyNone, {
+    /* this code will execute if access is allowed */
+  }, /* this code will execute if access is disallowed */ )
 }
 
 @end

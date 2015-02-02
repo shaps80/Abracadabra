@@ -37,13 +37,13 @@ describe(@"SPXSecureEventsStore", ^{
   
   context(@"Store", ^{
     it(@"should have discovered 1 group from SPXSecurityTestClass", ^{
+      SPXSecureEventsGroup *security = [store eventGroupWithName:@"Security"];
       [[[store should] have:1] eventGroups];
-      [[[store.eventGroups.firstObject name] should] equal:@"Machine"];
+      [[[security should] have:2] events];
     });
     
     it(@"should have discovered 1 event from SPXSecurityTestClass", ^{
       [[[store.eventGroups should] have:1] events];
-      [[[[store.eventGroups.firstObject events].firstObject name] should] equal:@"Shutdown"];
     });
     
     it(@"should add 1 group", ^{

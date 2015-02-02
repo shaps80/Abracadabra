@@ -12,23 +12,7 @@
 @implementation SPXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  SPXSecure(SPXSecurityPolicyNone, {
-     /* this code will execute if access is allowed */
-  })
-  
-  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
-     /* this code will execute if access is allowed */
-  })
-  
-  SPXSecure(SPXSecurityPolicyNone, {
-     /* this code will execute if access is allowed */
-  }, /* this code will execute if access is disallowed */ )
-  
-  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
-     /* this code will execute if access is allowed */
-  }, /* this code will execute if access is disallowed */ )
-  
+{  
   return YES;
 }
 

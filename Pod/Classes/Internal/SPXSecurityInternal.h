@@ -72,7 +72,7 @@ extern NSString *_SPXSecurityIdentifier(spx_secure_entry *entry);
 #define _SPXSecureCode(group_, name_, policy_, code_, action_) ({ \
   SPXSecurityPolicy policy = policy_; \
   \
-  if (group_ && name_) { \
+  if ((group_) && (name_)) { \
     SPXSecureEvent *event = _SPXGetSecureEventInternal(group_, name_, policy_); \
     policy = event.currentPolicy; \
   } \
