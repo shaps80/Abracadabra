@@ -1,0 +1,6 @@
+GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
+HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Abracadabra" "${PODS_ROOT}/Headers/Public/FXKeychain" "${PODS_ROOT}/Headers/Public/Kiwi" "${PODS_ROOT}/Headers/Public/SPXDataValidators" "${PODS_ROOT}/Headers/Public/SPXDefines"
+OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/Abracadabra" -isystem "${PODS_ROOT}/Headers/Public/FXKeychain" -isystem "${PODS_ROOT}/Headers/Public/Kiwi" -isystem "${PODS_ROOT}/Headers/Public/SPXDataValidators" -isystem "${PODS_ROOT}/Headers/Public/SPXDefines"
+OTHER_LDFLAGS = -ObjC -l"Pods-Abracadabra-Abracadabra" -l"Pods-Abracadabra-FXKeychain" -l"Pods-Abracadabra-SPXDataValidators" -l"Pods-Abracadabra-SPXDefines" -framework "Security"
+OTHER_LIBTOOLFLAGS = $(OTHER_LDFLAGS)
+PODS_ROOT = ${SRCROOT}/Pods
