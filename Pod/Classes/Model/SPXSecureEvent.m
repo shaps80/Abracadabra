@@ -39,7 +39,7 @@
   SPXDecode(identifier);
   SPXDecode(defaultPolicy);
   
-  _currentPolicy = [[aDecoder decodeObjectForKey:SPXKeyPath(currentPolicy)] integerValue];
+  _currentPolicy = [[aDecoder decodeObjectForKey:@"currentPolicy"] integerValue] ?: _currentPolicy;
   
   return self;
 }
@@ -71,7 +71,7 @@
   _defaultPolicy = policy;
   
   NSNumber *currentPolicy = [[NSUserDefaults standardUserDefaults] objectForKey:_identifier];
-  _currentPolicy = currentPolicy ? currentPolicy.integerValue : _defaultPolicy;
+  _currentPolicy = currentPolicy.integerValue;
   
   return self;
 }

@@ -14,8 +14,10 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   SPXSecure(SPXSecurityPolicyNone, {
-    NSLog(@"Nothing");
-  });
+    NSLog(@"Performing code...");
+  })
+  
+  
   
 //  NSURLSession *session = [NSURLSession sharedSession];
 //  NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];

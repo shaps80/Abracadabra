@@ -24,6 +24,9 @@
  */
 
 
+#ifndef _ABRACADABRA_H
+#define _ABRACADABRA_H
+
 #import "SPXSecurityInternal.h"
 
 
@@ -63,5 +66,7 @@
  *      // your code goes here (restart the server)
  *    }, return)
  */
-#define SPXSecure(policy, code, ...) _SPXSecureInternal(nil, nil, policy, code, __VA_ARGS__)
+#define SPXSecure(...) _SPXSecureInternal(__VA_ARGS__)
+
+#endif
 

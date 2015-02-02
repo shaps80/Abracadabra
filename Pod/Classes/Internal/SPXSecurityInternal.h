@@ -23,6 +23,9 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#ifndef _SPX_SECURITY_INTERNAL_H
+#define _SPX_SECURITY_INTERNAL_H
+
 #import "SPXDefinesCommon.h"
 #import "SPXSecureEventsStore.h"
 
@@ -40,20 +43,45 @@ typedef struct {
 
 extern NSString *_SPXSecurityIdentifier(spx_secure_entry *entry);
 
-#define _SPXSecureInternal(group_, name_, policy_, code_, action_) ({ \
-  if (!group_ && !name_) { \
-    if (policy_ == SPXSecurityPolicyNone) code_ \
-  } else { \
+
+#define __SPXSecurityConcat_(X, Y) X ## Y
+#define __SPXSecurityConcat(X, Y) __SPXSecurityConcat_(X, Y)
+
+#define __SPXSecurityIndex(_1, _2, _3, _4, _5, value, ...) value
+#define __SPXSecurityIndexCount(...) __SPXSecurityIndex(__VA_ARGS__, 5, 4, 3, 2, 1)
+
+#define __SPXSecurityHasOption1(__withPolicyOnly, __withoutName, __withoutNameAndAction, __withName, __withNameAndAction, ...) __withPolicyOnly
+#define __SPXSecurityHasOption2(__withPolicyOnly, __withoutName, __withoutNameAndAction, __withName, __withNameAndAction, ...) __withoutName
+#define __SPXSecurityHasOption3(__withPolicyOnly, __withoutName, __withoutNameAndAction, __withName, __withNameAndAction, ...) __withoutNameAndAction
+#define __SPXSecurityHasOption4(__withPolicyOnly, __withoutName, __withoutNameAndAction, __withName, __withNameAndAction, ...) __withName
+#define __SPXSecurityHasOption5(__withPolicyOnly, __withoutName, __withoutNameAndAction, __withName, __withNameAndAction, ...) __withNameAndAction
+
+
+#define _SPXSecurityHasOptions(__withPolicyOnly, __withoutName, __withoutNameAndAction, __withName, __withNameAndAction, ...) \
+  __SPXSecurityConcat(__SPXSecurityHasOption, __SPXSecurityIndexCount(__VA_ARGS__))(__withPolicyOnly, __withoutName, __withoutNameAndAction, __withName, __withNameAndAction)
+
+#define _SPXSecureInternal(...) \
+  _SPXSecurityHasOptions(_SPXSecureInternalWithPolicyOnly, _SPXSecureInternalWithoutName, _SPXSecureInternalWithoutNameAndAction, _SPXSecureInternalWithName, _SPXSecureInternalWithNameAndAction, __VA_ARGS__)(__VA_ARGS__)
+
+#define _SPXSecureInternalWithPolicyOnly(policy_) _SPXSecureCode(nil, nil, policy_, ;, ;)
+#define _SPXSecureInternalWithoutName(policy_, code_) _SPXSecureCode(nil, nil, policy_, code_, ;)
+#define _SPXSecureInternalWithoutNameAndAction(policy_, code_, action_) _SPXSecureCode(nil, nil, policy_, code_, action_)
+#define _SPXSecureInternalWithName(group_, name_, policy_, code_) _SPXSecureCode(group_, name_, policy_, code_, ;)
+#define _SPXSecureInternalWithNameAndAction(group_, name_, policy_, code_, action_) _SPXSecureCode(group_, name_, policy_, code_, action_)
+
+#define _SPXSecureCode(group_, name_, policy_, code_, action_) ({ \
+  SPXSecurityPolicy policy = policy_; \
   \
-  SPXSecureEvent *event = _SPXSecureEventInternal(group_, name_, policy_); \
-    if (event.currentPolicy == SPXSecurityPolicyNone) code_ \
-    else {\
-     \
-    } \
+  if (group_ && name_) { \
+    SPXSecureEvent *event = _SPXGetSecureEventInternal(group_, name_, policy_); \
+    policy = event.currentPolicy; \
   } \
+  \
+  if ((NSInteger)policy == SPXSecurityPolicyNone) code_ \
+  else action_; \
 });
 
-#define _SPXSecureEventInternal(group_, name_, policy_) \
+#define _SPXGetSecureEventInternal(group_, name_, policy_) \
 ((^{ \
   /* store the data in the binary at compile time. */ \
   __attribute__((used)) static _SPXSecureLiteralString group__ = group_; \
@@ -71,4 +99,7 @@ extern NSString *_SPXSecurityIdentifier(spx_secure_entry *entry);
   \
   return event; \
 })())
+
+
+#endif
 
