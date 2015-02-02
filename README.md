@@ -21,7 +21,7 @@ __Introducing Abracadabra!__
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To use Abracadabra in your own projects, simply wrap your code with a secure block.
+To use Abracadabra in your own projects, add `#import "Abracadabra.h"` to your file & simply wrap your code with a secure block.
 
 Lets say you have some code like this:
 
