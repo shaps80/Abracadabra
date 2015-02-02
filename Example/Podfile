@@ -1,0 +1,11 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
+target 'Abracadabra', :exclusive => true do
+  pod "Abracadabra", :path => "../"
+end
+
+target 'Tests', :exclusive => true do
+  pod "Abracadabra", :path => "../"
+
+  pod 'Kiwi'
+end
