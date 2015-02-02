@@ -21,7 +21,7 @@ __Introducing Abracadabra!__
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To use Abracadabra in your own projects, simply wrap secure code.
+To use Abracadabra in your own projects, simply wrap your code with a secure block.
 
 Lets say you have some code like this:
 
@@ -91,6 +91,8 @@ Policies for each event are then stored in `NSUserDefaults`, which allows us to 
 When you create a secure event, you must specify the default policy to apply to that piece of code. You can also reset an event (or all events) back to their defaults at any time, since this value is stored at compile time and is readonly at runtime.
 
 >All views and controllers can be replaced with your own implementations if you prefer.
+
+>Abracadabra does _NOT_ use blocks! All code is guaranteed to execute on the calling thread.
 
 ## Installation
 
