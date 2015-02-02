@@ -61,20 +61,24 @@ SPXSecure(@"Servers", @"Restart Server", SPXSecurityPolicyAlwaysWithPIN, {
 })
 ```
 
-Both methods also allow to specify some code to run in the event access is disallowed:
+In fact any of the variations below are valid statements:
 
 ```objc
-SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
-	// this code will execute if the policy allows
-}, return)
-
-// or 
-
-SPXSecure(@"Servers", @"Restart Server", SPXSecurityPolicyAlwaysWithPIN, {
-	// this code will execute if the policy allows
-}, return)
-
-// ... any code down here will not be executed if the policy is disallowed
+  SPXSecure(SPXSecurityPolicyNone, {
+     /* this code will execute if access is allowed */
+  })
+  
+  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
+     /* this code will execute if access is allowed */
+  })
+  
+  SPXSecure(SPXSecurityPolicyNone, {
+     /* this code will execute if access is allowed */
+  }, /* this code will execute if access is disallowed */ )
+  
+  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
+     /* this code will execute if access is allowed */
+  }, /* this code will execute if access is disallowed */ )
 ```
 
 ## Advanced Configurations

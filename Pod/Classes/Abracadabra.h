@@ -33,40 +33,45 @@
 /**
  *  Convenience macros for securing your code easily. All 'code' is guaranteed to run on the calling thread. No need to dispatch
  *
+ *  @param group  A group name for this event
+ *  @param name   A friendly name for this event
  *  @param policy The security policy to apply to this code
  *  @param code   The code to secure
- *  @param ...    You can optionally pass some code that will execute ONLY if access is disallowed
+ *  @param action You can optionally pass some code that will execute ONLY if access is disallowed
  *
- *  @example
+ *  @example The following examples are all valid uses of this macro
  *
  *    SPXSecure(SPXSecureEventPolicyAlways, {
- *      // your code goes here
+ *      // this code will execute if access is allowed
  *    })
  *
  *    or
  *
  *    SPXSecure(SPXSecureEventPolicyAlways, {
- *      // your code goes here
- *    }, return)
+ *      // this code will execute if access is allowed
+ *    }, { \
+ *      // this code will execute if access is disallowed
+ *    })
  *
  *  You can also opt in to providing a group and name, this allows you to query the store for it at runtime and present UI
  *
- *  @param group  A group name for this event
- *  @param name   A friendly name for this event
  *
  *  @example
  *
  *    SPXSecure(@"Servers", @"Restart Server", SPXSecureEventPolicyAlways, {
- *      // your code goes here (restart the server)
+ *      // this code will execute if access is allowed
  *    })
  *
  *    or
  *
  *    SPXSecure(@"Servers", @"Restart Server", SPXSecureEventPolicyAlways, {
- *      // your code goes here (restart the server)
- *    }, return)
+ *      // this code will execute if access is allowed
+ *    }, { \
+ *      // this code will execute if access is disallowed
+ *    })
  */
 #define SPXSecure(...) _SPXSecureInternal(__VA_ARGS__)
+
 
 #endif
 

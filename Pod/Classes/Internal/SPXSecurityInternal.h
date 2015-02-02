@@ -63,7 +63,7 @@ extern NSString *_SPXSecurityIdentifier(spx_secure_entry *entry);
 #define _SPXSecureInternal(...) \
   _SPXSecurityHasOptions(_SPXSecureInternalWithPolicyOnly, _SPXSecureInternalWithoutName, _SPXSecureInternalWithoutNameAndAction, _SPXSecureInternalWithName, _SPXSecureInternalWithNameAndAction, __VA_ARGS__)(__VA_ARGS__)
 
-#define _SPXSecureInternalWithPolicyOnly(policy_) _SPXSecureCode(nil, nil, policy_, ;, ;)
+#define _SPXSecureInternalWithPolicyOnly(policy_, code_) _SPXSecureCode(nil, nil, policy_, ;, ;)
 #define _SPXSecureInternalWithoutName(policy_, code_) _SPXSecureCode(nil, nil, policy_, code_, ;)
 #define _SPXSecureInternalWithoutNameAndAction(policy_, code_, action_) _SPXSecureCode(nil, nil, policy_, code_, action_)
 #define _SPXSecureInternalWithName(group_, name_, policy_, code_) _SPXSecureCode(group_, name_, policy_, code_, ;)

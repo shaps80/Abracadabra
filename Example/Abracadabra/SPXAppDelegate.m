@@ -14,16 +14,20 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
   SPXSecure(SPXSecurityPolicyNone, {
-    NSLog(@"Performing code...");
+     /* this code will execute if access is allowed */
   })
   
+  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
+     /* this code will execute if access is allowed */
+  })
   
+  SPXSecure(SPXSecurityPolicyNone, {
+     /* this code will execute if access is allowed */
+  }, /* this code will execute if access is disallowed */ )
   
-//  NSURLSession *session = [NSURLSession sharedSession];
-//  NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
-//  NSURLRequest *request = [NSURLRequest requestWithURL:URL];
-//  NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
-//  [task resume];
+  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
+     /* this code will execute if access is allowed */
+  }, /* this code will execute if access is disallowed */ )
   
   return YES;
 }
