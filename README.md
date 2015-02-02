@@ -71,6 +71,7 @@ Out of the box the following areas can be customized:
 * Event security policies view controller
 * Passcode validation 
 * Session policies (_timeout, retries, etc..._)
+* more...
 
 See the example project for full demo's on how to use all of these features.
 
