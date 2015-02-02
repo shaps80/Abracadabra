@@ -1,1 +1,0 @@
-../../../SPXDataValidators/SPXDataValidator/Validators/SPXRegexDataValidator.h

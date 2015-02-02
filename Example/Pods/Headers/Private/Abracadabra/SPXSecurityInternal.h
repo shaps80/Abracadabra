@@ -1,1 +1,0 @@
-../../../../../Pod/Classes/Internal/SPXSecurityInternal.h
