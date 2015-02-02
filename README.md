@@ -7,13 +7,14 @@
 
 ## What is it?
 
-Abracadabra was designed for a personal project of mine. An app called Drizzle (which can be found on the App Store).  Drizzle is an application for managing server instances. As you can imagine this is the kind of app that requires tight control over user actions to avoid accidental shutdowns or worse. Not to mention foul play by a 3rd party.
+Abracadabra was designed for a personal project of mine. An app called [Drizzle](https://itunes.apple.com/app/drizzle/id683629145?mt=8).  Drizzle is an application for managing server instances. As you can imagine this is the kind of app that requires tight control over user actions to avoid accidental shutdowns or worse. Not to mention foul play by a 3rd party.
 
 This was an existing project, so I didn't want to modify lots of existing code possibly introducing further issues and less stability. 
 
 So I set out to design a truly plug 'n' play solution that made it super easy to wrap my code and gain all the benefits of passcode security (_including TouchID_).
 
-#### Introducing Abracadabra!
+__Introducing Abracadabra!__
+
 >The name refers to the magical nature of its implementation as well as the fact a passcode (_or magical phrase_) is required ;)
 
 ## Usage
@@ -100,8 +101,12 @@ it, simply add the following line to your Podfile:
 
 ## Author
 
-Shaps Mohsenin, shapsuk@me.com
+Shaps Mohsenin, [shapsuk@me.com](mailto:shapsuk@me.com)
 
 ## License
 
 Abracadabra is available under the MIT license. See the LICENSE file for more info.
+
+## Attribution
+
+[FXKeychain](https://github.com/nicklockwood/FXKeychain) by Nick Lockwood is used for storing your passcode securely in the Keychain.
