@@ -45,39 +45,23 @@
  *    SPXSecure(SPXSecureEventPolicyAlways, {
  *      // your code goes here
  *    }, return)
- */
-#define SPXSecure(policy, code, ...) _SPXSecureInternal(nil, nil, policy, code, __VA_ARGS__)
-
-
-
-#pragma mark - The following macro should be used if you want to provide User Interface in your application for modifying the event at runtime
-
-
-
-/**
- *  Convenience macros for securing your code easily. All 'code' is guaranteed to run on the calling thread. No need to dispatch
  *
- *  @param group  Providing a group allows you to group events in your UI
- *  @param name   The name associated with this event, can be used in the UI. Names must be unique for a given group.
- *  @param policy The security policy to apply to this code
- *  @param code   The code to secure
- *  @param ...    You can optionally pass some code that will execute ONLY if access is disallowed
+ *  You can also opt in to providing a group and name, this allows you to query the store for it at runtime and present UI
+ *
+ *  @param group  A group name for this event
+ *  @param name   A friendly name for this event
  *
  *  @example
  *
- *    SPXSecureWithConfig(@"Servers", @"Restart Server", SPXSecureEventPolicyAlways, {
+ *    SPXSecure(@"Servers", @"Restart Server", SPXSecureEventPolicyAlways, {
  *      // your code goes here (restart the server)
  *    })
  *
  *    or
  *
- *    SPXSecureWithConfig(@"Servers", @"Restart Server", SPXSecureEventPolicyAlways, {
+ *    SPXSecure(@"Servers", @"Restart Server", SPXSecureEventPolicyAlways, {
  *      // your code goes here (restart the server)
  *    }, return)
-
  */
-#define SPXSecureWithConfig(group, name, policy, code, ...) _SPXSecureInternal(group, name, policy, code, __VA_ARGS__)
-
-
-
+#define SPXSecure(policy, code, ...) _SPXSecureInternal(nil, nil, policy, code, __VA_ARGS__)
 

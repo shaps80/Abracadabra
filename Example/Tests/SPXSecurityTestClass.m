@@ -30,9 +30,9 @@
 
 - (void)shutdownMachine
 {
-  SPXSecureWithConfig(@"Machine", @"Shutdown", SPXSecurityPolicyAlwaysWithPIN, {
-    // shutdown code
-  });
+//  SPXSecure(@"Machine", @"Shutdown", SPXSecurityPolicyAlwaysWithPIN, {
+//    // shutdown code
+//  });
 }
 
 - (void)restartMachine
