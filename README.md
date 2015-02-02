@@ -14,18 +14,38 @@ The name refers to the magical nature or its implementation as well as the fact 
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
 
-To use Abracadabra in your own projects, simple wrap secure code:
+To use Abracadabra in your own projects, simple wrap secure code.
+
+Lets say you have some code like this:
 
 ```objc
-// before
 NSURLSession *session = [NSURLSession sharedSession];
 NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
 NSURLRequest *request = [NSURLRequest requestWithURL:URL];
 NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
 [task resume];
+```
 
-// after
+We can easily secure that code now by wrapping it with Abracadabra. Magic!
+
+```objc
 SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
+  NSURLSession *session = [NSURLSession sharedSession];
+  NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
+  NSURLRequest *request = [NSURLRequest requestWithURL:URL];
+  NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
+  [task resume];
+})
+```
+
+If you're happy with the default view controllers and behaviour, __that's literally it ;)__
+
+Sometimes however, you want to provide a nice little UI to your users to allow them to control the security policy applied to individual actions right?
+
+Well that's easy too, just add a group and event name to your secure code blocks and Abracadabra will handle the rest for you!
+
+```objc
+SPXSecure(@"Servers", @"Restart Server", SPXSecurityPolicyAlwaysWithPIN, {
   NSURLSession *session = [NSURLSession sharedSession];
   NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
   NSURLRequest *request = [NSURLRequest requestWithURL:URL];
