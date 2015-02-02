@@ -66,19 +66,19 @@ In fact any of the variations below are valid statements:
 ```objc
   SPXSecure(SPXSecurityPolicyNone, {
      /* this code will execute if access is allowed */
-  })
+  });
   
   SPXSecure(@"", @"", SPXSecurityPolicyNone, {
      /* this code will execute if access is allowed */
-  })
+  });
   
   SPXSecure(SPXSecurityPolicyNone, {
      /* this code will execute if access is allowed */
-  }, /* this code will execute if access is disallowed */ )
+  }, /* this code will execute if access is disallowed */ );
   
   SPXSecure(@"", @"", SPXSecurityPolicyNone, {
      /* this code will execute if access is allowed */
-  }, /* this code will execute if access is disallowed */ )
+  }, /* this code will execute if access is disallowed */ );
 ```
 
 ## Advanced Configurations
