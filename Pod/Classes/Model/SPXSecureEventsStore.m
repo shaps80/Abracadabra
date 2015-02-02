@@ -63,14 +63,14 @@
 
 - (void)addEventGroup:(SPXSecureEventsGroup *)group
 {
+  SPXAssertTrueOrReturn(group);
   SPXAssertTrueOrReturn(!self.groupsNameMapping[group.name]);
   self.groupsNameMapping[group.name] = group;
 }
 
 - (void)removeEventGroup:(SPXSecureEventsGroup *)group
 {
-  [self.groupsNameMapping.allValues makeObjectsPerformSelector:@selector(reset)];
-  self.groupsNameMapping[group.name] = nil;
+  [self.groupsNameMapping removeObjectForKey:group.name];
 }
 
 - (void)resetDefaults

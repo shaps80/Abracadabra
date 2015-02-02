@@ -52,10 +52,19 @@
   SPXEncode(defaultPolicy);
 }
 
+- (instancetype)init
+{
+  NSAssert(NO, @"You must call the designated initializer: -initWithIdentifier:name:policy:");
+  return nil;
+}
+
 - (instancetype)initWithIdentifier:(NSString *)identifier name:(NSString *)name policy:(SPXSecurityPolicy)policy
 {
   self = [super init];
   SPXAssertTrueOrReturnNil(self);
+  
+  SPXAssertTrueOrReturnNil(identifier.length);
+  SPXAssertTrueOrReturnNil(name.length);
   
   _identifier = identifier;
   _name = name;

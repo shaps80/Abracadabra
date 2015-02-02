@@ -32,6 +32,12 @@
 
 @implementation SPXSecureEventsGroup
 
+- (instancetype)init
+{
+  NSAssert(NO, @"You must call the designated initializer: -initWithName:");
+  return nil;
+}
+
 - (id)initWithCoder:(NSCoder *)aDecoder
 {
   self = [super init];
@@ -53,6 +59,7 @@
 {
   self = [super init];
   SPXAssertTrueOrReturnNil(self);
+  SPXAssertTrueOrReturnNil(name.length);
   _name = name;
   return self;
 }
@@ -69,13 +76,14 @@
 
 - (void)addEvent:(SPXSecureEvent *)event
 {
+  SPXAssertTrueOrReturn(event);
   SPXAssertTrueOrReturn(!self.eventsIdentifierMapping[event.identifier]);
   self.eventsIdentifierMapping[event.identifier] = event;
 }
 
 - (void)removeEvent:(SPXSecureEvent *)event
 {
-  self.eventsIdentifierMapping[event.identifier] = nil;
+  [self.eventsIdentifierMapping removeObjectForKey:event.identifier];
 }
 
 - (NSMutableDictionary *)eventsIdentifierMapping

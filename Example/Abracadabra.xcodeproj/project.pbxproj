@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		0E376C4F1EE548DA389AAAF5 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E93062D1E3168F8CB1744A /* libPods-Tests.a */; };
+		54140A511A7FBADA00A08BEF /* SPXSecurityTestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54140A501A7FBADA00A08BEF /* SPXSecurityTestClass.m */; };
+		546E07C01A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 546E07BF1A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -22,7 +24,6 @@
 		6003F5B1195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F5B2195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
 		6003F5BA195388D20070C39A /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 6003F5B8195388D20070C39A /* InfoPlist.strings */; };
-		6003F5BC195388D20070C39A /* Tests.m in Sources */ = {isa = PBXBuildFile; fileRef = 6003F5BB195388D20070C39A /* Tests.m */; };
 		FD7CE80865D5AC5C8ACA0461 /* libPods-Abracadabra.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 1FD8FC7F3B970812F22E94BE /* libPods-Abracadabra.a */; };
 /* End PBXBuildFile section */
 
@@ -41,6 +42,8 @@
 		1FD8FC7F3B970812F22E94BE /* libPods-Abracadabra.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-Abracadabra.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		26BACFF3AAAAFF23CAD472A6 /* Pods-Tests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.release.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.release.xcconfig"; sourceTree = "<group>"; };
 		374BB517A932D47FDAFF363C /* Pods-Abracadabra.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abracadabra.release.xcconfig"; path = "Pods/Target Support Files/Pods-Abracadabra/Pods-Abracadabra.release.xcconfig"; sourceTree = "<group>"; };
+		54140A4F1A7FBADA00A08BEF /* SPXSecurityTestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecurityTestClass.h; sourceTree = "<group>"; };
+		54140A501A7FBADA00A08BEF /* SPXSecurityTestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecurityTestClass.m; sourceTree = "<group>"; };
 		546E079B1A7F2C4B00AEF796 /* Abracadabra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Abracadabra.h; sourceTree = "<group>"; };
 		546E079D1A7F2C4B00AEF796 /* SPXDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXDispatch.h; sourceTree = "<group>"; };
 		546E079E1A7F2C4B00AEF796 /* SPXDispatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXDispatch.m; sourceTree = "<group>"; };
@@ -60,6 +63,7 @@
 		546E07AF1A7F2C4B00AEF796 /* SPXSecureEventsGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsGroup.m; sourceTree = "<group>"; };
 		546E07B01A7F2C4B00AEF796 /* SPXSecureEventsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsStore.h; sourceTree = "<group>"; };
 		546E07B11A7F2C4B00AEF796 /* SPXSecureEventsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStore.m; sourceTree = "<group>"; };
+		546E07BF1A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStoreSpec.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Abracadabra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abracadabra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -79,7 +83,6 @@
 		6003F5AF195388D20070C39A /* XCTest.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = XCTest.framework; path = Library/Frameworks/XCTest.framework; sourceTree = DEVELOPER_DIR; };
 		6003F5B7195388D20070C39A /* Tests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Tests-Info.plist"; sourceTree = "<group>"; };
 		6003F5B9195388D20070C39A /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		6003F5BB195388D20070C39A /* Tests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = Tests.m; sourceTree = "<group>"; };
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6B4122DA84FB214E19F7C8D5 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		8C460179D13F3AD4149F6296 /* Pods-Abracadabra.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abracadabra.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Abracadabra/Pods-Abracadabra.debug.xcconfig"; sourceTree = "<group>"; };
@@ -123,6 +126,16 @@
 				26BACFF3AAAAFF23CAD472A6 /* Pods-Tests.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		54140A521A7FBAE000A08BEF /* Abracadara */ = {
+			isa = PBXGroup;
+			children = (
+				546E07BF1A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m */,
+				54140A4F1A7FBADA00A08BEF /* SPXSecurityTestClass.h */,
+				54140A501A7FBADA00A08BEF /* SPXSecurityTestClass.m */,
+			);
+			name = Abracadara;
 			sourceTree = "<group>";
 		};
 		546E07991A7F2C4B00AEF796 /* Classes */ = {
@@ -256,7 +269,7 @@
 		6003F5B5195388D20070C39A /* Tests */ = {
 			isa = PBXGroup;
 			children = (
-				6003F5BB195388D20070C39A /* Tests.m */,
+				54140A521A7FBAE000A08BEF /* Abracadara */,
 				6003F5B6195388D20070C39A /* Supporting Files */,
 			);
 			path = Tests;
@@ -458,7 +471,8 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6003F5BC195388D20070C39A /* Tests.m in Sources */,
+				54140A511A7FBADA00A08BEF /* SPXSecurityTestClass.m in Sources */,
+				546E07C01A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
