@@ -1,0 +1,1 @@
+../../../../../Pod/Classes/Logic/SPXSecureCredential.h
