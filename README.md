@@ -85,6 +85,27 @@ In fact any of the variations below are valid statements:
   });
 ```
 
+Notice those second blocks? This allows you to control flow based on success or failure. In this case, `-performSecureCode` will be executed only if the policy is authenticated. Otherwise the return statement will be executed and the log statement will never be shown.
+
+```objc
+  SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
+	  [self performSecureCode]; \
+  }, return)
+  
+  NSLog(@"Authentication Failed.");
+```
+
+By using optional parenthese around the return, we can now move the log statement inside the failure block too.
+
+```objc
+  SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
+	  [self performSecureCode]; \
+  }, {
+      NSLog(@"Authentication Failed.");
+      return; // in this case no more code exists at this scope, so this is no longer required
+  })
+```
+
 ## Advanced Configurations
 
 Abracadabra has been designed to be quite flexible and takes care of all the security for you. 
@@ -118,6 +139,22 @@ When you create a secure event, you must specify the default policy to apply to 
 >All views and controllers can be replaced with your own implementations if you prefer.
 
 >Abracadabra does _NOT_ use blocks! All code is guaranteed to execute on the calling thread.
+
+## Why should I use Abracadabra?
+
+Many applications or even 3rd party libraries exists with some form of Passcode based integration. However most of these are using baked-in -- and often incomplete -- implementations.
+
+Providing a passcode in your application isn't just about showing PIN entry form inside your view. This just gives your users a false sense of security around their actions and/or data. 
+
+Also, many open source implementations rely on the implementer to perform unneccary checks, this includes Apples high level solution regarding TouchID.
+
+Abracadabra was designed to remove almost all 'security' code from your project. This allows you to focus on your features and build application logic, leaving security as an after thought. 
+
+>Note I'm not advocating the idea of __NOT__ considering security! However if you're not going to, at least use Abracadabra to make your life easier and your code more secure. 
+
+The design choices I've made exist to make it easier for you to implement in your code, increasing the chance that you'll spend time securing your applications.
+
+One of the best reasons to use Abracadabra, is because my solution is so elegant and lightweight, making it really, really simple to improve the security library itself, without having to update your app code at all!
 
 ## Installation
 
