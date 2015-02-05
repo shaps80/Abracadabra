@@ -64,6 +64,12 @@
 		546E07B01A7F2C4B00AEF796 /* SPXSecureEventsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsStore.h; sourceTree = "<group>"; };
 		546E07B11A7F2C4B00AEF796 /* SPXSecureEventsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStore.m; sourceTree = "<group>"; };
 		546E07BF1A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStoreSpec.m; sourceTree = "<group>"; };
+		54B942771A80444400735EB3 /* SPXSecureEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsViewController.h; sourceTree = "<group>"; };
+		54B942781A80444400735EB3 /* SPXSecureEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsViewController.m; sourceTree = "<group>"; };
+		54B9427A1A80633400735EB3 /* SPXSecurePasscodeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecurePasscodeButton.h; sourceTree = "<group>"; };
+		54B9427B1A80633400735EB3 /* SPXSecurePasscodeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecurePasscodeButton.m; sourceTree = "<group>"; };
+		54B9427D1A8063A700735EB3 /* UIImage+SecurityAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+SecurityAdditions.h"; sourceTree = "<group>"; };
+		54B9427E1A8063A700735EB3 /* UIImage+SecurityAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SecurityAdditions.m"; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Abracadabra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abracadabra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -157,6 +163,8 @@
 			children = (
 				546E079D1A7F2C4B00AEF796 /* SPXDispatch.h */,
 				546E079E1A7F2C4B00AEF796 /* SPXDispatch.m */,
+				54B9427D1A8063A700735EB3 /* UIImage+SecurityAdditions.h */,
+				54B9427E1A8063A700735EB3 /* UIImage+SecurityAdditions.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
@@ -201,6 +209,10 @@
 		546E07B21A7F2C4B00AEF796 /* User Interface */ = {
 			isa = PBXGroup;
 			children = (
+				54B942771A80444400735EB3 /* SPXSecureEventsViewController.h */,
+				54B942781A80444400735EB3 /* SPXSecureEventsViewController.m */,
+				54B9427A1A80633400735EB3 /* SPXSecurePasscodeButton.h */,
+				54B9427B1A80633400735EB3 /* SPXSecurePasscodeButton.m */,
 			);
 			path = "User Interface";
 			sourceTree = "<group>";

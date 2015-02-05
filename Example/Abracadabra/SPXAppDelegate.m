@@ -12,7 +12,11 @@
 @implementation SPXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{  
+{
+  SPXSecure(@"Group 2", @"Event 2", SPXSecurityPolicyNone, {
+    
+  });
+  
   return YES;
 }
 

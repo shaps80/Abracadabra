@@ -73,12 +73,16 @@ In fact any of the variations below are valid statements:
   });
   
   SPXSecure(SPXSecurityPolicyNone, {
-     /* this code will execute if access is allowed */
-  }, /* this code will execute if access is disallowed */ );
+	  /* this code will execute if access is allowed */
+  }, { \
+	  /* this code will execute if access is disallowed */ \
+  });
   
   SPXSecure(@"", @"", SPXSecurityPolicyNone, {
-     /* this code will execute if access is allowed */
-  }, /* this code will execute if access is disallowed */ );
+     /* this code will execute if access is allowed */ \
+  }, { \
+	  /* this code will execute if access is disallowed */ \
+  });
 ```
 
 ## Advanced Configurations
