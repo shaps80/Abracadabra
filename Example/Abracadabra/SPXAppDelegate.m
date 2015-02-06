@@ -13,9 +13,9 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-  SPXSecure(@"Group 2", @"Event 2", SPXSecurityPolicyNone, {
-    
-  });
+  SPXSecure(SPXSecurityPolicyNone, {
+    NSLog(@"Authentication Success!");
+  }, NSLog(@"Authentication Failed!"))
   
   return YES;
 }

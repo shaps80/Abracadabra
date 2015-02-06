@@ -23,24 +23,28 @@
     NSLog(@"running code");
   });
   
-//  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
-//    
-    SPXSecureEventsViewController *controller = [SPXSecureEventsViewController new];
-  
-  [controller configureWithBlock:^(UITableViewController *controller) {
+  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
     
-  }];
-//
-//    [controller configureWithBlock:^(UITableViewController *controller) {
-//      controller.title = @"Another";
-//    }];
-  
+    SPXSecureEventsViewController *controller = [SPXSecureEventsViewController new];
+    
+    [controller configureWithBlock:^(UITableViewController *controller) {
+      
+    }];
+    
+    [controller configureWithBlock:^(UITableViewController *controller) {
+      controller.title = @"Another";
+    }];
+    
+    
+    
     // need to be able to configure sorting!
     
+    
+    
 //    [controller.tableViewController.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:SPXSecureEventCellIdentifier];
-    [self.navigationController pushViewController:controller.tableViewController animated:YES];
+//    [self.navigationController pushViewController:controller.tableViewController animated:YES];
 //    [self presentViewController:controller animated:YES completion:nil];
-//  });
+  });
 }
 
 @end

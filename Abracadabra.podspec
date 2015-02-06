@@ -10,7 +10,6 @@ Pod::Spec.new do |s|
   s.platform     = :ios, '7.0'
   s.requires_arc = true
   s.source_files = 'Pod/Classes/**/*.{h,m}'
-  s.dependency 'SPXDefines', '~> 1.1.0'
-  s.dependency 'SPXDataValidators', '~> 1.2.0'
-  s.dependency 'FXKeychain', '~> 1.5.2'
+  s.dependency 'SPXDefines'
+  s.dependency 'SPXDataValidators'
 end
