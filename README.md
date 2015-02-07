@@ -165,12 +165,9 @@ it, simply add the following line to your Podfile:
 
 ## Author
 
-Shaps Mohsenin, [shapsuk@me.com](mailto:shapsuk@me.com)
+Shaps Mohsenin, [@shaps](http://twitter.com/shaps)
 
 ## License
 
 Abracadabra is available under the MIT license. See the LICENSE file for more info.
 
-## Attribution
-
-[FXKeychain](https://github.com/nicklockwood/FXKeychain) by Nick Lockwood is used for storing your passcode securely in the Keychain.
