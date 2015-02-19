@@ -9,7 +9,15 @@ Pod::Spec.new do |s|
   s.social_media_url = 'https://twitter.com/shaps'
   s.platform     = :ios, '7.0'
   s.requires_arc = true
-  s.source_files = 'Pod/Classes/**/*.{h,m}'
   s.dependency 'SPXDefines'
   s.dependency 'SPXDataValidators'
+
+  s.subspec 'Core' do |spec|
+    spec.source_files = 'Pod/Classes/Core/**/*.{h,m}'
+  end
+
+  s.subspec 'UI' do |spec|
+    spec.source_files = 'Pod/Classes/UI/**/*.{h,m}'
+    spec.dependency 'Abracadabra/Core'
+  end
 end

@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/Model/SPXSecureEvent.h
+../../../../../Pod/Classes/Core/Model/SPXSecureEvent.h

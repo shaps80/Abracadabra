@@ -9,8 +9,6 @@
 #import "UITextField+SPXDataValidatorAdditions.h"
 #import <objc/runtime.h>
 
-static void * SPXDataValidatorKey = &SPXDataValidatorKey;
-
 
 @interface UITextField (Private)
 @property (nonatomic, strong) id <SPXDataValidator> dataValidator;
@@ -18,21 +16,16 @@ static void * SPXDataValidatorKey = &SPXDataValidatorKey;
 
 @implementation UITextField (SPXDataValidatorAdditions)
 
-- (void)setDataValidator:(id<SPXDataValidator>)validator
+- (void)setDataValidator:(id<SPXDataValidator>)dataValidator
 {
-  objc_setAssociatedObject(self, &SPXDataValidatorKey, validator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  @synchronized(self) {
+    objc_setAssociatedObject(self, @selector(dataValidator), dataValidator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+  }
 }
 
 - (id<SPXDataValidator>)dataValidator
 {
-  return objc_getAssociatedObject(self, &SPXDataValidatorKey);
-}
-
-- (void)applyValidator:(id<SPXDataValidator>)validator
-{
-  @synchronized(validator) {
-    self.dataValidator = validator;
-  }
+  return objc_getAssociatedObject(self, @selector(dataValidator));
 }
 
 - (BOOL)validateWithError:(out NSError *__autoreleasing *)error

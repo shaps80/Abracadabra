@@ -9,39 +9,32 @@
 #import "UITextView+SPXDataValidatorAdditions.h"
 #import <objc/runtime.h>
 
-static void * SPXDataValidatorKey = &SPXDataValidatorKey;
-
 
 @interface UITextView (Private)
-@property (nonatomic, strong) id <SPXDataValidator> validator;
+@property (nonatomic, strong) id <SPXDataValidator> dataValidator;
 @end
 
 @implementation UITextView (SPXDataValidatorAdditions)
 
-- (void)setValidator:(id<SPXDataValidator>)validator
+- (void)setDataValidator:(id<SPXDataValidator>)validator
 {
-  objc_setAssociatedObject(self, &SPXDataValidatorKey, validator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
-}
-
-- (id<SPXDataValidator>)validator
-{
-  return objc_getAssociatedObject(self, &SPXDataValidatorKey);
-}
-
-- (void)applyValidator:(id<SPXDataValidator>)validator
-{
-  @synchronized(validator) {
-    self.validator = validator;
+  @synchronized(self) {
+    objc_setAssociatedObject(self, @selector(dataValidator), validator, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
   }
+}
+
+- (id<SPXDataValidator>)dataValidator
+{
+  return objc_getAssociatedObject(self, @selector(dataValidator));
 }
 
 - (BOOL)validateWithError:(out NSError *__autoreleasing *)error
 {
-  if (!self.validator) {
+  if (!self.dataValidator) {
     return YES;
   }
   
-  return [self.validator validateValue:self.text error:error];
+  return [self.dataValidator validateValue:self.text error:error];
 }
 
 @end

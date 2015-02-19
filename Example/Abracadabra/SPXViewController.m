@@ -7,43 +7,38 @@
 //
 
 #import "SPXViewController.h"
-#import "SPXSecureEventsViewController.h"
 #import "Abracadabra.h"
+
+#import "SPXSecureField.h"
+#import "SPXPasscodeViewController.h"
 
 @interface SPXViewController ()
 @end
 
 @implementation SPXViewController
 
-- (void)viewDidAppear:(BOOL)animated
+- (void)viewDidLoad
 {
-  [super viewDidAppear:animated];
+  [super viewDidLoad];
   
-  SPXSecure(SPXSecurityPolicyTimedSessionWithPIN, {
-    NSLog(@"running code");
-  });
-  
-  dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.5 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+  [[UIView appearanceWhenContainedIn:SPXPasscodeViewController.class, nil] setTintColor:[UIColor whiteColor]];
+}
+
+- (void)viewWillLayoutSubviews
+{
+  [super viewWillLayoutSubviews];
+}
+
+- (IBAction)add:(id)sender
+{
+  NSLog(@"Add: %@", [NSThread currentThread]);
+
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
+    NSLog(@"Background: %@", [NSThread currentThread]);
     
-    SPXSecureEventsViewController *controller = [SPXSecureEventsViewController new];
-    
-    [controller configureWithBlock:^(UITableViewController *controller) {
-      
-    }];
-    
-    [controller configureWithBlock:^(UITableViewController *controller) {
-      controller.title = @"Another";
-    }];
-    
-    
-    
-    // need to be able to configure sorting!
-    
-    
-    
-//    [controller.tableViewController.tableView registerClass:[UITableViewCell class] forCellReuseIdentifier:SPXSecureEventCellIdentifier];
-//    [self.navigationController pushViewController:controller.tableViewController animated:YES];
-//    [self presentViewController:controller animated:YES completion:nil];
+    Abracadabra(@"Group", @"Restart Server", SPXSecurePolicyAlwaysWithPIN, {
+      NSLog(@"Success: %@", [NSThread currentThread]);
+    })
   });
 }
 

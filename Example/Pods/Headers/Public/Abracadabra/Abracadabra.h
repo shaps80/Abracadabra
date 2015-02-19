@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/Abracadabra.h
+../../../../../Pod/Classes/Core/Abracadabra.h

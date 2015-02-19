@@ -44,32 +44,43 @@
 		374BB517A932D47FDAFF363C /* Pods-Abracadabra.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abracadabra.release.xcconfig"; path = "Pods/Target Support Files/Pods-Abracadabra/Pods-Abracadabra.release.xcconfig"; sourceTree = "<group>"; };
 		54140A4F1A7FBADA00A08BEF /* SPXSecurityTestClass.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecurityTestClass.h; sourceTree = "<group>"; };
 		54140A501A7FBADA00A08BEF /* SPXSecurityTestClass.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecurityTestClass.m; sourceTree = "<group>"; };
-		546E079B1A7F2C4B00AEF796 /* Abracadabra.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Abracadabra.h; sourceTree = "<group>"; };
-		546E079D1A7F2C4B00AEF796 /* SPXDispatch.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXDispatch.h; sourceTree = "<group>"; };
-		546E079E1A7F2C4B00AEF796 /* SPXDispatch.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXDispatch.m; sourceTree = "<group>"; };
-		546E07A01A7F2C4B00AEF796 /* SPXSecurityInternal.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecurityInternal.h; sourceTree = "<group>"; };
-		546E07A11A7F2C4B00AEF796 /* SPXSecurityInternal.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecurityInternal.m; sourceTree = "<group>"; };
-		546E07A31A7F2C4B00AEF796 /* SPXSecureCredential.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureCredential.h; sourceTree = "<group>"; };
-		546E07A41A7F2C4B00AEF796 /* SPXSecureCredential.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureCredential.m; sourceTree = "<group>"; };
-		546E07A51A7F2C4B00AEF796 /* SPXSecureDomain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureDomain.h; sourceTree = "<group>"; };
-		546E07A61A7F2C4B00AEF796 /* SPXSecureDomain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureDomain.m; sourceTree = "<group>"; };
-		546E07A71A7F2C4B00AEF796 /* SPXSecureDomainSettings.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureDomainSettings.h; sourceTree = "<group>"; };
-		546E07A81A7F2C4B00AEF796 /* SPXSecureDomainSettings.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureDomainSettings.m; sourceTree = "<group>"; };
-		546E07A91A7F2C4B00AEF796 /* SPXSecureSession.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureSession.h; sourceTree = "<group>"; };
-		546E07AA1A7F2C4B00AEF796 /* SPXSecureSession.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureSession.m; sourceTree = "<group>"; };
-		546E07AC1A7F2C4B00AEF796 /* SPXSecureEvent.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEvent.h; sourceTree = "<group>"; };
-		546E07AD1A7F2C4B00AEF796 /* SPXSecureEvent.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEvent.m; sourceTree = "<group>"; };
-		546E07AE1A7F2C4B00AEF796 /* SPXSecureEventsGroup.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsGroup.h; sourceTree = "<group>"; };
-		546E07AF1A7F2C4B00AEF796 /* SPXSecureEventsGroup.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsGroup.m; sourceTree = "<group>"; };
-		546E07B01A7F2C4B00AEF796 /* SPXSecureEventsStore.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsStore.h; sourceTree = "<group>"; };
-		546E07B11A7F2C4B00AEF796 /* SPXSecureEventsStore.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStore.m; sourceTree = "<group>"; };
+		5446112A1A955D68006E821A /* SPXAudio.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXAudio.h; sourceTree = "<group>"; };
+		5446112B1A955D68006E821A /* SPXAudio.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXAudio.m; sourceTree = "<group>"; };
+		5446112F1A956590006E821A /* UIImage+SPXSecureAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIImage+SPXSecureAdditions.h"; sourceTree = "<group>"; };
+		544611301A956590006E821A /* UIImage+SPXSecureAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SPXSecureAdditions.m"; sourceTree = "<group>"; };
 		546E07BF1A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStoreSpec.m; sourceTree = "<group>"; };
-		54B942771A80444400735EB3 /* SPXSecureEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsViewController.h; sourceTree = "<group>"; };
-		54B942781A80444400735EB3 /* SPXSecureEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsViewController.m; sourceTree = "<group>"; };
-		54B9427A1A80633400735EB3 /* SPXSecurePasscodeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecurePasscodeButton.h; sourceTree = "<group>"; };
-		54B9427B1A80633400735EB3 /* SPXSecurePasscodeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecurePasscodeButton.m; sourceTree = "<group>"; };
-		54B9427D1A8063A700735EB3 /* UIImage+SecurityAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "UIImage+SecurityAdditions.h"; sourceTree = "<group>"; };
-		54B9427E1A8063A700735EB3 /* UIImage+SecurityAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "UIImage+SecurityAdditions.m"; sourceTree = "<group>"; };
+		54DAA33E1A94A90400F4B938 /* Abracadabra.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Abracadabra.h; sourceTree = "<group>"; };
+		54DAA3401A94A90400F4B938 /* NSData+SPXSecureAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+SPXSecureAdditions.h"; sourceTree = "<group>"; };
+		54DAA3411A94A90400F4B938 /* NSData+SPXSecureAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+SPXSecureAdditions.m"; sourceTree = "<group>"; };
+		54DAA3421A94A90400F4B938 /* SPXDispatch.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXDispatch.h; sourceTree = "<group>"; };
+		54DAA3431A94A90400F4B938 /* SPXDispatch.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXDispatch.m; sourceTree = "<group>"; };
+		54DAA3441A94A90400F4B938 /* SPXKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXKeychain.h; sourceTree = "<group>"; };
+		54DAA3451A94A90400F4B938 /* SPXKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXKeychain.m; sourceTree = "<group>"; };
+		54DAA3471A94A90400F4B938 /* SPXSecurityInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecurityInternal.h; sourceTree = "<group>"; };
+		54DAA3481A94A90400F4B938 /* SPXSecurityInternal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecurityInternal.m; sourceTree = "<group>"; };
+		54DAA34A1A94A90400F4B938 /* SPXSecureEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureEvent.h; sourceTree = "<group>"; };
+		54DAA34B1A94A90400F4B938 /* SPXSecureEvent.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEvent.m; sourceTree = "<group>"; };
+		54DAA34C1A94A90400F4B938 /* SPXSecureEventsGroup.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsGroup.h; sourceTree = "<group>"; };
+		54DAA34D1A94A90400F4B938 /* SPXSecureEventsGroup.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsGroup.m; sourceTree = "<group>"; };
+		54DAA34E1A94A90400F4B938 /* SPXSecureEventsStore.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureEventsStore.h; sourceTree = "<group>"; };
+		54DAA34F1A94A90400F4B938 /* SPXSecureEventsStore.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureEventsStore.m; sourceTree = "<group>"; };
+		54DAA3511A94A90400F4B938 /* SPXSecureCredential.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureCredential.h; sourceTree = "<group>"; };
+		54DAA3521A94A90400F4B938 /* SPXSecureCredential.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureCredential.m; sourceTree = "<group>"; };
+		54DAA3531A94A90400F4B938 /* SPXSecureSession.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureSession.h; sourceTree = "<group>"; };
+		54DAA3541A94A90400F4B938 /* SPXSecureSession.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureSession.m; sourceTree = "<group>"; };
+		54DAA3551A94A90400F4B938 /* SPXSecureVault.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureVault.h; sourceTree = "<group>"; };
+		54DAA3561A94A90400F4B938 /* SPXSecureVault.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureVault.m; sourceTree = "<group>"; };
+		54DAA3661A94BE5700F4B938 /* SPXPasscodeLayout.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXPasscodeLayout.h; sourceTree = "<group>"; };
+		54DAA3671A94BE5700F4B938 /* SPXPasscodeLayout.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXPasscodeLayout.m; sourceTree = "<group>"; };
+		54DAA3681A94BE5700F4B938 /* SPXPasscodeViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXPasscodeViewController.h; sourceTree = "<group>"; };
+		54DAA3691A94BE5700F4B938 /* SPXPasscodeViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXPasscodeViewController.m; sourceTree = "<group>"; };
+		54DAA36A1A94BE5700F4B938 /* SPXSecureField.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureField.h; sourceTree = "<group>"; };
+		54DAA36B1A94BE5700F4B938 /* SPXSecureField.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureField.m; sourceTree = "<group>"; };
+		54DAA36C1A94BE5700F4B938 /* SPXSecureKeyCell.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureKeyCell.h; sourceTree = "<group>"; };
+		54DAA36D1A94BE5700F4B938 /* SPXSecureKeyCell.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecureKeyCell.m; sourceTree = "<group>"; };
+		54DAA36F1A94C1E600F4B938 /* SPXSecureDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureDefines.h; sourceTree = "<group>"; };
+		54DAA3731A950C7100F4B938 /* SPXSecureKeyCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureKeyCellBackground.h; sourceTree = "<group>"; };
+		54DAA3741A950C7100F4B938 /* SPXSecureKeyCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureKeyCellBackground.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Abracadabra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abracadabra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -92,7 +103,7 @@
 		606FC2411953D9B200FFA9A0 /* Tests-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Tests-Prefix.pch"; sourceTree = "<group>"; };
 		6B4122DA84FB214E19F7C8D5 /* LICENSE */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = LICENSE; path = ../LICENSE; sourceTree = "<group>"; };
 		8C460179D13F3AD4149F6296 /* Pods-Abracadabra.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Abracadabra.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Abracadabra/Pods-Abracadabra.debug.xcconfig"; sourceTree = "<group>"; };
-		A53C4D354471A9DB03E5187F /* Abracadabra.podspec */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Abracadabra.podspec; path = ../Abracadabra.podspec; sourceTree = "<group>"; };
+		A53C4D354471A9DB03E5187F /* Abracadabra.podspec */ = {isa = PBXFileReference; explicitFileType = text.script.ruby; includeInIndex = 1; name = Abracadabra.podspec; path = ../Abracadabra.podspec; sourceTree = "<group>"; };
 		C09D24DDB07EFAB59E5F4CE0 /* README.md */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = net.daringfireball.markdown; name = README.md; path = ../README.md; sourceTree = "<group>"; };
 		C17BA5CDF604CD94D0158834 /* Pods-Tests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Tests.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Tests/Pods-Tests.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -144,83 +155,134 @@
 			name = Abracadara;
 			sourceTree = "<group>";
 		};
-		546E07991A7F2C4B00AEF796 /* Classes */ = {
+		5446112C1A956542006E821A /* Helpers */ = {
 			isa = PBXGroup;
 			children = (
-				546E079B1A7F2C4B00AEF796 /* Abracadabra.h */,
-				546E079C1A7F2C4B00AEF796 /* Helpers */,
-				546E079F1A7F2C4B00AEF796 /* Internal */,
-				546E07A21A7F2C4B00AEF796 /* Logic */,
-				546E07AB1A7F2C4B00AEF796 /* Model */,
-				546E07B21A7F2C4B00AEF796 /* User Interface */,
+				5446112F1A956590006E821A /* UIImage+SPXSecureAdditions.h */,
+				544611301A956590006E821A /* UIImage+SPXSecureAdditions.m */,
+			);
+			name = Helpers;
+			sourceTree = "<group>";
+		};
+		54DAA33B1A94A90400F4B938 /* Classes */ = {
+			isa = PBXGroup;
+			children = (
+				54DAA33D1A94A90400F4B938 /* Core */,
+				54DAA3631A94BE5700F4B938 /* UI */,
 			);
 			name = Classes;
 			path = ../Pod/Classes;
 			sourceTree = "<group>";
 		};
-		546E079C1A7F2C4B00AEF796 /* Helpers */ = {
+		54DAA33D1A94A90400F4B938 /* Core */ = {
 			isa = PBXGroup;
 			children = (
-				546E079D1A7F2C4B00AEF796 /* SPXDispatch.h */,
-				546E079E1A7F2C4B00AEF796 /* SPXDispatch.m */,
-				54B9427D1A8063A700735EB3 /* UIImage+SecurityAdditions.h */,
-				54B9427E1A8063A700735EB3 /* UIImage+SecurityAdditions.m */,
+				54DAA33E1A94A90400F4B938 /* Abracadabra.h */,
+				54DAA36F1A94C1E600F4B938 /* SPXSecureDefines.h */,
+				54DAA33F1A94A90400F4B938 /* Helpers */,
+				54DAA3461A94A90400F4B938 /* Internal */,
+				54DAA3491A94A90400F4B938 /* Model */,
+				54DAA3501A94A90400F4B938 /* Vault */,
+			);
+			path = Core;
+			sourceTree = "<group>";
+		};
+		54DAA33F1A94A90400F4B938 /* Helpers */ = {
+			isa = PBXGroup;
+			children = (
+				54DAA3401A94A90400F4B938 /* NSData+SPXSecureAdditions.h */,
+				54DAA3411A94A90400F4B938 /* NSData+SPXSecureAdditions.m */,
+				54DAA3421A94A90400F4B938 /* SPXDispatch.h */,
+				54DAA3431A94A90400F4B938 /* SPXDispatch.m */,
+				54DAA3441A94A90400F4B938 /* SPXKeychain.h */,
+				54DAA3451A94A90400F4B938 /* SPXKeychain.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
 		};
-		546E079F1A7F2C4B00AEF796 /* Internal */ = {
+		54DAA3461A94A90400F4B938 /* Internal */ = {
 			isa = PBXGroup;
 			children = (
-				546E07A01A7F2C4B00AEF796 /* SPXSecurityInternal.h */,
-				546E07A11A7F2C4B00AEF796 /* SPXSecurityInternal.m */,
+				54DAA3471A94A90400F4B938 /* SPXSecurityInternal.h */,
+				54DAA3481A94A90400F4B938 /* SPXSecurityInternal.m */,
 			);
 			path = Internal;
 			sourceTree = "<group>";
 		};
-		546E07A21A7F2C4B00AEF796 /* Logic */ = {
+		54DAA3491A94A90400F4B938 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				546E07A31A7F2C4B00AEF796 /* SPXSecureCredential.h */,
-				546E07A41A7F2C4B00AEF796 /* SPXSecureCredential.m */,
-				546E07A51A7F2C4B00AEF796 /* SPXSecureDomain.h */,
-				546E07A61A7F2C4B00AEF796 /* SPXSecureDomain.m */,
-				546E07A71A7F2C4B00AEF796 /* SPXSecureDomainSettings.h */,
-				546E07A81A7F2C4B00AEF796 /* SPXSecureDomainSettings.m */,
-				546E07A91A7F2C4B00AEF796 /* SPXSecureSession.h */,
-				546E07AA1A7F2C4B00AEF796 /* SPXSecureSession.m */,
-			);
-			path = Logic;
-			sourceTree = "<group>";
-		};
-		546E07AB1A7F2C4B00AEF796 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				546E07AC1A7F2C4B00AEF796 /* SPXSecureEvent.h */,
-				546E07AD1A7F2C4B00AEF796 /* SPXSecureEvent.m */,
-				546E07AE1A7F2C4B00AEF796 /* SPXSecureEventsGroup.h */,
-				546E07AF1A7F2C4B00AEF796 /* SPXSecureEventsGroup.m */,
-				546E07B01A7F2C4B00AEF796 /* SPXSecureEventsStore.h */,
-				546E07B11A7F2C4B00AEF796 /* SPXSecureEventsStore.m */,
+				54DAA34A1A94A90400F4B938 /* SPXSecureEvent.h */,
+				54DAA34B1A94A90400F4B938 /* SPXSecureEvent.m */,
+				54DAA34C1A94A90400F4B938 /* SPXSecureEventsGroup.h */,
+				54DAA34D1A94A90400F4B938 /* SPXSecureEventsGroup.m */,
+				54DAA34E1A94A90400F4B938 /* SPXSecureEventsStore.h */,
+				54DAA34F1A94A90400F4B938 /* SPXSecureEventsStore.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
 		};
-		546E07B21A7F2C4B00AEF796 /* User Interface */ = {
+		54DAA3501A94A90400F4B938 /* Vault */ = {
 			isa = PBXGroup;
 			children = (
-				54B942771A80444400735EB3 /* SPXSecureEventsViewController.h */,
-				54B942781A80444400735EB3 /* SPXSecureEventsViewController.m */,
-				54B9427A1A80633400735EB3 /* SPXSecurePasscodeButton.h */,
-				54B9427B1A80633400735EB3 /* SPXSecurePasscodeButton.m */,
+				54DAA3551A94A90400F4B938 /* SPXSecureVault.h */,
+				54DAA3561A94A90400F4B938 /* SPXSecureVault.m */,
+				54DAA3511A94A90400F4B938 /* SPXSecureCredential.h */,
+				54DAA3521A94A90400F4B938 /* SPXSecureCredential.m */,
+				54DAA3531A94A90400F4B938 /* SPXSecureSession.h */,
+				54DAA3541A94A90400F4B938 /* SPXSecureSession.m */,
 			);
-			path = "User Interface";
+			path = Vault;
+			sourceTree = "<group>";
+		};
+		54DAA3631A94BE5700F4B938 /* UI */ = {
+			isa = PBXGroup;
+			children = (
+				5446112C1A956542006E821A /* Helpers */,
+				54DAA3641A94BE5700F4B938 /* Events */,
+				54DAA3651A94BE5700F4B938 /* Passcode */,
+				54DAA36E1A94BE5700F4B938 /* Settings */,
+			);
+			path = UI;
+			sourceTree = "<group>";
+		};
+		54DAA3641A94BE5700F4B938 /* Events */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Events;
+			sourceTree = "<group>";
+		};
+		54DAA3651A94BE5700F4B938 /* Passcode */ = {
+			isa = PBXGroup;
+			children = (
+				5446112A1A955D68006E821A /* SPXAudio.h */,
+				5446112B1A955D68006E821A /* SPXAudio.m */,
+				54DAA36A1A94BE5700F4B938 /* SPXSecureField.h */,
+				54DAA36B1A94BE5700F4B938 /* SPXSecureField.m */,
+				54DAA3661A94BE5700F4B938 /* SPXPasscodeLayout.h */,
+				54DAA3671A94BE5700F4B938 /* SPXPasscodeLayout.m */,
+				54DAA3681A94BE5700F4B938 /* SPXPasscodeViewController.h */,
+				54DAA3691A94BE5700F4B938 /* SPXPasscodeViewController.m */,
+				54DAA36C1A94BE5700F4B938 /* SPXSecureKeyCell.h */,
+				54DAA36D1A94BE5700F4B938 /* SPXSecureKeyCell.m */,
+				54DAA3731A950C7100F4B938 /* SPXSecureKeyCellBackground.h */,
+				54DAA3741A950C7100F4B938 /* SPXSecureKeyCellBackground.m */,
+			);
+			path = Passcode;
+			sourceTree = "<group>";
+		};
+		54DAA36E1A94BE5700F4B938 /* Settings */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Settings;
 			sourceTree = "<group>";
 		};
 		6003F581195388D10070C39A = {
 			isa = PBXGroup;
 			children = (
-				546E07991A7F2C4B00AEF796 /* Classes */,
+				54DAA33B1A94A90400F4B938 /* Classes */,
 				60FF7A9C1954A5C5007DD14C /* Podspec Metadata */,
 				6003F593195388D20070C39A /* Abracadabra */,
 				6003F5B5195388D20070C39A /* Tests */,

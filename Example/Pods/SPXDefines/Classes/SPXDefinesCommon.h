@@ -29,15 +29,10 @@
 #import <objc/runtime.h>
 
 
-#pragma mark - These are useful for building other macros
-
 #define _SPX_OBJC_STRINGIFY(x) @#x
 #define _SPX_STRINGIFY(x) #x
 
 #define _SPXCompileTimeCheck(code_, action_) (((void)(NO && ((void)code_, NO)), action_))
-
-
-#pragma mark - The following allow for nice code inspection or cross-platform support
 
 
 /**
@@ -54,77 +49,4 @@ static inline BOOL isMetaClass(id objOrClass)
 }
 
 
-// Cross platform support
-
-#pragma mark - Universal
-
-#if TARGET_OS_IPHONE
-
-#define SPXColor            UIColor
-#define SPXGraphicsContext  UIGraphicsGetCurrentContext()
-#define SPXBezierPath       UIBezierPath
-
-#else
-
-#define SPXColor            NSColor
-#define SPXGraphicsContext  [[NSGraphicsContext currentContext] graphicsPort]
-#define SPXBezierPath       NSBezierPath
-
 #endif
-
-/**
- Requires Super - Provides compiler warning when super is not called on a method that requires it.
- - (void)myMethod NS_REQUIRES_SUPER;
- 
- Non NULL - Provides compiler warning when passing nil to a method argument
- - (void)setFirstName:(NSString *)firstName lastName:(NSString *)lastName  __nonnull(1, 2);
- */
-
-#pragma mark - Compile-time checks
-
-#ifndef NS_REQUIRES_SUPER
-#if __has_attribute(objc_requires_super)
-#define NS_REQUIRES_SUPER __attribute((objc_requires_super))
-#else
-#define NS_REQUIRES_SUPER
-#endif
-#endif
-
-#ifndef __nonnull
-#if __has_attribute(nonnull)
-#define __nonnull(...) __attribute__ ((nonnull (__VA_ARGS__)))
-#else
-#define __nonnull(...)
-#endif
-#endif
-
-/**
- Weak Variables - automatically inserts __weak/weak in iOS 5 and above, and __unsafe_unretained/assign older versions
- id __WEAK object;
- @property (WEAK) object;
- */
-
-#pragma mark - Weak Pointers
-
-#if __IPHONE_OS_VERSION_MIN_REQUIRED >= __IPHONE_5_0
-
-#define __WEAK      __weak
-#define WEAK        weak
-
-#else
-
-#define __WEAK      __unsafe_unretained
-#define WEAK        assign
-
-#endif
-
-#if __has_feature(objc_arc)
-#define STRONG      strong
-#else
-#define STRONG      retain
-#endif
-
-
-
-#endif
-

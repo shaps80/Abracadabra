@@ -5,12 +5,25 @@
 [![License](https://img.shields.io/cocoapods/l/SPXDataValidators.svg?style=flat)](http://cocoadocs.org/docsets/SPXDataValidators)
 [![Platform](https://img.shields.io/cocoapods/p/SPXDataValidators.svg?style=flat)](http://cocoadocs.org/docsets/SPXDataValidators)
 
+## Updates
+
+* Two new validators is now included `SPXEmailValidator` and `SPXBlockDataValidator`.
+* New `SPXFormValidator ` for validating multiple fields at once in your user interface
+* Validators can now be added to your `UITextField` and `UITextView` instances from Interface Builder.
+	- Validators can even be re-used in IB across multiple fields
+* New runtime attributes (IBInspectable) for validators to make it easier assign common validations from IB
+
+<img src="Screenshots/IB.png" width="720" height="160" />
+
+>These validators work exceptionally well alongside another open-source project I released [SPXControls](https://github.com/shaps80/SPXControls)
+
 ## Validation done right!
 
 Download the example project to see it in action, or checkout the **[presentation](https://github.com/shaps80/SPXDataValidators/blob/master/Data%20Validation%20-%20Presentation.pdf?raw=true)**.
 
-This is **not** a library or tool. Its really just an approach to a common problem. 
-The approach makes heavy use of the following best practices:
+>Please note the presentation is a little dated, so subtle changes may be found in actual code. When in doubt, check the code ;)
+
+The approach I've taken makes heavy use of the following best practices:
 
 * Single Responsibility Principle
 * Separation of Concerns
@@ -21,19 +34,6 @@ The approach makes heavy use of the following best practices:
 I created these validators because I didn't want to use a 3rd party solution that was usually bound to Forms and included additional form building infrastructure I didn't need. I wanted something I could drop-in to my projects more easily, covering more cases (not just UI) and clean up my view controllers.
 
 I couldn't find a decent solution, so I built it myself. Its pretty simple, but very effective. Hope you like it, let me know on [Twitter](http://twitter.com/shaps) ;)
-
-I will be adding to the validators in the near future, I have a few more that are just not tested yet ;)
-I'll add a nice one tomorrow for validating multiple fields (useful for confirming passwords).
-
-## Pull Requests
-
-If you have ideas for really useful, reusable validators, please create a pull request and I'll get them in ASAP. Please don't submit any validators without **tests** though... that makes GitHub'ers sad :( 
-
-When designing your validators remember these basic rules:
-
-* Only perform **a single** type of validation
-* Ensure your validators are stateless and immutable
-* Write unit tests!!!
 
 ## Simple Usage
 
@@ -46,13 +46,19 @@ self.signInButton.enabled = [validator validateValue:email error:nil]
 
 ```
 
+If you're using `<SPXDataField>` instances -- e.g. `UITextField`, `UITextView`, etc...
+
+```objc
+self.signInButton.enabled = [SPXFormValidator validatorFields:@[ emailField, passwordField ]];
+```
+
 Often though you'll want to use UI components for validating user input. I've provided categories for UITextField and UITextView so that they conform to my protocol <SPXDataField> but you can extend your own classes (UI or not) easily enough, and then call something like the following:
   
 ``` objc
 
 NSError *error = nil;
 if (![self.emailField validateWithError:&error]) {
-  NSLog(@"%@", error);
+  // do something useful here
 }
 
 ```
@@ -64,18 +70,18 @@ if (![self.emailField validateWithError:&error]) {
 - (void)configureValidators
 {
   SPXEmptyDataValidator *emptyValidator = [SPXEmptyDataValidator new];
-  SPXEmailDataValidator *emailValidator = [SPXEmailDataValidator new];
+  SPXEmailDataValidator *emailValidator = [SPXEmailValidator new];
 
   NSOrderedSet *validators = [NSOrderedSet orderedSetWithObjects:emptyValidator, emailValidator, nil];
   SPXCompoundDataValidator *usernameValidators = [SPXCompoundDataValidator validatorWithValidators:validators validationType:SPXCompoundDataValidatorValidateAll];
 
-  [self.emailField applyValidator:usernameValidators];
+  self.emailField.dataValidator = usernameValidators;
 
-  SPXPasswordDataValidator *passValidator = [SPXPasswordDataValidator validatorWithRegularExpression:PasswordRegex];
+  SPXPasswordDataValidator *passValidator = [SPXRegexDataValidator validatorWithExpression:regex];
   validators = [NSOrderedSet orderedSetWithObjects:emptyValidator, passValidator, nil];
   SPXCompoundDataValidator *passwordValidators = [SPXCompoundDataValidator validatorWithValidators:validators validationType:SPXCompoundDataValidatorValidateAll];
 
-  [self.passwordField applyValidator:passwordValidators];
+  self.passwordField.dataValidator = passwordValidators;
 }
 
 ```
@@ -86,14 +92,14 @@ For better reusability, try providing a factory class somewhere in your code for
 
 ``` objc
 
-[self.emailField applyValidator:[ValidatorFactory emailValidator]];
-[self.passwordField applyValidator:[ValidatorFactory passwordValidator]];
+self.emailField = [ValidatorFactory emailValidator];
+self.passwordField.dataValidator = [ValidatorFactory passwordValidator];
 
 ```
 
 This is highly reusable and allows you to easily define all your validators in once place throughout your entire project if you want to.
 
-Later, from some UI code you can use the **all new** SPXFormValidator:
+This approach makes it much easier to use `SPXFormValidator` to validate all of your fields:
 
 ``` objc
 
@@ -120,9 +126,20 @@ it, simply add the following line to your Podfile:
 
     pod "SPXDataValidators"
 
+## Pull Requests
+
+If you have ideas for really useful, reusable validators, please create a pull request and I'll get them in ASAP. Please don't submit any validators without **tests** though... that makes GitHub'ers sad :( 
+
+When designing your validators remember these basic rules:
+
+* Its recommended you perform **a single** type of validation only per validator
+	* You can then use a compound validator for combining validators
+* Ensure your validators are stateless and immutable
+* Write unit tests!!!
+
 ## Author
 
-Shaps, http://twitter.com/shaps
+Shaps Mohsenin, [@shaps](http://twitter.com/shaps)
 
 ## License
 

@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/Helpers/SPXDispatch.h
+../../../../../Pod/Classes/Core/Helpers/SPXDispatch.h

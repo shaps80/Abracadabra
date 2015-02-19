@@ -26,7 +26,6 @@
 #ifndef _SPX_DEFINES_H
 #define _SPX_DEFINES_H
 
-#import "SPXDefinesCommon.h"
 #import "SPXDescriptionDefines.h"
 #import "SPXLoggingDefines.h"
 #import "SPXAssertionDefines.h"

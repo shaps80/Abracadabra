@@ -1,1 +1,1 @@
-../../../../../Pod/Classes/Internal/SPXSecurityInternal.h
+../../../../../Pod/Classes/Core/Internal/SPXSecurityInternal.h
