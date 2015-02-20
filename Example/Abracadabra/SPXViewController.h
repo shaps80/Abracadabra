@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface SPXViewController : UIViewController
+@interface SPXViewController : UITableViewController
 
 @end

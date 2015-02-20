@@ -27,6 +27,10 @@
 #import "SPXSecureCredential.h"
 #import "SPXSecureDefines.h"
 
+
+typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession> session);
+
+
 @protocol SPXSecureVaultDelegate;
 
 
@@ -68,10 +72,26 @@
 
 
 /**
+ *  Gets/sets whether or not an authentication method should fallback to confirmation when a id<SPXPasscodeViewController> hasn't been registered
+ */
+@property (nonatomic, assign) BOOL fallbackToConfirmation;
+
+
+
+#pragma mark - Initializers
+
+
+
+/**
  *  Returns a default singleton vault instance
  */
 + (instancetype)defaultVault;
 + (instancetype)vaultNamed:(NSString *)name;
+
+
+
+#pragma mark - Authentication
+
 
 
 /**
@@ -82,8 +102,44 @@
  *
  *  @return If a valid session exists, or the user authenticates successfully, the session is returned. nil otherwise
  */
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy completion:(void (^)(id<SPXSecureSession>))completion;
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id<SPXSecureCredential>)credential completion:(void (^)(id<SPXSecureSession>))completion;
+//- (void)authenticateWithPolicy:(SPXSecurePolicy)policy completion:(void (^)(id<SPXSecureSession>))completion;
+//- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id<SPXSecureCredential>)credential completion:(void (^)(id<SPXSecureSession>))completion;
+
+
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id <SPXSecureCredential>)credential completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
+
+
+
+#pragma mark - Manage Credential
+
+
+
+/**
+ *  Updates the current passcode. This is similar to calling -removePasscode followed by -authenticateWithPolicy:completion: -- However this method won't dismiss the view until the procedure is complete
+ *
+ *  @note If no credential currently exists, this is equivalent to calling -authenticateWithPolicy:completion: and setting up a new passcode
+ */
+- (void)updateCredentialWithCompletion:(SPXSecureVaultAuthenticationCompletionBlock)completion;;
+- (void)updateCredentialWithExistingCredential:(id <SPXSecureCredential>)existingCredential newCredential:(id <SPXSecureCredential>)newCredential completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
+
+
+/**
+ *  If the vault has been permanently locked, this method will reset the vault to allow you to set a new passcode. This method should ONLY be called if you're sure its safe! If the vault is currentlt locked (not permanently) and you call this method, this method does nothing.
+ *  If you're trying to reset the passcode use -resetPasscode below.
+ */
+- (void)resetVault;
+
+
+/**
+ *  Resets the current passcode. This method will call [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN] first to authenticate the user, if this is successful the passcode will then be reset
+ */
+- (void)removeCredentialWithCompletion:(void (^)())completion;
+
+
+
+#pragma mark - ViewControllers
+
 
 
 /**
@@ -103,19 +159,18 @@
 
 
 /**
- *  If the vault has been permanently locked, this method will reset the vault to allow you to set a new passcode. This method should ONLY be called if you're sure its safe! If the vault is currentlt locked (not permanently) and you call this method, this method does nothing.
- *  If you're trying to reset the passcode use -resetPasscode below.
+ *  Registers the specified class to use for presenting the secure events found in your code. This can be used to allow runtime policy changes to your users
+ *
+ *  @param viewControllerClass The viewController class
  */
-- (void)reset;
-
-
-/**
- *  Resets the current passcode. This method will call [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN] first to authenticate the user, if this is successful the passcode will then be reset
- */
-- (void)resetPasscode;
+- (void)registerEventsViewControllerClass:(Class)viewControllerClass;
 
 
 @end
+
+
+
+#pragma mark - Delegate
 
 
 
