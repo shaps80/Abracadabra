@@ -25,7 +25,7 @@
 
 #import "SPXSecureEvent.h"
 #import "SPXDefines.h"
-
+#import "SPXKeychain.h"
 
 @implementation SPXSecureEvent
 
@@ -70,8 +70,9 @@
   _identifier = identifier;
   _name = name;
   _defaultPolicy = policy;
-  
-  NSNumber *currentPolicy = [[NSUserDefaults standardUserDefaults] objectForKey:_identifier];
+
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSNumber *currentPolicy = keychain[identifier];
   _currentPolicy = currentPolicy.integerValue;
   
   return self;
@@ -84,15 +85,15 @@
   }
   
   _currentPolicy = currentPolicy;
-  [[NSUserDefaults standardUserDefaults] setObject:@(currentPolicy) forKey:self.identifier];
-  [[NSUserDefaults standardUserDefaults] synchronize];
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  keychain[self.identifier] = @(currentPolicy);
 }
 
 - (void)reset
 {
   self.currentPolicy = self.defaultPolicy;
-  [[NSUserDefaults standardUserDefaults] removeObjectForKey:self.identifier];
-  [[NSUserDefaults standardUserDefaults] synchronize];
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  keychain[self.identifier] = nil;
 }
 
 - (NSString *)description

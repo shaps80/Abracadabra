@@ -31,13 +31,14 @@
 
 
 /**
- *  Convenience macros for securing your code easily. All 'code' is guaranteed to run on the calling thread. No need to dispatch
+ *  Convenience macros for securing your code easily. All 'code' is guaranteed to run on the calling thread. No need to dispatch back to your thread.
+ *  Abracadabra needs to wait for user input, as such you should treat it as asynchronous in all cases, although when passing SPXSecurePolicyNone, the code will execute immediately
  *
- *  @param group  A group name for this event
- *  @param name   A friendly name for this event
- *  @param policy The security policy to apply to this code
- *  @param code   The code to secure
- *  @param action You can optionally pass some code that will execute ONLY if access is disallowed
+ *  @param group  A group name for this event (optional)
+ *  @param name   A friendly name for this event (optional)
+ *  @param policy The security policy to apply to this code (required)
+ *  @param code   The code to secure (required)
+ *  @param action You can optionally pass some code that will execute ONLY if access is disallowed (optional)
  *
  *  @example The following examples are all valid uses of this macro
  *

@@ -35,7 +35,7 @@
 
 extern NSString *_SPXSecurityIdentifier(spx_secure_entry *entry)
 {
-  return [NSString stringWithFormat:@"SPXSecure:%@:%@", *entry->group, *entry->name];
+  return [NSString stringWithFormat:@"Abracadabra:%@:%@", *entry->group, *entry->name];
 }
 
 static SPXSecureEvent *_SPXSecureEventCreateWithEntry(NSString *identifier, spx_secure_entry *entry)

@@ -24,23 +24,28 @@
   [[UIView appearanceWhenContainedIn:SPXPasscodeViewController.class, nil] setTintColor:[UIColor whiteColor]];
 }
 
-- (void)viewWillLayoutSubviews
-{
-  [super viewWillLayoutSubviews];
-}
-
 - (IBAction)add:(id)sender
 {
-  NSLog(@"Add: %@", [NSThread currentThread]);
-
-  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    NSLog(@"Background: %@", [NSThread currentThread]);
-    
-    Abracadabra(@"Group", @"Restart Server", SPXSecurePolicyAlwaysWithPIN, {
-      NSLog(@"Success: %@", [NSThread currentThread]);
-    })
-  });
+  SPXSecureVault *vault = [SPXSecureVault vaultNamed:@"test"];
+  
+  if (vault.hasCredential) {
+    NSLog(@"Has credential");
+  } else {
+    NSLog(@"Settings Credential");
+  }
+  
+  SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:@"0000"];
+  [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:credential completion:^(id<SPXSecureSession> session) {
+    if (session.isValid) {
+      NSLog(@"Success");
+    } else {
+      NSLog(@"Failed");
+    }
+  }];
+  
+//  Abracadabra(SPXSecurePolicyAlwaysWithPIN, NSLog(@"Success"), NSLog(@"Failed"));
 }
 
 @end
+
 

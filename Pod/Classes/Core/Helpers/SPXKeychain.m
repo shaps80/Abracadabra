@@ -113,8 +113,9 @@
   CFDataRef data = nil;
 	SecItemCopyMatching((SPX_DICTIONARY_REF)query, (CFTypeRef *)&data);
   
-  if (!data)
+  if (!data) {
     return nil;
+  }
   
   Class archiverClass = nil;
 #if TARGET_OS_IPHONE

@@ -26,9 +26,17 @@
 #import "SPXSecureVault.h"
 #import "SPXSecureSession.h"
 #import "SPXDefines.h"
-#import "SPXDispatch.h"
+#import "SPXKeychain.h"
 
 NSString *const SPXSecureVaultDidFailAuthenticationPermanently = @"SPXSecureVaultDidFailAuthenticationPermanently";
+
+static NSMutableDictionary *__vaults;
+static dispatch_semaphore_t __semaphore;
+
+static inline void spx_kill_semaphore() {
+  dispatch_semaphore_signal(__semaphore);
+  __semaphore = NULL;
+}
 
 @interface SPXSecureVault () <UIActionSheetDelegate>
 
@@ -37,6 +45,8 @@ NSString *const SPXSecureVaultDidFailAuthenticationPermanently = @"SPXSecureVaul
 @property (nonatomic, assign) Class <SPXSecurePasscodeViewController> passcodeViewControllerClass;
 @property (nonatomic, assign) Class vaultSettingsViewControllerClass;
 @property (nonatomic, copy) void (^completionBlock)(id <SPXSecureSession> session);
+@property (nonatomic, strong) NSString *name;
+@property (nonatomic, assign) BOOL success;
 
 @end
 
@@ -48,18 +58,66 @@ NSString *const SPXSecureVaultDidFailAuthenticationPermanently = @"SPXSecureVaul
   static dispatch_once_t oncePredicate;
   dispatch_once(&oncePredicate, ^{
     _sharedInstance = [[self alloc] init];
+    _sharedInstance.name = @"DefaultVault";
   });
   
   return _sharedInstance;
 }
 
-- (instancetype)init
++ (instancetype)vaultNamed:(NSString *)name
 {
-  self = [super init];
-  SPXAssertTrueOrReturnNil(self);
-  _maximumRetryCount = 10;
-  _defaultTimeoutInterval = 60;
-  return self;
+  if (!__vaults) {
+    __vaults = [NSMutableDictionary new];
+  }
+  
+  SPXSecureVault *vault = __vaults[name];
+  
+  if (!vault) {
+    vault = [SPXSecureVault new];
+    vault.name = name;
+    __vaults[name] = vault;
+  }
+  
+  return vault;
+}
+
+- (BOOL)hasCredential
+{
+  return (self.credential != nil);
+}
+
+- (NSString *)persistentKeyForSelector:(SEL)selector
+{
+  NSString *name = [@"Abracadabra" stringByAppendingPathExtension:self.name];
+  return [name stringByAppendingPathExtension:NSStringFromSelector(selector)];
+}
+
+- (void)setMaximumRetryCount:(NSUInteger)maximumRetryCount
+{
+  [[NSUserDefaults standardUserDefaults] setInteger:maximumRetryCount forKey:@"default.maximumRetryCount"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+}
+
+- (void)setDefaultTimeoutInterval:(NSTimeInterval)defaultTimeoutInterval
+{
+  [[NSUserDefaults standardUserDefaults] setDouble:defaultTimeoutInterval forKey:@"default.timeoutInterval"];
+  [[NSUserDefaults standardUserDefaults] synchronize];
+  
+  [self.timedSession invalidate];
+}
+
+- (NSUInteger)maximumRetryCount
+{
+  NSString *key = [self persistentKeyForSelector:@selector(maximumRetryCount)];
+  NSInteger maximumRetryCount = [[NSUserDefaults standardUserDefaults] integerForKey:key];
+  return maximumRetryCount ?: 10;
+}
+
+- (NSTimeInterval)defaultTimeoutInterval
+{
+  NSString *key = [self persistentKeyForSelector:@selector(maximumRetryCount)];
+  NSInteger maximumRetryCount = [[NSUserDefaults standardUserDefaults] doubleForKey:key];
+  return maximumRetryCount ?: 5;
 }
 
 - (void)registerPasscodeViewControllerClass:(Class<SPXSecurePasscodeViewController>)viewControllerClass
@@ -79,7 +137,8 @@ NSString *const SPXSecureVaultDidFailAuthenticationPermanently = @"SPXSecureVaul
 
 - (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id<SPXSecureCredential>)credential completion:(void (^)(id<SPXSecureSession>))completion
 {
-  SPXAssertTrueOrReturn(completion);
+  SPXAssertTrueOrPerformAction(!__semaphore, SPXLog(@"There is another authentication still in progress..."));
+  
   self.completionBlock = completion;
   
   if (policy == SPXSecurePolicyNone) {
@@ -87,81 +146,240 @@ NSString *const SPXSecureVaultDidFailAuthenticationPermanently = @"SPXSecureVaul
     return;
   }
   
-  if (policy == SPXSecurePolicyConfirmationOnly) {
-    NSString *title = description ? [NSString stringWithFormat:@"Are you sure you want to %@?", description] : @"Are you sure?";
-    [[[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:description ?: @"Continue" otherButtonTitles:nil] showInView:[UIApplication sharedApplication].keyWindow];
+  if ([self isLocked]) {
+    SPXLog(@"The vault has been locked because the user entered the wrong passcode more than the maximum number of allowed retries. To fix this you should remove user data and call -reset on this vault.");
+    !self.completionBlock ?: self.completionBlock(nil);
     return;
   }
   
-  if (self.credential) {
-    id <SPXSecureSession> session = [self sessionForPolicy:policy credential:credential];
-    self.completionBlock(session);
+  if (policy == SPXSecurePolicyConfirmationOnly) {
+    NSString *title = description ? [NSString stringWithFormat:@"Are you sure you want to %@?", description] : @"Are you sure?";
+    
+    if ([NSThread isMainThread]) {
+      [self authenticateOnMainThreadWithConfirmationTitle:title description:description];
+    } else {
+      [self authenticateOnBackgroundThreadWithConfirmationTitle:title description:description];
+    }
+    
+    return;
+  }
+  
+  SPXAssertTrueOrReturn(credential || self.passcodeViewControllerClass);
+  
+  if (credential) {
+    !self.completionBlock ?: self.completionBlock([self sessionForPolicy:policy credential:credential]);
     return;
   }
   
   if (!self.passcodeViewControllerClass) {
-    // if no viewController is registered we can't possibly show a prompt, so no session is returned.
-    SPXLog(@"You must call -registerPasscodeViewControllerClass: if you want Abracadabra to prompt for a passcode automatically");
-    self.completionBlock(nil);
+    SPXLog(@"Could not authenticate because no credential was provided and no passcodeViewController was registered");
+    !self.completionBlock ?: self.completionBlock(nil);
     return;
   }
   
+  if (policy == SPXSecurePolicyTimedSessionWithPIN && self.timedSession.isValid) {
+    !self.completionBlock ?: self.completionBlock(self.timedSession);
+    return;
+  }
+  
+  if ([NSThread isMainThread]) {
+    [self authenticateOnMainThreadWithPolicy:policy credential:credential completion:completion];
+  } else {
+    [self authenticateOnBackgroundThreadWithPolicy:policy credential:credential completion:completion];
+  }
+}
+
+- (void)authenticateOnBackgroundThreadWithPolicy:(SPXSecurePolicy)policy credential:(id<SPXSecureCredential>)credential completion:(void (^)(id<SPXSecureSession>))completion
+{
   __weak typeof(self) weakInstance = self;
   __block id <SPXSecureSession> session = nil;
-  
-  dispatch_sync_main(^{
-    id <SPXSecurePasscodeViewController> controller = [weakInstance.passcodeViewControllerClass.class new];
-    SPXCAssertTrueOrReturn([controller respondsToSelector:@selector(transitionToState:animated:completion:)]);
-    
-    SPXSecurePasscodeViewControllerState state = (self.credential) ? SPXSecurePasscodeViewControllerStateAuthenticating : SPXSecurePasscodeViewControllerStateInitializing;
-    UIViewController *viewController = (UIViewController *)controller;
-    
-    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-    
-    UIViewController *presentingController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    [presentingController presentViewController:viewController animated:YES completion:nil];
+
+  __semaphore = dispatch_semaphore_create(0);
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    id <SPXSecurePasscodeViewController> controller = [weakInstance presentPasscodeViewController];
+    SPXSecurePasscodeViewControllerState state = (weakInstance.credential) ? SPXSecurePasscodeViewControllerStateAuthenticating : SPXSecurePasscodeViewControllerStateInitializing;
     
     [controller transitionToState:state animated:YES completion:^id<SPXSecureSession>(id<SPXSecureCredential> credential) {
+      if (!credential) {
+        session = nil;
+        spx_kill_semaphore();
+        return nil;
+      }
+      
       session = [weakInstance sessionForPolicy:policy credential:credential];
+      
+      if (session) {
+        spx_kill_semaphore();
+      }
+      
       return session;
     }];
-  }, ^{
-    self.completionBlock(session);
   });
+  
+  dispatch_semaphore_wait(__semaphore, DISPATCH_TIME_FOREVER);
+  
+  !self.completionBlock ?: self.completionBlock(session);
+}
+
+- (void)authenticateOnMainThreadWithPolicy:(SPXSecurePolicy)policy credential:(id<SPXSecureCredential>)credential completion:(void (^)(id<SPXSecureSession>))completion
+{
+  __weak typeof(self) weakInstance = self;
+  __block id <SPXSecureSession> session = nil;
+  __semaphore = dispatch_semaphore_create(0);
+  
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      id <SPXSecurePasscodeViewController> controller = [weakInstance presentPasscodeViewController];
+      SPXSecurePasscodeViewControllerState state = (weakInstance.credential) ? SPXSecurePasscodeViewControllerStateAuthenticating : SPXSecurePasscodeViewControllerStateInitializing;
+      
+      [controller transitionToState:state animated:YES completion:^id<SPXSecureSession>(id<SPXSecureCredential> credential) {
+        if (!credential) {
+          session = nil;
+          spx_kill_semaphore();
+          return nil;
+        }
+        
+        session = [weakInstance sessionForPolicy:policy credential:credential];
+        
+        if (session) {
+          spx_kill_semaphore();
+        }
+        
+        return session;
+      }];
+    });
+    
+    dispatch_semaphore_wait(__semaphore, DISPATCH_TIME_FOREVER);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      !self.completionBlock ?: self.completionBlock(session);
+    });
+  });
+}
+
+- (void)authenticateOnMainThreadWithConfirmationTitle:(NSString *)title description:(NSString *)description
+{
+  dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+    __semaphore = dispatch_semaphore_create(0);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      [[[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:description ?: @"Continue" otherButtonTitles:nil] showInView:[UIApplication sharedApplication].keyWindow];
+    });
+    
+    dispatch_semaphore_wait(__semaphore, DISPATCH_TIME_FOREVER);
+    
+    dispatch_async(dispatch_get_main_queue(), ^{
+      !self.completionBlock ?: self.completionBlock(self.success ? [SPXSecureOnceSession session] : nil);
+    });
+  });
+}
+
+- (void)authenticateOnBackgroundThreadWithConfirmationTitle:(NSString *)title description:(NSString *)description
+{
+  __semaphore = dispatch_semaphore_create(0);
+  
+  dispatch_sync(dispatch_get_main_queue(), ^{
+    [[[UIActionSheet alloc] initWithTitle:title delegate:self cancelButtonTitle:@"Cancel" destructiveButtonTitle:description ?: @"Continue" otherButtonTitles:nil] showInView:[UIApplication sharedApplication].keyWindow];
+  });
+  
+  dispatch_semaphore_wait(__semaphore, DISPATCH_TIME_FOREVER);
+  
+  !self.completionBlock ?: self.completionBlock(self.success ? [SPXSecureOnceSession session] : nil);
+}
+
+- (id <SPXSecurePasscodeViewController>)presentPasscodeViewController
+{
+  id <SPXSecurePasscodeViewController> controller = [self.passcodeViewControllerClass.class new];
+  SPXAssertTrueOrReturnNil([controller respondsToSelector:@selector(transitionToState:animated:completion:)]);
+  UIViewController *viewController = (UIViewController *)controller;
+  
+  viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+  viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+  
+  UIViewController *presentingController = [UIApplication sharedApplication].keyWindow.rootViewController;
+  [presentingController presentViewController:viewController animated:YES completion:nil];
+  
+  return controller;
 }
 
 - (id <SPXSecureSession>)sessionForPolicy:(SPXSecurePolicy)policy credential:(id <SPXSecureCredential>)credential
 {
-  id <SPXSecureSession> session = [SPXSecureOnceSession new];
-  return session;
-}
-
-- (void)setDefaultTimeoutInterval:(NSTimeInterval)defaultTimeoutInterval
-{
-  _defaultTimeoutInterval = defaultTimeoutInterval;
-  [self.timedSession invalidate];
-}
-
-//- (void)reset
-//{
-//  self.credential = nil;
-//}
-//
-//- (void)resetPasscode
-//{
-//  if ([self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN].isValid) {
-//    
-//  }
-//}
-
-- (void)actionSheet:(UIActionSheet *)actionSheet didDismissWithButtonIndex:(NSInteger)buttonIndex
-{
-  if (buttonIndex) {
-    self.completionBlock(nil);
-  } else {
-    self.completionBlock([SPXSecureOnceSession new]);
+  if (!self.credential) {
+    self.credential = credential;
   }
+  
+  if (![credential isEqualToCredential:self.credential]) {
+    return nil;
+  }
+  
+  if (policy == SPXSecurePolicyTimedSessionWithPIN) {
+    if (!self.timedSession.isValid) {
+      self.timedSession = [SPXSecureTimedSession sessionWithTimeoutInterval:self.defaultTimeoutInterval];
+    }
+    
+    return self.timedSession;
+  }
+  
+  return [SPXSecureOnceSession session];
+}
+
+- (id<SPXSecureCredential>)credential
+{
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSString *key = [self persistentKeyForSelector:@selector(credential)];
+  return keychain[key];
+}
+
+- (void)setCredential:(id<SPXSecureCredential>)credential
+{
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSString *key = [self persistentKeyForSelector:@selector(credential)];
+  keychain[key] = credential;
+}
+
+- (void)reset
+{
+  self.credential = nil;
+  
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSString *key = [self persistentKeyForSelector:@selector(lock)];
+  keychain[key] = nil;
+}
+
+- (void)resetPasscode
+{
+  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN completion:^(id<SPXSecureSession> session) {
+    if (session.isValid) {
+      self.credential = nil;
+    }
+  }];
+}
+
+- (BOOL)isLocked
+{
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSString *key = [self persistentKeyForSelector:@selector(lock)];
+  return keychain[key];
+}
+
+- (void)lock
+{
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSString *key = [self persistentKeyForSelector:@selector(lock)];
+  keychain[key] = @(1);
+}
+
+- (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+  // HACKY -- REPLACE!!
+  self.success = NO;
+  
+  if (!buttonIndex) {
+    self.success = YES;
+  }
+  
+  spx_kill_semaphore();
 }
 
 @end

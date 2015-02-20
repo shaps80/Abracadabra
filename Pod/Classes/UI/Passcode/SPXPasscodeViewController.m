@@ -69,20 +69,6 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   return [self.class new];
 }
 
-- (void)setTintColor:(UIColor *)tintColor
-{
-  
-  /*
-   This will never get called to update the tintColor of each subview
-   */
-  
-  
-  
-  
-  self.collectionView.tintColor = tintColor;
-  self.secureField.tintColor = tintColor;
-}
-
 - (instancetype)init
 {
   self = [super init];
@@ -131,6 +117,8 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   [self.view addSubview:self.imageView];
   [self.view addSubview:self.contentView];
+  
+  self.secureField.tintColor = self.view.tintColor;
 }
 
 - (void)configureBackground
@@ -167,6 +155,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   if (indexPath.item == 9) {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    self.completion(nil);
     return;
   }
   
@@ -185,58 +174,66 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
 
 - (void)secureFieldDidChange:(SPXSecureField *)field
 {
-  if (self.state == SPXSecurePasscodeViewControllerStateInitializing) {
-    BOOL readyForConfirmation = (field.text.length == 4 && field.state == SPXSecureFieldStateSetPasscode);
-    
-    if (readyForConfirmation) {
-      self.passcode = field.text;
-      [field transitionToState:SPXSecureFieldStateConfirmPasscode animationStyle:SPXSecureFieldAnimationStylePush];
-    }
-    
-    BOOL mismatchedPasscode = (field.state == SPXSecureFieldStateMismatchPassCode);
-    
-    if (mismatchedPasscode) {
-      NSString *text = field.text;
-      [field transitionToState:SPXSecureFieldStateSetPasscode animationStyle:SPXSecureFieldAnimationStyleFade];
-      [field appendText:text];
-    }
-    
-    BOOL readyForCredential = (field.text.length == 4 && field.state == SPXSecureFieldStateConfirmPasscode);
-    
-    if (readyForCredential) {
-      if ([self.passcode isEqualToString:field.text]) {
-        SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:self.passcode];
-        self.completion(credential);
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-      } else {
-        [field transitionToState:SPXSecureFieldStateMismatchPassCode animationStyle:SPXSecureFieldAnimationStyleShake];
-        [SPXAudio playSystemAudioType:SPXAudioTypeVibrate];
-        self.passcode = nil;
-      }
-    }
+  if (self.state == SPXSecurePasscodeViewControllerStateAuthenticating) {
+    [self handleAuthenticationStates];
+  } else {
+    [self handleInitializationStates];
+  }
+}
+
+- (void)handleInitializationStates
+{
+  BOOL readyForConfirmation = (self.secureField.text.length == 4 && self.secureField.state == SPXSecureFieldStateSetPasscode);
+  
+  if (readyForConfirmation) {
+    self.passcode = self.secureField.text;
+    [self.secureField transitionToState:SPXSecureFieldStateConfirmPasscode animationStyle:SPXSecureFieldAnimationStylePush];
   }
   
-  if (self.state == SPXSecurePasscodeViewControllerStateAuthenticating) {
-    BOOL invalidPasscode = field.state == SPXSecureFieldStateInvalidPasscode;
-    
-    if (invalidPasscode) {
-      NSString *text = field.text;
-      [field transitionToState:SPXSecureFieldStateEnterPasscode animationStyle:SPXSecureFieldAnimationStyleFade];
-      [field appendText:text];
+  BOOL mismatchedPasscode = (self.secureField.state == SPXSecureFieldStateMismatchPassCode);
+  
+  if (mismatchedPasscode) {
+    NSString *text = self.secureField.text;
+    [self.secureField transitionToState:SPXSecureFieldStateSetPasscode animationStyle:SPXSecureFieldAnimationStyleFade];
+    [self.secureField appendText:text];
+  }
+  
+  BOOL readyForCredential = (self.secureField.text.length == 4 && self.secureField.state == SPXSecureFieldStateConfirmPasscode);
+  
+  if (readyForCredential) {
+    if ([self.passcode isEqualToString:self.secureField.text]) {
+      SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:self.passcode];
+      self.completion(credential);
+      [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+      [self.secureField transitionToState:SPXSecureFieldStateMismatchPassCode animationStyle:SPXSecureFieldAnimationStyleShake];
+      [SPXAudio playSystemAudioType:SPXAudioTypeVibrate];
+      self.passcode = nil;
     }
+  }
+}
+
+- (void)handleAuthenticationStates
+{
+  BOOL invalidPasscode = self.secureField.state == SPXSecureFieldStateInvalidPasscode;
+  
+  if (invalidPasscode) {
+    NSString *text = self.secureField.text;
+    [self.secureField transitionToState:SPXSecureFieldStateEnterPasscode animationStyle:SPXSecureFieldAnimationStyleFade];
+    [self.secureField appendText:text];
+  }
+  
+  BOOL readyForCredential = (self.secureField.text.length == 4 && self.secureField.state == SPXSecureFieldStateEnterPasscode);
+  
+  if (readyForCredential) {
+    SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:self.secureField.text];
+    id <SPXSecureSession> session = self.completion(credential);
     
-    BOOL readyForCredential = (field.text.length == 4 && field.state == SPXSecureFieldStateEnterPasscode);
-    
-    if (readyForCredential) {
-      SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:field.text];
-      id <SPXSecureSession> session = self.completion(credential);
-      
-      if (session.isValid) {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-      } else {
-        [field transitionToState:SPXSecureFieldStateInvalidPasscode animationStyle:SPXSecureFieldAnimationStyleShake];
-        [SPXAudio playSystemAudioType:SPXAudioTypeVibrate];
-      }
+    if (session) {
+      [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    } else {
+      [self.secureField transitionToState:SPXSecureFieldStateInvalidPasscode animationStyle:SPXSecureFieldAnimationStyleShake];
+      [SPXAudio playSystemAudioType:SPXAudioTypeVibrate];
     }
   }
 }

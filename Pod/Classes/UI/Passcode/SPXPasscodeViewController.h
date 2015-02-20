@@ -27,6 +27,7 @@
 #import "SPXSecureDefines.h"
 
 @interface SPXPasscodeViewController : UIViewController <SPXSecurePasscodeViewController, UIAppearanceContainer>
+
 @end
 
 

@@ -66,6 +66,7 @@
  *  Returns a default singleton vault instance
  */
 + (instancetype)defaultVault;
++ (instancetype)vaultNamed:(NSString *)name;
 
 
 /**
