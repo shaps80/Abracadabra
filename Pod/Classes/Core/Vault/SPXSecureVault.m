@@ -47,6 +47,7 @@ static inline void spx_kill_semaphore() {
 @property (nonatomic, copy) void (^completionBlock)(id <SPXSecureSession> session);
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) BOOL success;
+@property (nonatomic, assign) NSUInteger currentRetryCount;
 
 @end
 
@@ -94,13 +95,15 @@ static inline void spx_kill_semaphore() {
 
 - (void)setMaximumRetryCount:(NSUInteger)maximumRetryCount
 {
-  [[NSUserDefaults standardUserDefaults] setInteger:maximumRetryCount forKey:@"default.maximumRetryCount"];
+  NSString *key = [self persistentKeyForSelector:@selector(maximumRetryCount)];
+  [[NSUserDefaults standardUserDefaults] setInteger:maximumRetryCount forKey:key];
   [[NSUserDefaults standardUserDefaults] synchronize];
 }
 
 - (void)setDefaultTimeoutInterval:(NSTimeInterval)defaultTimeoutInterval
 {
-  [[NSUserDefaults standardUserDefaults] setDouble:defaultTimeoutInterval forKey:@"default.timeoutInterval"];
+  NSString *key = [self persistentKeyForSelector:@selector(defaultTimeoutInterval)];
+  [[NSUserDefaults standardUserDefaults] setDouble:MAX(defaultTimeoutInterval, 0) forKey:key];
   [[NSUserDefaults standardUserDefaults] synchronize];
   
   [self.timedSession invalidate];
@@ -115,9 +118,9 @@ static inline void spx_kill_semaphore() {
 
 - (NSTimeInterval)defaultTimeoutInterval
 {
-  NSString *key = [self persistentKeyForSelector:@selector(maximumRetryCount)];
-  NSInteger maximumRetryCount = [[NSUserDefaults standardUserDefaults] doubleForKey:key];
-  return maximumRetryCount ?: 5;
+  NSString *key = [self persistentKeyForSelector:@selector(defaultTimeoutInterval)];
+  NSInteger defaultTimeoutInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:key];
+  return defaultTimeoutInterval ?: 60;
 }
 
 - (void)registerPasscodeViewControllerClass:(Class<SPXSecurePasscodeViewController>)viewControllerClass
@@ -137,18 +140,18 @@ static inline void spx_kill_semaphore() {
 
 - (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id<SPXSecureCredential>)credential completion:(void (^)(id<SPXSecureSession>))completion
 {
+  if ([self isLocked]) {
+    SPXLog(@"The vault has been locked because the user entered the wrong passcode more than the maximum number of allowed retries. To fix this you should remove user data and call -reset on this vault.");
+    !completion ?: completion(nil);
+    return;
+  }
+  
   SPXAssertTrueOrPerformAction(!__semaphore, SPXLog(@"There is another authentication still in progress..."));
   
   self.completionBlock = completion;
   
   if (policy == SPXSecurePolicyNone) {
     completion([SPXSecureOnceSession new]);
-    return;
-  }
-  
-  if ([self isLocked]) {
-    SPXLog(@"The vault has been locked because the user entered the wrong passcode more than the maximum number of allowed retries. To fix this you should remove user data and call -reset on this vault.");
-    !self.completionBlock ?: self.completionBlock(nil);
     return;
   }
   
@@ -310,8 +313,18 @@ static inline void spx_kill_semaphore() {
   }
   
   if (![credential isEqualToCredential:self.credential]) {
+    if (self.maximumRetryCount) {
+      if (self.currentRetryCount < self.maximumRetryCount) {
+        [self incrementRetryCount];
+      } else {
+        [self lock];
+      }
+    }
+    
     return nil;
   }
+  
+  [self resetCurrentRetryCount];
   
   if (policy == SPXSecurePolicyTimedSessionWithPIN) {
     if (!self.timedSession.isValid) {
@@ -322,6 +335,30 @@ static inline void spx_kill_semaphore() {
   }
   
   return [SPXSecureOnceSession session];
+}
+
+- (NSUInteger)currentRetryCount
+{
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSString *key = [self persistentKeyForSelector:@selector(currentRetryCount)];
+  return [keychain[key] unsignedIntegerValue];
+}
+
+- (void)setCurrentRetryCount:(NSUInteger)currentRetryCount
+{
+  SPXKeychain *keychain = [SPXKeychain sharedInstance];
+  NSString *key = [self persistentKeyForSelector:@selector(currentRetryCount)];
+  keychain[key] = @(currentRetryCount);
+}
+
+- (void)incrementRetryCount
+{
+  self.currentRetryCount++;
+}
+
+- (void)resetCurrentRetryCount
+{
+  self.currentRetryCount = 0;
 }
 
 - (id<SPXSecureCredential>)credential
@@ -349,9 +386,16 @@ static inline void spx_kill_semaphore() {
 
 - (void)resetPasscode
 {
+  if (!self.hasCredential) {
+    SPXLog(@"Nothing reset. This vault doesnt have an existing credential to reset.");
+    return;
+  }
+  
+  __weak typeof(self) weakInstance = self;
   [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN completion:^(id<SPXSecureSession> session) {
     if (session.isValid) {
-      self.credential = nil;
+      weakInstance.credential = nil;
+      [weakInstance resetCurrentRetryCount];
     }
   }];
 }
@@ -360,14 +404,20 @@ static inline void spx_kill_semaphore() {
 {
   SPXKeychain *keychain = [SPXKeychain sharedInstance];
   NSString *key = [self persistentKeyForSelector:@selector(lock)];
-  return keychain[key];
+  return [keychain[key] boolValue];
 }
 
 - (void)lock
 {
   SPXKeychain *keychain = [SPXKeychain sharedInstance];
   NSString *key = [self persistentKeyForSelector:@selector(lock)];
-  keychain[key] = @(1);
+  keychain[key] = @YES;
+  
+  [self resetCurrentRetryCount];
+  // we set the credential to something random so it can't even be guessed. Just an additional level of security
+  self.credential = [SPXSecurePasscodeCredential credentialWithPasscode:[NSUUID UUID].UUIDString];
+  
+  SPXLog(@"The vault was locked because the maximum number of retries was reached!");
 }
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex

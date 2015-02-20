@@ -46,12 +46,17 @@
 
 /**
  *  Gets/sets the maximum number of retries allowed before the vault is no longer accessible. (Defaults to 10)
+ *  Its not recommended that you allow this value to change at runtime
+ *
+ *  @note Pass a value of 0 to allow unlimited retries
  */
 @property (nonatomic, assign) NSUInteger maximumRetryCount;
 
 
 /**
  *  Sets the default session timeout interval (in seconds). Setting this value will reset the current session. (Defaults to 60 seconds)
+ *
+ *  @note Pass 0 to use default. Negative values will default to 0
  */
 @property (nonatomic, assign) NSTimeInterval defaultTimeoutInterval;
 

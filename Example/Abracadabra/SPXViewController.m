@@ -34,6 +34,8 @@
     NSLog(@"Settings Credential");
   }
   
+  [vault resetPasscode];
+  return;
   SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:@"0000"];
   [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:credential completion:^(id<SPXSecureSession> session) {
     if (session.isValid) {
@@ -43,7 +45,7 @@
     }
   }];
   
-//  Abracadabra(SPXSecurePolicyAlwaysWithPIN, NSLog(@"Success"), NSLog(@"Failed"));
+  Abracadabra(SPXSecurePolicyAlwaysWithPIN, NSLog(@"Success"), NSLog(@"Failed"));
 }
 
 @end
