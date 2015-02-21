@@ -126,15 +126,34 @@ typedef NS_ENUM(NSInteger, SPXSecureFieldAnimationStyle){
 
 
 /**
- *  Gets 
+ *  Sets the placeholder text to display for the specified state
  *
- *  @param placeholder <#placeholder description#>
- *  @param state       <#state description#>
+ *  @param placeholder The placeholder string
+ *  @param state       The state this placeholder will be displayed
  */
 - (void)setPlaceholderText:(NSString *)placeholder forState:(SPXSecureFieldState)state UI_APPEARANCE_SELECTOR;
+
+
+/**
+ *  Transitions the field to the specified state
+ *
+ *  @param state          The state to transition to
+ *  @param animationStyle The animation style to use for this transition
+ */
 - (void)transitionToState:(SPXSecureFieldState)state animationStyle:(SPXSecureFieldAnimationStyle)animationStyle;
 
+
+/**
+ *  Appends the specified text to the current passcode. (Note: Only the first character will be used)
+ *
+ *  @param text The text to append
+ */
 - (void)appendText:(NSString *)text;
+
+
+/**
+ *  Deletes a single character from the field text
+ */
 - (void)deleteBackward;
 
 

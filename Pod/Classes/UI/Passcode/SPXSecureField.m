@@ -309,7 +309,7 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
     return;
   }
   
-  [self.mutableText appendString:text];
+  [self.mutableText appendString:[text substringToIndex:1]];
   [self updateIndicators:YES];
   
   if ([self.delegate respondsToSelector:@selector(secureFieldDidChange:)]) {

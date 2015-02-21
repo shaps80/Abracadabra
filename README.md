@@ -189,7 +189,11 @@ One of the best reasons to use Abracadabra, is because my solution is so elegant
 Abracadabra is available through [CocoaPods](http://cocoapods.org). To install
 it, simply add the following line to your Podfile:
 
-    pod 'Abracadabra'
+To include all components:
+    `pod 'Abracadabra'`
+    
+To include only the core
+	`pod 'Abracadabra/Core'`
 
 ## Author
 

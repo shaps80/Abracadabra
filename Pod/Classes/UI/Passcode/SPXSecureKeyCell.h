@@ -25,13 +25,32 @@
 
 #import "SPXSecureDefines.h"
 
+
+/**
+ *  Provides a collection view cell for allowing input
+ */
 @interface SPXSecureKeyCell : UICollectionViewCell
 
-@property (nonatomic, assign) SPXSecureViewStyle viewStyle UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
-@property (nonatomic, assign) BOOL separatorHidden;
 
+/**
+ *  Gets/sets the appearance style to apply to this cell
+ */
+@property (nonatomic, assign) SPXSecureViewStyle viewStyle UI_APPEARANCE_SELECTOR;
+
+/**
+ *  Gets/sets the font to apply to this cell's label
+ */
+@property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
+
+
+/**
+ *  Sets the titles for this cell's label
+ *
+ *  @param title    This will usually be the KeyPad number (0 ... 9)
+ *  @param subtitle This will usually be the KeyPad characters (abc ... xzy)
+ */
 - (void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
+
 
 @end
 

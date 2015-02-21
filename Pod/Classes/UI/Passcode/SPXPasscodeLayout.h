@@ -25,6 +25,10 @@
 
 #import <UIKit/UIKit.h>
 
+
+/**
+ *  Provides the the KeyPad layout
+ */
 @interface SPXPasscodeLayout : UICollectionViewFlowLayout
 
 @end

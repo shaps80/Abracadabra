@@ -26,10 +26,28 @@
 #import <UIKit/UIKit.h>
 #import "SPXSecureDefines.h"
 
+
+/**
+ *  Provides a passcode view controller to accept user input
+ */
 @interface SPXPasscodeViewController : UIViewController <SPXSecurePasscodeViewController>
 
+
+/**
+ *  Sets the appearance style to apply to all containing views
+ *
+ *  @param style The style to apply
+ */
 + (void)setViewStyle:(SPXSecureViewStyle)style;
+
+
+/**
+ *  Sets the tintColor to apply to all containing views
+ *
+ *  @param color The color to apply
+ */
 + (void)setTintColor:(UIColor *)color;
+
 
 @end
 

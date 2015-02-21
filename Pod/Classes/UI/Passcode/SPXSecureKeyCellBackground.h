@@ -25,10 +25,33 @@
 
 #import <UIKit/UIKit.h>
 
+
+/**
+ *  Provides the backgrounds for the KeyPad cells
+ */
 @interface SPXSecureKeyCellBackground : UIView
 
+
+/**
+ *  Returns a background view with the specified text and separator insets applied
+ *
+ *  @param textInsets      The text insets
+ *  @param separatorInsets The separator insets
+ *
+ *  @return A new background view
+ */
 + (instancetype)viewWithTextInsets:(UIEdgeInsets)textInsets separatorInsets:(UIEdgeInsets)separatorInsets;
+
+
+/**
+ *  Returns a new selected background view with tehe specified text insets applied
+ *
+ *  @param textInsets The text insets
+ *
+ *  @return A new selected background view
+ */
 + (instancetype)selectedViewWithTextInsets:(UIEdgeInsets)textInsets;
+
 
 @end
 

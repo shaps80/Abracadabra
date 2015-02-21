@@ -137,12 +137,6 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
   self.label.lineBreakMode = NSLineBreakByTruncatingTail;
 }
 
-- (void)setSeparatorHidden:(BOOL)separatorHidden
-{
-  _separatorHidden = separatorHidden;
-  self.separatorView.hidden = separatorHidden;
-}
-
 - (void)layoutSubviews
 {
   [super layoutSubviews];
