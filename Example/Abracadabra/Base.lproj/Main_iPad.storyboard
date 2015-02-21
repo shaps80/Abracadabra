@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="6247"/>
     </dependencies>
     <scenes>
-        <!--Root View Controller-->
+        <!--Abracadabra-->
         <scene sceneID="gMe-zC-wCf">
             <objects>
                 <tableViewController id="XNa-US-PEF" customClass="SPXViewController" sceneMemberID="viewController">
@@ -186,7 +186,13 @@
                             <outlet property="delegate" destination="XNa-US-PEF" id="Yip-My-j3O"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Root View Controller" id="0Mt-vj-V0O"/>
+                    <navigationItem key="navigationItem" title="Abracadabra" id="0Mt-vj-V0O">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="hzY-Gk-H2J">
+                            <connections>
+                                <action selector="configureEvents:" destination="XNa-US-PEF" id="y6x-mo-kDB"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="l2X-F1-aAo" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

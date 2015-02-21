@@ -116,12 +116,14 @@ static inline void spx_kill_semaphore() {
 
 - (UIViewController *)eventsViewController
 {
-  return [self.eventsViewControllerClass.class new];
+  UIViewController *eventsController = [self.eventsViewControllerClass.class new];
+  return [[UINavigationController alloc] initWithRootViewController:eventsController];
 }
 
 - (UIViewController *)settingsViewController
 {
-  return [self.settingsViewController.class new];
+  UIViewController *eventsController = [self.vaultSettingsViewControllerClass.class new];
+  return [[UINavigationController alloc] initWithRootViewController:eventsController];
 }
 
 #pragma mark - Updating Passcode

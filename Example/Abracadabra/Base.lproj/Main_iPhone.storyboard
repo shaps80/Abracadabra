@@ -186,7 +186,16 @@
                             <outlet property="delegate" destination="igB-CV-gd7" id="Z6A-C7-ZHj"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Abracadabra" id="UM0-vV-a78"/>
+                    <navigationItem key="navigationItem" title="Abracadabra" id="UM0-vV-a78">
+                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="EPL-OK-b6e">
+                            <connections>
+                                <action selector="configureEvents:" destination="igB-CV-gd7" id="Cbh-PQ-BAs"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <connections>
+                        <outlet property="view" destination="YQO-mF-avf" id="33M-Gk-yfV"/>
+                    </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="e1L-OQ-M3m" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

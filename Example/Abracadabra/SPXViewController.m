@@ -39,6 +39,11 @@
 //  [SPXPasscodeViewController setTintColor:[UIColor colorWithRed:0.153 green:0.667 blue:0.910 alpha:0.75]];
 }
 
+- (IBAction)configureEvents:(id)sender
+{
+  [self presentViewController:[[SPXSecureVault defaultVault] eventsViewController] animated:YES completion:nil];
+}
+
 - (void)macroAuthenticationWithIndexPath:(NSIndexPath *)indexPath
 {
   // the following implementations are mostly are identical to some of the code below and are provided here for reference only. This is the recommended implementation
@@ -48,14 +53,14 @@
   if (indexPath.section == 0) {
     switch (indexPath.row) {
       case 0:
-        Abracadabra(SPXSecurePolicyNone, NSLog(@"Success"), NSLog(@"Failed"))
+        Abracadabra(@"Authentication", @"No Authentication", SPXSecurePolicyNone, NSLog(@"Success"), NSLog(@"Failed"))
         break;
       case 1:
-        Abracadabra(@"Group", @"Shutdown Server", SPXSecurePolicyConfirmationOnly, NSLog(@"Success"), NSLog(@"Failed"))
+        Abracadabra(@"Authentication", @"Authenticate with Confirmation", SPXSecurePolicyConfirmationOnly, NSLog(@"Success"), NSLog(@"Failed"))
         break;
       case 2:
         vault.fallbackToConfirmation = YES;
-        Abracadabra(@"Group 1", @"Restart Server", SPXSecurePolicyAlwaysWithPIN, {
+        Abracadabra(@"Authentication", @"Authentication with Passcode", SPXSecurePolicyAlwaysWithPIN, {
           NSLog(@"Success");
         }, NSLog(@"Failed"))
         break;
@@ -63,12 +68,12 @@
         vault.fallbackToConfirmation = YES;
         [vault registerPasscodeViewControllerClass:nil];
         
-        Abracadabra(@"Group 2", @"Restart Server", SPXSecurePolicyTimedSessionWithPIN, {
+        Abracadabra(@"Authentication", @"Authenticate with Fallback", SPXSecurePolicyTimedSessionWithPIN, {
           NSLog(@"Success");
         })
         break;
       case 5:
-        Abracadabra(SPXSecurePolicyTimedSessionWithPIN, NSLog(@"Success"), NSLog(@"Failed"))
+        Abracadabra(@"Authentication", @"Authenticate with Timeout", SPXSecurePolicyTimedSessionWithPIN, NSLog(@"Success"), NSLog(@"Failed"))
         break;
       default:
         [self authenticateWithIndexPath:indexPath];
@@ -158,7 +163,7 @@
 {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
-//#define DISPATCH
+#define DISPATCH
 #ifdef DISPATCH
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
     [self selectIndexPath:indexPath];

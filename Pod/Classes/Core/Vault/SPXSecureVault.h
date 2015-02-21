@@ -190,8 +190,20 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 
 
 
-- (UIViewController *)eventsViewController;
-- (UIViewController *)settingsViewController;
+/**
+ *  Returns your registered eventsViewController embedded in a navigation controller
+ *
+ *  @return A navigation controller with its rootViewController set as the registered eventsViewController
+ */
+- (UINavigationController *)eventsViewController;
+
+
+/**
+ *  Returns your registered settingsViewController embedded in a navigation controller
+ *
+ *  @return A navigation controller with its rootViewController set as the registered settingsViewController
+ */
+- (UINavigationController *)settingsViewController;
 
 
 

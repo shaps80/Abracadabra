@@ -10,6 +10,8 @@
 		0E376C4F1EE548DA389AAAF5 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E93062D1E3168F8CB1744A /* libPods-Tests.a */; };
 		54140A511A7FBADA00A08BEF /* SPXSecurityTestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54140A501A7FBADA00A08BEF /* SPXSecurityTestClass.m */; };
 		546E07C01A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 546E07BF1A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m */; };
+		54FE90E21A98F8FA00FD36E6 /* SPXEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FE90E11A98F8FA00FD36E6 /* SPXEventsViewController.m */; };
+		54FE90E51A98F90400FD36E6 /* SPXPoliciesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FE90E41A98F90400FD36E6 /* SPXPoliciesViewController.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -79,6 +81,10 @@
 		54DAA36F1A94C1E600F4B938 /* SPXSecureDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureDefines.h; sourceTree = "<group>"; };
 		54DAA3731A950C7100F4B938 /* SPXSecureKeyCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureKeyCellBackground.h; sourceTree = "<group>"; };
 		54DAA3741A950C7100F4B938 /* SPXSecureKeyCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureKeyCellBackground.m; sourceTree = "<group>"; };
+		54FE90E01A98F8FA00FD36E6 /* SPXEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXEventsViewController.h; sourceTree = "<group>"; };
+		54FE90E11A98F8FA00FD36E6 /* SPXEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXEventsViewController.m; sourceTree = "<group>"; };
+		54FE90E31A98F90400FD36E6 /* SPXPoliciesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXPoliciesViewController.h; sourceTree = "<group>"; };
+		54FE90E41A98F90400FD36E6 /* SPXPoliciesViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXPoliciesViewController.m; sourceTree = "<group>"; };
 		6003F58A195388D20070C39A /* Abracadabra.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Abracadabra.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6003F58D195388D20070C39A /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		6003F58F195388D20070C39A /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
@@ -245,6 +251,10 @@
 		54DAA3641A94BE5700F4B938 /* Events */ = {
 			isa = PBXGroup;
 			children = (
+				54FE90E01A98F8FA00FD36E6 /* SPXEventsViewController.h */,
+				54FE90E11A98F8FA00FD36E6 /* SPXEventsViewController.m */,
+				54FE90E31A98F90400FD36E6 /* SPXPoliciesViewController.h */,
+				54FE90E41A98F90400FD36E6 /* SPXPoliciesViewController.m */,
 			);
 			path = Events;
 			sourceTree = "<group>";
@@ -534,6 +544,8 @@
 				6003F59E195388D20070C39A /* SPXAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* SPXViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
+				54FE90E21A98F8FA00FD36E6 /* SPXEventsViewController.m in Sources */,
+				54FE90E51A98F90400FD36E6 /* SPXPoliciesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

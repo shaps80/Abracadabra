@@ -77,7 +77,7 @@ extern NSString *_SPXSecurityIdentifier(spx_secure_entry *entry);
     policy = event.currentPolicy; \
   } \
   \
-  [[SPXSecureVault defaultVault] authenticateWithPolicy:policy_ description:name_ credential:nil completion:^(id<SPXSecureSession> session) { \
+  [[SPXSecureVault defaultVault] authenticateWithPolicy:policy description:name_ credential:nil completion:^(id<SPXSecureSession> session) { \
     if (session.isValid) { code_; } else { action_; } \
   }]; \
 });
