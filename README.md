@@ -36,6 +36,37 @@ __Introducing Abracadabra!__
 
 >The name refers to the magical nature of its implementation as well as the fact a passcode (_or magical phrase_) is required ;)
 
+## Full Feature List
+
+#### Core
+
+The following features are available in the Core and are completely configurable.
+
+* Simple code wrapping via convenience macro's
+* Passcode managment & configuration
+	* Maximum passcode retry
+	* Default timeout interval for time-based sessions
+	* Automatic fallback to alert confirmation when no view controller has been registered or a passcode hasn't yet been defined
+	* Automatic locking when maximum retry count has been reached
+	* Use alert vs action sheet on iPhone -- iPad always uses alert
+* Full iPhone, iPad and orientation support
+* Touch ID support
+* Ability to register your own view controllers for passcode, events and settings (if you include the user interface sub-spec these controllers will be provided by default)
+* Support for multiple vaults -- useful if you want to assign a vault to a user account
+* Abracadabra automatically finds all your macro definitions -- where you've wrapped your code -- so you can access a list at any time for runtime configuration
+* Vault delegate and notifications for listening for authentication failures and vault locking -- useful for logging out users, etc...
+* Session management -- including one-off & timed sessions
+* Secure hashing (SHA2) of all credential/passcode's including entry and storage in the keychain
+* Persistent policy updates for events -- including across launches
+
+#### User Interface
+
+* Secure events view controller that you can present to your user for configuring policies at runtime
+* Per-Vault settings view controller for configuring your vault
+* Device vibration on failed authentication
+* Custom field and buttons for prompting for passcode, TouchID  and confirmations
+* Presenting view controller blurring with light effects
+
 ## Usage
 
 To run the example project, clone the repo, and run `pod install` from the Example directory first.
