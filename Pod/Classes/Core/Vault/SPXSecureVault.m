@@ -454,7 +454,6 @@ static inline void spx_kill_semaphore() {
   self.timedSession = nil;
   
   self.credential = nil;
-  __semaphore = nil;
   self.currentRetryCount = 0;
   
   [self setObject:@NO forSelector:@selector(lock)];
