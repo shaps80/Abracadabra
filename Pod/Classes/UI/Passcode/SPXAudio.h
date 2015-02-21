@@ -24,34 +24,14 @@
  */
 
 @import Foundation;
-@import AudioToolbox;
 
 
-#if TARGET_OS_IPHONE
-
-typedef enum
-{
-  SPXAudioTypeVibrate             = kSystemSoundID_Vibrate,
-  SPXAudioTypeNewMail             = 1000,
-  SPXAudioTypeMailSent            = 1001,
-  SPXAudioTypeNewMessage          = 1002,
-  SPXAudioTypeReminder            = 1005,
-  SPXAudioTypeLowPower            = 1006,
-  SPXAudioTypeTweetSent           = 1016,
-  SPXAudioTypeLock                = 1100,
-  SPXAudioTypeUnlock              = 1101,
-  SPXAudioTypeCharging            = 1106,
-  SPXAudioTypeShutter             = 1108,
-} SPXAudioType;
-
-#endif
 
 /**
- Provides convenience wrapper for dealing with system and custom sounds.
- This class also has built in caching and UIImage style convenience for loading a sound via its name (with or without extension for mp3 and wav types)
- The class also cleans up any caching if the -didReceiveMemoryWarnings is called by the system.
+ Provides convenience wrapper for playing custom sounds. This class also has built in caching and UIImage style convenience for loading a sound via its name (with or without extension for mp3 and wav types). The class also cleans up any caching if the -didReceiveMemoryWarnings is called by the system.
  */
 @interface SPXAudio : NSObject
+
 
 /**
  @abstract      Attempts to play the sound file with the specified name
@@ -60,9 +40,11 @@ typedef enum
  */
 + (void)playAudioNamed:(NSString *)name;
 
-#if TARGET_OS_IPHONE
-+ (void)playSystemAudioType:(SPXAudioType)type;
+
+/**
+ *  Vibrates the device
+ */
 + (void)vibrate;
-#endif
+
 
 @end

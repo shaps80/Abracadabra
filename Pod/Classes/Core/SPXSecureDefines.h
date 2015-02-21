@@ -27,9 +27,6 @@
 #import "SPXSecureSession.h"
 
 
-extern NSString *const SPXSecureVaultDidFailAuthenticationPermanently;
-
-
 /**
  *  Defines the available security policies
  */
@@ -53,16 +50,36 @@ typedef NS_ENUM(NSInteger, SPXSecurePolicy) {
 };
 
 
-typedef NS_ENUM(NSInteger, SPXSecurePasscodeViewControllerState)
-{
+/**
+ *  Defines the possible states for the passcode view controller
+ */
+typedef NS_ENUM(NSInteger, SPXSecurePasscodeViewControllerState){
+  /**
+   *  The controller is authenticating and existing passcode
+   */
   SPXSecurePasscodeViewControllerStateAuthenticating,
+  /**
+   *  The controller is initializing a new passcode
+   */
   SPXSecurePasscodeViewControllerStateInitializing,
+  /**
+   *  The controller is updating an existing passcode
+   */
   SPXSecurePasscodeViewControllerStateUpdating,
 };
 
 
-typedef NS_ENUM(NSInteger, SPXSecureViewStyle) {
+/**
+ *  Defines the appearance style to apply to the passcode view controller
+ */
+typedef NS_ENUM(NSInteger, SPXSecureViewStyle){
+  /**
+   *  All UI elements will be dark (black)
+   */
   SPXSecureViewStyleDefault,
+  /**
+   *  All UI elements with be light (white)
+   */
   SPXSecureViewStyleLightContent
 };
 

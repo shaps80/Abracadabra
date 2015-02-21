@@ -26,8 +26,21 @@
 #import <UIKit/UIKit.h>
 #import "SPXSecureEvent.h"
 
+
+/**
+ The policiesViewController provides a choice of policies that can be assigned to the event
+ */
 @interface SPXPoliciesViewController : UITableViewController
 
+
+/**
+ *  Initializes the controller with the specified event
+ *
+ *  @param event The event to view/apply the policy
+ *
+ *  @return A new instance of this controller
+ */
 - (instancetype)initWithEvent:(SPXSecureEvent *)event NS_DESIGNATED_INITIALIZER;
+
 
 @end

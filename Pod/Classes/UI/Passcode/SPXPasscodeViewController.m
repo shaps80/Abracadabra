@@ -230,7 +230,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
       [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     } else {
       [self.secureField transitionToState:SPXSecureFieldStateMismatchPassCode animationStyle:SPXSecureFieldAnimationStyleShake];
-      [SPXAudio playSystemAudioType:SPXAudioTypeVibrate];
+      [SPXAudio vibrate];
       self.passcode = nil;
     }
   }
@@ -258,7 +258,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
       }
     } else {
       [self.secureField transitionToState:SPXSecureFieldStateInvalidPasscode animationStyle:SPXSecureFieldAnimationStyleShake];
-      [SPXAudio playSystemAudioType:SPXAudioTypeVibrate];
+      [SPXAudio vibrate];
     }
   }
 }

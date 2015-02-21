@@ -50,6 +50,7 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
 - (void)setTextInsets:(UIEdgeInsets)textInsets separatorInsets:(UIEdgeInsets)separatorInsets
 {
   _textInsets = textInsets;
+  _separatorInsets = separatorInsets;
   
   self.backgroundView = [SPXSecureKeyCellBackground viewWithTextInsets:textInsets separatorInsets:separatorInsets];
   self.selectedBackgroundView = [SPXSecureKeyCellBackground selectedViewWithTextInsets:textInsets];

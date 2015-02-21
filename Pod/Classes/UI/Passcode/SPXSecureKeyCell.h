@@ -32,7 +32,6 @@
 @property (nonatomic, assign) BOOL separatorHidden;
 
 - (void)setTitle:(NSString *)title subtitle:(NSString *)subtitle;
-- (void)setTextInsets:(UIEdgeInsets)textInsets separatorInsets:(UIEdgeInsets)separatorInsets UI_APPEARANCE_SELECTOR;
 
 @end
 

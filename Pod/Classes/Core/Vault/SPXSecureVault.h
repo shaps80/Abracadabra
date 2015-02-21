@@ -30,11 +30,33 @@
 #import "SPXSecureDefines.h"
 
 
+/**
+ *  When an authentication attempt fails, this notification will be sent.
+ */
 extern NSString *const SPXSecureVaultDidFailAuthenticationPermanently;
 
 
+/**
+ *  When the vault is locked, this notification will be sent.
+ */
+extern NSString *const SPXSecureVaultDidFailAuthenticationPermanently;
+
+
+/**
+ *  Defines the authentication completion block used for all authentication calls
+ *
+ *  @param session A valid session if authentication was successful, nil otherwise
+ */
 typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession> session);
+
+
+/**
+ *  Defines the completion block used by methods that just have a bool return value
+ *
+ *  @param success YES if the command was successful, NO otherwise
+ */
 typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
+
 
 
 @protocol SPXSecureVaultDelegate;

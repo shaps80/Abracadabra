@@ -27,8 +27,22 @@
 
 @interface UIImage (SPXSecureAdditions)
 
+
+/**
+ *  Return a new image with light effects applied. (blurRadius = 20, tintColor = 50% white, saturation = 1)
+ *
+ *  @return A new image
+ */
 - (UIImage*)imageByApplyingLightEffect;
+
+
+/**
+ *  Return a new image with dark effects applied. (blurRadius = 20, tintColor = 90% black, saturation = 1.8)
+ *
+ *  @return A new image
+ */
 - (UIImage*)imageByApplyingDarkEffect;
+
 
 //| ----------------------------------------------------------------------------
 //! Applies a blur, tint color, and saturation adjustment to @a inputImage,
@@ -51,5 +65,6 @@
 //!         by this mask.  This must be an image mask or it must meet the
 //!         requirements of the mask parameter of CGContextClipToMask.
 - (UIImage*)imageByApplyingBlurRadius:(CGFloat)blurRadius tintColor:(UIColor *)tintColor saturationDeltaFactor:(CGFloat)saturationDeltaFactor maskImage:(UIImage *)maskImage;
+
 
 @end

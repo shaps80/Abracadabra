@@ -25,10 +25,33 @@
 
 #import "SPXDataValidator.h"
 
+
+/**
+ *  Defines a protocol that all credential's should conform to
+ */
 @protocol SPXSecureCredential <NSCoding>
+
+
+/**
+ *  Returns a secure string representatino of the credential. This value will be used to store your credential in the keychain
+ *
+ *  @return A secure string representation
+ */
 - (NSString *)secureCredential;
+
+
+/**
+ *  Determines if 2 credential's have identical values or not
+ *
+ *  @param credential The credential to compare to this credential
+ *
+ *  @return YES if their secure values are equal, NO otherwise
+ */
 - (BOOL)isEqualToCredential:(id <SPXSecureCredential>)credential;
+
+
 @end
+
 
 
 /**

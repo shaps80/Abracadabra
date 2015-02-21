@@ -25,7 +25,11 @@
 
 #import "SPXAudio.h"
 #import "SPXDefines.h"
-#import <AudioToolbox/AudioToolbox.h>
+#import "SPXAssertionDefines.h"
+
+@import AudioToolbox;
+
+static SystemSoundID const SPXAudioTypeVibrate = kSystemSoundID_Vibrate;
 
 @interface SPXAudio ()
 @property (nonatomic, strong) NSMutableDictionary *preloadedAudio;
@@ -33,27 +37,20 @@
 
 @implementation SPXAudio
 
-- (id)init
-{
-  self = [super init];
-  
-  if (self)
-  {
-#if TARGET_OS_IPHONE
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
-#endif
-  }
-  
-  return self;
-}
-
-#if TARGET_OS_IPHONE
 - (void)didReceiveMemoryWarning:(NSNotification *)note
 {
-  for (NSNumber *sound in self.preloadedAudio.allValues)
+  for (NSNumber *sound in self.preloadedAudio.allValues) {
     AudioServicesDisposeSystemSoundID([sound intValue]);
+  }
 }
-#endif
+
+- (instancetype)init
+{
+  self = [super init];
+  SPXAssertTrueOrReturnNil(self);
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didReceiveMemoryWarning:) name:UIApplicationDidReceiveMemoryWarningNotification object:nil];
+  return self;
+}
 
 +(instancetype)sharedInstance
 {
@@ -72,10 +69,17 @@
   NSString *extension = [name pathExtension];
   NSURL *url = nil;
   
-  // if we have the filename and extension
-  if (extension) url = [[NSBundle mainBundle] URLForResource:filename withExtension:extension];
-  if (!url) url = [[NSBundle mainBundle] URLForResource:filename withExtension:@"wav"];
-  if (!url) url = [[NSBundle mainBundle] URLForResource:filename withExtension:@"mp3"];
+  if (extension) {
+    url = [[NSBundle mainBundle] URLForResource:filename withExtension:extension];
+  }
+  
+  if (!url) {
+    url = [[NSBundle mainBundle] URLForResource:filename withExtension:@"wav"];
+  }
+  
+  if (!url) {
+    url = [[NSBundle mainBundle] URLForResource:filename withExtension:@"mp3"];
+  }
   
   return url.path;
 }
@@ -89,17 +93,29 @@
 {
   SystemSoundID soundID = 0;
   NSURL *url = [NSURL fileURLWithPath:[self pathForAudioNamed:name]];
-  if (!url) return 0;
+  
+  if (!url) {
+    return 0;
+  }
+  
   AudioServicesCreateSystemSoundID((__bridge CFURLRef)url, &soundID);
   self.preloadedAudio[name] = @(soundID);
+  
   return soundID;
 }
 
 - (void)playCustomAudioNamed:(NSString *)name
 {
   SystemSoundID soundID = (SystemSoundID)[self.preloadedAudio[name] integerValue];
-  if (!soundID) soundID = [self preloadCustomAudioNamed:name];
-  if (!soundID) return;
+  
+  if (!soundID) {
+    soundID = [self preloadCustomAudioNamed:name];
+  }
+  
+  if (!soundID) {
+    return;
+  }
+  
   AudioServicesPlaySystemSound(soundID);
 }
 
@@ -116,11 +132,6 @@
 }
 
 #if TARGET_OS_IPHONE
-
-+ (void)playSystemAudioType:(SPXAudioType)type
-{
-  [[SPXAudio sharedInstance] playSystemAudio:type];
-}
 
 + (void)vibrate
 {

@@ -25,6 +25,9 @@
 
 #import <UIKit/UIKit.h>
 
+/**
+ *  The default eventsViewController can be used to present a list of events found in your code at runtime. This allows you to modify their policies, which are persisted automatically across launches.
+ */
 @interface SPXEventsViewController : UITableViewController
 
 @end
