@@ -30,19 +30,19 @@
 
 - (void)secureCode
 {
-  SPXSecure(SPXSecurityPolicyNone, {
+  Abracadabra(SPXSecurePolicyNone, {
     /* this code will execute if access is allowed */
   })
   
-  SPXSecure(@"Security", @"Event 1", SPXSecurityPolicyNone, {
+  Abracadabra(@"Security", @"Event 1", SPXSecurePolicyNone, {
     /* this code will execute if access is allowed */
   })
   
-  SPXSecure(SPXSecurityPolicyNone, {
+  Abracadabra(SPXSecurePolicyNone, {
     /* this code will execute if access is allowed */
   }, /* this code will execute if access is disallowed */ )
   
-  SPXSecure(@"Security", @"Event 2", SPXSecurityPolicyNone, {
+  Abracadabra(@"Security", @"Event 2", SPXSecurePolicyNone, {
     /* this code will execute if access is allowed */
   }, /* this code will execute if access is disallowed */ )
 }

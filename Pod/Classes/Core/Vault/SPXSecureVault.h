@@ -23,6 +23,8 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+#import <UIKit/UIKit.h>
+
 #import "SPXSecureSession.h"
 #import "SPXSecureCredential.h"
 #import "SPXSecureDefines.h"
@@ -67,6 +69,12 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
  *  @note Pass 0 to use default. Negative values will default to 0
  */
 @property (nonatomic, assign) NSTimeInterval defaultTimeoutInterval;
+
+
+/**
+ *  Gets/sets whether an alertView should be used instead of the action sheet on iPhone. iPad will always use an alertView
+ */
+@property (nonatomic, assign) BOOL useAlertViewForConfirmation;
 
 
 /**

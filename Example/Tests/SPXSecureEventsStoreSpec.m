@@ -33,7 +33,7 @@ describe(@"SPXSecureEventsStore", ^{
   
   SPXSecureEventsStore *store = [SPXSecureEventsStore sharedInstance];
   SPXSecureEventsGroup *group = [[SPXSecureEventsGroup alloc] initWithName:@"Group"];
-  SPXSecureEvent *event = [[SPXSecureEvent alloc] initWithIdentifier:@"1234" name:@"Event" policy:SPXSecurityPolicyNone];
+  SPXSecureEvent *event = [[SPXSecureEvent alloc] initWithIdentifier:@"1234" name:@"Event" policy:SPXSecurePolicyNone];
   
   context(@"Store", ^{
     it(@"should have discovered 1 group from SPXSecurityTestClass", ^{
@@ -91,7 +91,7 @@ describe(@"SPXSecureEventsStore", ^{
     });
     
     it(@"current policy should equal 0", ^{
-      event.currentPolicy = SPXSecurityPolicyTimedSessionWithPIN;
+      event.currentPolicy = SPXSecurePolicyTimedSessionWithPIN;
       [[theValue(event.currentPolicy) should] equal:theValue(1)];
     });
   });

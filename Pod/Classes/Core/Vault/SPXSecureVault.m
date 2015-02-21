@@ -38,7 +38,7 @@ static inline void spx_kill_semaphore() {
   __semaphore = NULL;
 }
 
-@interface SPXSecureVault () <UIActionSheetDelegate>
+@interface SPXSecureVault () <UIActionSheetDelegate, UIAlertViewDelegate>
 
 @property (nonatomic, strong) id <SPXSecureCredential> credential;
 @property (nonatomic, strong) SPXSecureTimedSession *timedSession;
@@ -268,7 +268,13 @@ static inline void spx_kill_semaphore() {
   
   [self presentWithPresentationBlock:^{
     NSString *title = description ? [NSString stringWithFormat:@"Are you sure you want to %@?", description] : @"Are you sure?";
-    UIView *view = [UIApplication sharedApplication].keyWindow;
+    
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad || self.useAlertViewForConfirmation) {
+      [[[UIAlertView alloc] initWithTitle:description message:title delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil] show];
+      return;
+    }
+    
+    UIView *view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
     [[[UIActionSheet alloc] initWithTitle:title delegate:weakInstance cancelButtonTitle:@"Cancel" destructiveButtonTitle:description ?: @"Continue" otherButtonTitles:nil] showInView:view];
   } completion:^{
     !weakInstance.completionBlock ?: weakInstance.completionBlock([weakInstance sessionForPolicy:SPXSecurePolicyConfirmationOnly credential:nil]);
@@ -316,11 +322,17 @@ static inline void spx_kill_semaphore() {
   !completion ?: completion();
 }
 
-#pragma mark - Action Sheet Delegate
+#pragma mark - UIKit Delegates
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
   self.confirmationWasSuccessful = (!buttonIndex);
+  spx_kill_semaphore();
+}
+
+- (void)alertView:(UIAlertView *)alertView willDismissWithButtonIndex:(NSInteger)buttonIndex
+{
+  self.confirmationWasSuccessful = (buttonIndex);
   spx_kill_semaphore();
 }
 
