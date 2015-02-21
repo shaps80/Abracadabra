@@ -27,7 +27,7 @@ This is not just a PIN entry User Interface. In fact that part of the library is
 * Easily find all the Abracadabra references in your code and show them at runtime for user configuration
 * Layout support for both iPhone and iPad, including rotation
 
-Plus if you're including the entire library in your project, you even get the optional UI elements.
+Plus if you're including the entire library in your project, you even get the optional UI elements. In fact you don't even have to write any code to get started. Just include the POD and it will be used by default ;)
 
 <p style="text-align: center"><img src="Abracadabra.gif"></p>
 
@@ -65,6 +65,8 @@ Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
 
 If you're happy with the default view controllers and behaviour, __that's literally it ;)__
 You don't even have to configure options, provide views, nothing! Just sit back, relax and let the magic happen. 
+
+Its recommended that you always provide a group and name even if you don't plan to implement the viewController in-app because this is also used for providing better textual feedback for confirmation dialogs, etc...
 
 >You may also notice semi-colons and curly-braces are entirely optional with single line entries _(in both success and failure blocks)_. Abracadabra takes care of this for you, keeping your code clutter-free ;)
 
