@@ -10,7 +10,7 @@
 * Events controller is not yet implemented -- in progress
 * Settings controller is not yet implemented -- in progress
 * When you provide a group/name this entry will be persisted across launches and the policy is a default only. So if you change the policy across runs or allow runtime configuration, then the value might not be what you see in code. This feature is not yet working correctly -- in progress
-* TouchID is not yet implemented -- coming tomorrow
+* <del>TouchID is not yet implemented</del> -- __DONE__
 * Abracadabra currently launches in the current orientation but doesn't support orientation changes while its being presented yet -- in progress
 
 ## What is it?

@@ -303,31 +303,39 @@ static inline void spx_kill_semaphore() {
   description = description ?: @"Perform Secure Event";
   
   __weak typeof(self) weakInstance = self;
-  __block BOOL authenticated = NO;
-  __block BOOL fallback = NO;
+  __block NSInteger errorCode = 0;
   self.completionBlock = completion;
   
   [self presentWithPresentationBlock:^{
     [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:description reply:^(BOOL success, NSError *error) {
       switch (error.code) {
         case kLAErrorUserCancel:
+          errorCode = kLAErrorUserCancel;
+          break;
         case kLAErrorAuthenticationFailed:
-          authenticated = NO;
+          errorCode = kLAErrorAuthenticationFailed;
           break;
         default:
-          fallback = YES;
+          errorCode = success ? 0 : kLAErrorUserFallback;
           break;
       }
       
       spx_kill_semaphore();
     }];
   } completion:^{
-    if (fallback) {
+    if (errorCode == kLAErrorUserCancel) {
+      !weakInstance.completionBlock ?: weakInstance.completionBlock(nil);
+      return;
+    }
+    
+    if (errorCode == kLAErrorUserFallback) {
       [self authenticateWithPolicy:policy updating:NO completion:weakInstance.completionBlock];
       return;
     }
     
-    !weakInstance.completionBlock ?: weakInstance.completionBlock(authenticated ? [weakInstance sessionForPolicy:policy credential:weakInstance.credential] : nil);
+    id <SPXSecureCredential> credential = !errorCode ? weakInstance.credential : nil;
+    id <SPXSecureSession> session = [weakInstance sessionForPolicy:policy credential:credential];
+    !weakInstance.completionBlock ?: weakInstance.completionBlock(session);
   }];
 }
 
