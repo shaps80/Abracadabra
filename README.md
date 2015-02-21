@@ -61,8 +61,10 @@ The following features are available in the Core and are completely configurable
 
 #### User Interface
 
+All of the below are per-vault.
+
 * Secure events view controller that you can present to your user for configuring policies at runtime
-* Per-Vault settings view controller for configuring your vault
+* Settings view controller for configuring your vault
 * Device vibration on failed authentication
 * Custom field and buttons for prompting for passcode, TouchID  and confirmations
 * Presenting view controller blurring with light effects
