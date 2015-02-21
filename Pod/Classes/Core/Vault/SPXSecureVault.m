@@ -479,6 +479,12 @@ static inline void spx_kill_semaphore() {
 
 - (NSTimeInterval)defaultTimeoutInterval
 {
+  NSNumber *interval = [self objectForSelector:@selector(defaultTimeoutInterval)];
+  
+  if (!interval) {
+    return 60;
+  }
+  
   return [[self objectForSelector:@selector(defaultTimeoutInterval)] doubleValue];
 }
 
