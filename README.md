@@ -59,8 +59,6 @@ The following features are available in the Core and are completely configurable
 * Secure hashing (SHA2) of all credential/passcode's including entry and storage in the keychain
 * Persistent policy updates for events -- including across launches
 
->See the example project for full demo's on how to use all of these features.
-
 #### User Interface
 
 All of the below are per-vault.
@@ -70,6 +68,8 @@ All of the below are per-vault.
 * Device vibration on failed authentication
 * Custom field and buttons for prompting for passcode, TouchID  and confirmations
 * Presenting view controller blurring with light effects
+
+>See the example project for full demo's on how to use all of these features.
 
 ## Usage
 
