@@ -6,6 +6,7 @@
 [![Platform](https://img.shields.io/cocoapods/p/Abracadabra.svg?style=flat)](http://cocoadocs.org/docsets/Abracadabra)
 
 ## Updates
+_(Sunday 20th Feb 2015)_
 
 * Events controller is not yet implemented -- in progress
 * Settings controller is not yet implemented -- in progress
