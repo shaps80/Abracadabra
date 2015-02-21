@@ -9,20 +9,20 @@
 // Abracadabra
 #define COCOAPODS_POD_AVAILABLE_Abracadabra
 #define COCOAPODS_VERSION_MAJOR_Abracadabra 1
-#define COCOAPODS_VERSION_MINOR_Abracadabra 0
-#define COCOAPODS_VERSION_PATCH_Abracadabra 0
+#define COCOAPODS_VERSION_MINOR_Abracadabra 1
+#define COCOAPODS_VERSION_PATCH_Abracadabra 2
 
 // Abracadabra/Core
 #define COCOAPODS_POD_AVAILABLE_Abracadabra_Core
 #define COCOAPODS_VERSION_MAJOR_Abracadabra_Core 1
-#define COCOAPODS_VERSION_MINOR_Abracadabra_Core 0
-#define COCOAPODS_VERSION_PATCH_Abracadabra_Core 0
+#define COCOAPODS_VERSION_MINOR_Abracadabra_Core 1
+#define COCOAPODS_VERSION_PATCH_Abracadabra_Core 2
 
 // Abracadabra/UI
 #define COCOAPODS_POD_AVAILABLE_Abracadabra_UI
 #define COCOAPODS_VERSION_MAJOR_Abracadabra_UI 1
-#define COCOAPODS_VERSION_MINOR_Abracadabra_UI 0
-#define COCOAPODS_VERSION_PATCH_Abracadabra_UI 0
+#define COCOAPODS_VERSION_MINOR_Abracadabra_UI 1
+#define COCOAPODS_VERSION_PATCH_Abracadabra_UI 2
 
 // SPXDataValidators
 #define COCOAPODS_POD_AVAILABLE_SPXDataValidators

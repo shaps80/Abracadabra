@@ -10,8 +10,6 @@
 		0E376C4F1EE548DA389AAAF5 /* libPods-Tests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 06E93062D1E3168F8CB1744A /* libPods-Tests.a */; };
 		54140A511A7FBADA00A08BEF /* SPXSecurityTestClass.m in Sources */ = {isa = PBXBuildFile; fileRef = 54140A501A7FBADA00A08BEF /* SPXSecurityTestClass.m */; };
 		546E07C01A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m in Sources */ = {isa = PBXBuildFile; fileRef = 546E07BF1A7FADC400AEF796 /* SPXSecureEventsStoreSpec.m */; };
-		54FE90E21A98F8FA00FD36E6 /* SPXEventsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FE90E11A98F8FA00FD36E6 /* SPXEventsViewController.m */; };
-		54FE90E51A98F90400FD36E6 /* SPXPoliciesViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 54FE90E41A98F90400FD36E6 /* SPXPoliciesViewController.m */; };
 		6003F58E195388D20070C39A /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58D195388D20070C39A /* Foundation.framework */; };
 		6003F590195388D20070C39A /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F58F195388D20070C39A /* CoreGraphics.framework */; };
 		6003F592195388D20070C39A /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6003F591195388D20070C39A /* UIKit.framework */; };
@@ -544,8 +542,6 @@
 				6003F59E195388D20070C39A /* SPXAppDelegate.m in Sources */,
 				6003F5A7195388D20070C39A /* SPXViewController.m in Sources */,
 				6003F59A195388D20070C39A /* main.m in Sources */,
-				54FE90E21A98F8FA00FD36E6 /* SPXEventsViewController.m in Sources */,
-				54FE90E51A98F90400FD36E6 /* SPXPoliciesViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
