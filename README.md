@@ -1,6 +1,6 @@
 # Abracadabra
 
-[![CI Status](http://img.shields.io/travis/Shaps Mohsenin/Abracadabra.svg?style=flat)](https://travis-ci.org/shaps80/Abracadabra)
+[![CI Status](http://img.shields.io/travis/shaps80/Abracadabra.svg?style=flat)](https://travis-ci.org/shaps80/Abracadabra)
 [![Version](https://img.shields.io/cocoapods/v/Abracadabra.svg?style=flat)](http://cocoadocs.org/docsets/Abracadabra)
 [![License](https://img.shields.io/cocoapods/l/Abracadabra.svg?style=flat)](http://cocoadocs.org/docsets/Abracadabra)
 [![Platform](https://img.shields.io/cocoapods/p/Abracadabra.svg?style=flat)](http://cocoadocs.org/docsets/Abracadabra)
