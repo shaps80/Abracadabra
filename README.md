@@ -59,6 +59,8 @@ The following features are available in the Core and are completely configurable
 * Secure hashing (SHA2) of all credential/passcode's including entry and storage in the keychain
 * Persistent policy updates for events -- including across launches
 
+>See the example project for full demo's on how to use all of these features.
+
 #### User Interface
 
 All of the below are per-vault.
@@ -166,20 +168,6 @@ By using optional parenthese around the return, we can now move the log statemen
       return; // in this case no more code exists at this scope, so this is no longer required
   })
 ```
-
-## Advanced Configurations
-
-Abracadabra has been designed to be quite flexible and takes care of all the security for you. 
-
-Out of the box the following areas can be customized:
-
-* Passcode input view controller (_who says you need 4 digits?_)
-* Event security policies view controller
-* Passcode validation 
-* Session policies (_timeout, retries, etc..._)
-* more...
-
-See the example project for full demo's on how to use all of these features.
 
 ## Under the Hood
 
