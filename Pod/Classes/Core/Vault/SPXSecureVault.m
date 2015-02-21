@@ -23,6 +23,8 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@import LocalAuthentication;
+
 #import "SPXSecureVault.h"
 #import "SPXSecureSession.h"
 #import "SPXDefines.h"
@@ -35,7 +37,6 @@ static dispatch_semaphore_t __semaphore;
 
 static inline void spx_kill_semaphore() {
   dispatch_semaphore_signal(__semaphore);
-  __semaphore = NULL;
 }
 
 @interface SPXSecureVault () <UIActionSheetDelegate, UIAlertViewDelegate>
@@ -55,6 +56,13 @@ static inline void spx_kill_semaphore() {
 @end
 
 @implementation SPXSecureVault
+
+- (void)dealloc
+{
+  spx_kill_semaphore();
+  [self.timedSession invalidate];
+  self.credential = nil;
+}
 
 #pragma mark - Initializers
 
@@ -198,6 +206,7 @@ static inline void spx_kill_semaphore() {
   }
   
   if ([self isLocked]) {
+    SPXLog(@"The vault is current locked!");
     if ([self.delegate respondsToSelector:@selector(vault:didFailAuthenticationWithRemainingRetryCount:)]) {
       [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.remainingRetryCount];
     }
@@ -206,7 +215,7 @@ static inline void spx_kill_semaphore() {
     return;
   }
   
-  if ((self.fallbackToConfirmation && !self.passcodeViewControllerClass)) {
+  if ((self.fallbackToConfirmation && !self.passcodeViewControllerClass) || (self.fallbackToConfirmation && !self.credential)) {
     [self authenticateWithConfirmation:description completion:completion];
     return;
   }
@@ -218,6 +227,12 @@ static inline void spx_kill_semaphore() {
   
   if (policy == SPXSecurePolicyTimedSessionWithPIN && self.timedSession.isValid) {
     !completion ?: completion(self.timedSession);
+    return;
+  }
+  
+  if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
+    LAContext *context = [LAContext new];
+    [self authenticateWithContext:context policy:policy description:description completion:completion];
     return;
   }
   
@@ -248,7 +263,9 @@ static inline void spx_kill_semaphore() {
     state = updating ? SPXSecurePasscodeViewControllerStateUpdating : state;
     
     [controller transitionToState:state animated:YES completion:^id<SPXSecureSession>(id<SPXSecureCredential> credential) {
-      session = [weakInstance sessionForPolicy:policy credential:credential];
+      if (credential) {
+        session = [weakInstance sessionForPolicy:policy credential:credential];
+      }
       
       if (session || !credential) {
         spx_kill_semaphore();
@@ -267,10 +284,10 @@ static inline void spx_kill_semaphore() {
   self.completionBlock = completion;
   
   [self presentWithPresentationBlock:^{
-    NSString *title = description ? [NSString stringWithFormat:@"Are you sure you want to %@?", description] : @"Are you sure?";
+    NSString *title = @"Are you sure you want to perform this action?";
     
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad || self.useAlertViewForConfirmation) {
-      [[[UIAlertView alloc] initWithTitle:description message:title delegate:self cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil] show];
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad || weakInstance.useAlertViewForConfirmation) {
+      [[[UIAlertView alloc] initWithTitle:description message:title delegate:weakInstance cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil] show];
       return;
     }
     
@@ -278,6 +295,39 @@ static inline void spx_kill_semaphore() {
     [[[UIActionSheet alloc] initWithTitle:title delegate:weakInstance cancelButtonTitle:@"Cancel" destructiveButtonTitle:description ?: @"Continue" otherButtonTitles:nil] showInView:view];
   } completion:^{
     !weakInstance.completionBlock ?: weakInstance.completionBlock([weakInstance sessionForPolicy:SPXSecurePolicyConfirmationOnly credential:nil]);
+  }];
+}
+
+- (void)authenticateWithContext:(LAContext *)context policy:(SPXSecurePolicy)policy description:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+{
+  description = description ?: @"Perform Secure Event";
+  
+  __weak typeof(self) weakInstance = self;
+  __block BOOL authenticated = NO;
+  __block BOOL fallback = NO;
+  self.completionBlock = completion;
+  
+  [self presentWithPresentationBlock:^{
+    [context evaluatePolicy:LAPolicyDeviceOwnerAuthenticationWithBiometrics localizedReason:description reply:^(BOOL success, NSError *error) {
+      switch (error.code) {
+        case kLAErrorUserCancel:
+        case kLAErrorAuthenticationFailed:
+          authenticated = NO;
+          break;
+        default:
+          fallback = YES;
+          break;
+      }
+      
+      spx_kill_semaphore();
+    }];
+  } completion:^{
+    if (fallback) {
+      [self authenticateWithPolicy:policy updating:NO completion:weakInstance.completionBlock];
+      return;
+    }
+    
+    !weakInstance.completionBlock ?: weakInstance.completionBlock(authenticated ? [weakInstance sessionForPolicy:policy credential:weakInstance.credential] : nil);
   }];
 }
 

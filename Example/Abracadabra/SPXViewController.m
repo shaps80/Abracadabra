@@ -82,6 +82,7 @@
         }];
         break;
       case 2:
+        vault.fallbackToConfirmation = YES;
         [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil completion:^(id<SPXSecureSession> session) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
