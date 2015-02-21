@@ -61,6 +61,12 @@ typedef NS_ENUM(NSInteger, SPXSecurePasscodeViewControllerState)
 };
 
 
+typedef NS_ENUM(NSInteger, SPXSecureViewStyle) {
+  SPXSecureViewStyleDefault,
+  SPXSecureViewStyleLightContent
+};
+
+
 /**
  *  Defines the protocol all passcode viewController's must conform to
  */

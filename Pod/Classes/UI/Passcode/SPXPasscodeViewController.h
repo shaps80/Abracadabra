@@ -26,6 +26,10 @@
 #import <UIKit/UIKit.h>
 #import "SPXSecureDefines.h"
 
-@interface SPXPasscodeViewController : UIViewController <SPXSecurePasscodeViewController, UIAppearanceContainer>
+@interface SPXPasscodeViewController : UIViewController <SPXSecurePasscodeViewController>
+
++ (void)setViewStyle:(SPXSecureViewStyle)style;
++ (void)setTintColor:(UIColor *)color;
+
 @end
 

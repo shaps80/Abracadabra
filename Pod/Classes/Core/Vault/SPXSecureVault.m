@@ -104,15 +104,33 @@ static inline void spx_kill_semaphore() {
   self.eventsViewControllerClass = viewControllerClass;
 }
 
+#pragma mark - ViewControllers
+
+- (UIViewController *)eventsViewController
+{
+  return [self.eventsViewControllerClass.class new];
+}
+
+- (UIViewController *)settingsViewController
+{
+  return [self.settingsViewController.class new];
+}
+
 #pragma mark - Updating Passcode
 
-- (void)updateCredentialWithCompletion:(void (^)(BOOL success))completion
+- (void)updateCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion
 {
   [self updateCredentialWithExistingCredential:self.credential newCredential:nil completion:completion];
 }
 
-- (void)updateCredentialWithExistingCredential:(id<SPXSecureCredential>)existingCredential newCredential:(id<SPXSecureCredential>)newCredential completion:(void (^)(BOOL success))completion
+- (void)updateCredentialWithExistingCredential:(id<SPXSecureCredential>)existingCredential newCredential:(id<SPXSecureCredential>)newCredential completion:(SPXSecureVaultCompletionBlock)completion
 {
+  if ([self isLocked]) {
+    SPXLog(@"Unabled to update the credential. The vault has been locked.");
+    !completion ?: completion(NO);
+    return;
+  }
+  
   __weak typeof(self) weakInstance = self;
   id <SPXSecureCredential> credential = self.credential;
   
@@ -129,7 +147,7 @@ static inline void spx_kill_semaphore() {
   
   if (!self.credential && newCredential) {
     self.credential = newCredential;
-    !completion ?: completion([SPXSecureOnceSession session]);
+    !completion ?: completion(YES);
     return;
   }
   
@@ -174,7 +192,21 @@ static inline void spx_kill_semaphore() {
     return;
   }
   
-  if (policy == SPXSecurePolicyConfirmationOnly || (self.fallbackToConfirmation && !self.passcodeViewControllerClass)) {
+  if (policy == SPXSecurePolicyConfirmationOnly) {
+    [self authenticateWithConfirmation:description completion:completion];
+    return;
+  }
+  
+  if ([self isLocked]) {
+    if ([self.delegate respondsToSelector:@selector(vault:didFailAuthenticationWithRemainingRetryCount:)]) {
+      [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.maximumRetryCount - self.currentRetryCount];
+    }
+    
+    !completion ?: completion(nil);
+    return;
+  }
+  
+  if ((self.fallbackToConfirmation && !self.passcodeViewControllerClass)) {
     [self authenticateWithConfirmation:description completion:completion];
     return;
   }
@@ -328,8 +360,14 @@ static inline void spx_kill_semaphore() {
 
 #pragma mark - Resets
 
-- (void)removeCredentialWithCompletion:(void (^)())completion
+- (void)removeCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion
 {
+  if ([self isLocked]) {
+    SPXLog(@"Nothing to reset. The vault has been locked.");
+    !completion ?: completion(NO);
+    return;
+  }
+  
   if (!self.hasCredential) {
     SPXLog(@"Nothing to reset. This vault does not have an existing credential to reset.");
     return;
@@ -339,21 +377,25 @@ static inline void spx_kill_semaphore() {
   [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:NO completion:^(id <SPXSecureSession> session) {
     if (session) {
       weakInstance.credential = nil;
+      [weakInstance.timedSession invalidate];
+      weakInstance.timedSession = nil;
       weakInstance.currentRetryCount = 0;
-      !completion ?: completion();
     }
+    
+    !completion ?: completion(session.isValid);
   }];
 }
 
 - (void)resetVault
 {
+  [self.timedSession invalidate];
+  self.timedSession = nil;
+  
   self.credential = nil;
   __semaphore = nil;
   self.currentRetryCount = 0;
   
-  SPXKeychain *keychain = [SPXKeychain sharedInstance];
-  NSString *key = [self persistentKeyForSelector:@selector(lock)];
-  keychain[key] = nil;
+  [self setObject:@NO forSelector:@selector(lock)];
 }
 
 #pragma mark - NSUserDefaults Values
@@ -392,7 +434,7 @@ static inline void spx_kill_semaphore() {
 
 - (BOOL)isLocked
 {
-  return [self objectForSelector:@selector(lock)];
+  return [[self objectForSelector:@selector(lock)] boolValue];
 }
 
 - (void)lock
@@ -400,6 +442,11 @@ static inline void spx_kill_semaphore() {
   [self setObject:@YES forSelector:@selector(lock)];
   self.currentRetryCount = 0;
   SPXLog(@"The vault was locked because the maximum number of retries was reached!");
+  [[NSNotificationCenter defaultCenter] postNotificationName:SPXSecureVaultDidFailAuthenticationPermanently object:self];
+  
+  if ([self.delegate respondsToSelector:@selector(vaultDidLock:)]) {
+    [self.delegate vaultDidLock:self];
+  }
 }
 
 - (BOOL)hasCredential
@@ -414,7 +461,15 @@ static inline void spx_kill_semaphore() {
 
 - (void)setCurrentRetryCount:(NSUInteger)currentRetryCount
 {
+  if (self.currentRetryCount == currentRetryCount) {
+    return;
+  }
+  
   [self setObject:@(currentRetryCount) forSelector:@selector(currentRetryCount)];
+  
+  if ([self.delegate respondsToSelector:@selector(vault:didFailAuthenticationWithRemainingRetryCount:)]) {
+    [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.maximumRetryCount - self.currentRetryCount];
+  }
 }
 
 - (id<SPXSecureCredential>)credential

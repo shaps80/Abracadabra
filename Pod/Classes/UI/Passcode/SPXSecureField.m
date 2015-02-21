@@ -40,7 +40,6 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
 
 @property (nonatomic, strong) NSMutableString *mutableText;
 @property (nonatomic, strong) NSMutableDictionary *placeholderStrings;
-@property (nonatomic, strong) NSMutableDictionary *placeholderColors;
 
 @property (nonatomic, assign) NSUInteger numberOfShakes;
 @property (nonatomic, assign) NSInteger shakeDirection;
@@ -50,7 +49,7 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
 
 @implementation SPXSecureField
 
-@synthesize placeholderFont = _placeholderFont;
+@synthesize font = _font;
 @synthesize indicatorSize = _indicatorSize;
 
 - (NSString *)text
@@ -71,15 +70,15 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
   return _contentView;
 }
 
-- (void)setTintColor:(UIColor *)tintColor
+- (void)setViewStyle:(SPXSecureViewStyle)viewStyle
 {
-  [super setTintColor:tintColor];
-  
-  [self setPlaceholderColor:tintColor forState:SPXSecureFieldStateSetPasscode];
-  [self setPlaceholderColor:tintColor forState:SPXSecureFieldStateMismatchPassCode];
-  [self setPlaceholderColor:tintColor forState:SPXSecureFieldStateInvalidPasscode];
-  [self setPlaceholderColor:tintColor forState:SPXSecureFieldStateEnterPasscode];
-  [self setPlaceholderColor:tintColor forState:SPXSecureFieldStateConfirmPasscode];
+  _viewStyle = viewStyle;
+  _placeholderLabel.textColor = self.currentColor;
+}
+
+- (UIColor *)currentColor
+{
+  return self.viewStyle ? [UIColor whiteColor] : [UIColor blackColor];
 }
 
 - (UILabel *)placeholderLabel
@@ -90,9 +89,9 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
   
   _placeholderLabel = [UILabel new];
   _placeholderLabel.backgroundColor = [UIColor clearColor];
-  _placeholderLabel.font = self.placeholderFont;
+  _placeholderLabel.font = self.font;
+  _placeholderLabel.textColor = self.currentColor;
   _placeholderLabel.textAlignment = NSTextAlignmentCenter;
-  _placeholderLabel.textColor = [self placeholderColorForState:SPXSecureFieldStateEnterPasscode];
   _placeholderLabel.text = [self placeholderTextForState:SPXSecureFieldStateEnterPasscode];
   
   [self.contentView addSubview:_placeholderLabel];
@@ -109,7 +108,6 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
   
   for (int i = 0; i < 4; i++) {
     UIView *indicator = [[UIView alloc] initWithFrame:CGRectMake(0, 0, SPXSecureFieldIndicatorSize, SPXSecureFieldIndicatorSize)];
-    indicator.backgroundColor = self.tintColor;
     [self.contentView addSubview:indicator];
     [indicators addObject:indicator];
   }
@@ -123,17 +121,12 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
   return _placeholderStrings ?: (_placeholderStrings = [NSMutableDictionary new]);
 }
 
-- (NSMutableDictionary *)placeholderColors
-{
-  return _placeholderColors ?: (_placeholderColors = [NSMutableDictionary new]);
-}
-
 - (void)updateIndicators:(BOOL)animated
 {
   void(^update)() = ^() {
     for (int i = 0; i < 4; i++) {
       UIView *indicator = self.indicators[i];
-      indicator.backgroundColor = [self placeholderColorForState:SPXSecureFieldStateEnterPasscode];
+      indicator.backgroundColor = self.currentColor;
       indicator.layer.cornerRadius = CGRectGetWidth(indicator.bounds) / 2;
       
       CGFloat spacing = CGRectGetWidth(indicator.bounds) * 1.5;
@@ -174,7 +167,7 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
   _state = state;
   self.mutableText = [NSMutableString new];
   self.placeholderLabel.text = [self placeholderTextForState:state];
-  self.placeholderLabel.textColor = [self placeholderColorForState:state];
+  self.placeholderLabel.textColor = self.currentColor;
   [self setNeedsLayout];
 }
 
@@ -268,33 +261,16 @@ static const CGFloat SPXSecureFieldIndicatorSize = 15;
   [self transitionToState:self.state];
 }
 
-- (UIColor *)placeholderColorForState:(SPXSecureFieldState)state
+- (void)setFont:(UIFont *)font
 {
-  switch (state) {
-    case SPXSecureFieldStateInvalidPasscode:
-    case SPXSecureFieldStateMismatchPassCode:
-      return self.placeholderColors[@(state)] ?: [UIColor colorWithRed:0.969 green:0.224 blue:0.051 alpha:1.000];
-    default:
-      return self.tintColor;
-  }
+  _font = font;
+  self.placeholderLabel.font = font;
 }
 
-- (void)setPlaceholderColor:(UIColor *)color forState:(SPXSecureFieldState)state
+- (UIFont *)font
 {
-  self.placeholderColors[@(state)] = color;
-  [self transitionToState:self.state];
-}
-
-- (void)setPlaceholderFont:(UIFont *)placeholderFont
-{
-  _placeholderFont = placeholderFont;
-  self.placeholderLabel.font = placeholderFont;
-}
-
-- (UIFont *)placeholderFont
-{
-  if (_placeholderFont) {
-    return _placeholderFont;
+  if (_font) {
+    return _font;
   }
   
   return [UIFont boldSystemFontOfSize:14];

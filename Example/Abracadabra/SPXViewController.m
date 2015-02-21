@@ -13,17 +13,29 @@
 #import "SPXPasscodeViewController.h"
 
 #import "SPXLoggingDefines.h"
-#import "SPXPasscodeViewController.h"
 
-@interface SPXViewController ()
+@interface SPXViewController () <SPXSecureVaultDelegate>
 @end
 
 @implementation SPXViewController
 
+- (void)vault:(SPXSecureVault *)vault didFailAuthenticationWithRemainingRetryCount:(NSUInteger)remainingRetries
+{
+  NSLog(@"Remaining retries: %zd", remainingRetries);
+}
+
+-(void)vaultDidLock:(SPXSecureVault *)vault
+{
+  [[[UIAlertView alloc] initWithTitle:@"LOCKED" message:@"Vault was locked" delegate:nil cancelButtonTitle:@"OK" otherButtonTitles:nil] show];
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
-  [[UIView appearanceWhenContainedIn:SPXPasscodeViewController.class, nil] setTintColor:[UIColor whiteColor]];
+ 
+  [SPXPasscodeViewController setViewStyle:SPXSecureViewStyleLightContent];
+//  [SPXPasscodeViewController setTintColor:[UIColor colorWithRed:0.918 green:1.000 blue:0.580 alpha:0.700]];
+//  [SPXPasscodeViewController setTintColor:[UIColor colorWithRed:0.153 green:0.667 blue:0.910 alpha:0.75]];
 }
 
 - (void)authenticateWithIndexPath:(NSIndexPath *)indexPath
@@ -38,22 +50,22 @@
     switch (indexPath.row) {
       case 0:
         [vault authenticateWithPolicy:SPXSecurePolicyNone description:nil credential:nil completion:^(id<SPXSecureSession> session) {
-          NSLog(@"%@: %zd: %@", session, session.isValid, [NSThread currentThread]);
+          if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 1:
         [vault authenticateWithPolicy:SPXSecurePolicyConfirmationOnly description:@"Restart Server" credential:nil completion:^(id<SPXSecureSession> session) {
-          NSLog(@"%@: %zd: %@", session, session.isValid, [NSThread currentThread]);
+          if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 2:
         [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil completion:^(id<SPXSecureSession> session) {
-          NSLog(@"%@: %zd: %@", session, session.isValid, [NSThread currentThread]);
+          if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 3:
         [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:credential completion:^(id<SPXSecureSession> session) {
-          NSLog(@"%@: %zd: %@", session, session.isValid, [NSThread currentThread]);
+          if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 4:
@@ -61,17 +73,17 @@
         [vault registerPasscodeViewControllerClass:nil];
         
         [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:nil completion:^(id<SPXSecureSession> session) {
-          NSLog(@"%@: %zd: %@", session, session.isValid, [NSThread currentThread]);
+          if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 5:
         [vault authenticateWithPolicy:SPXSecurePolicyTimedSessionWithPIN description:nil credential:nil completion:^(id<SPXSecureSession> session) {
-          NSLog(@"%@: %zd: %@", session, session.isValid, [NSThread currentThread]);
+          if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 6:
         [vault authenticateWithPolicy:SPXSecurePolicyTimedSessionWithPIN description:nil credential:credential completion:^(id<SPXSecureSession> session) {
-          NSLog(@"%@: %zd: %@", session, session.isValid, [NSThread currentThread]);
+          if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
     }
@@ -79,17 +91,17 @@
     switch (indexPath.row) {
       case 0:
         [vault updateCredentialWithCompletion:^(BOOL success) {
-          NSLog(@"%@: %@", success ? @"YES" : @"NO", [NSThread currentThread]);
+          if (success) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 1:
         [vault updateCredentialWithExistingCredential:credential newCredential:credential completion:^(BOOL success) {
-          NSLog(@"%@: %@", success ? @"YES" : @"NO", [NSThread currentThread]);
+          if (success) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 2:
-        [vault removeCredentialWithCompletion:^{
-          NSLog(@"Passcode removed: %@", [NSThread currentThread]);
+        [vault removeCredentialWithCompletion:^ (BOOL success) {
+          if (success) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
     }
@@ -106,11 +118,9 @@
   
 #ifdef DISPATCH
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    NSLog(@"%@", [NSThread currentThread]);
     [self authenticateWithIndexPath:indexPath];
   });
 #else
-  NSLog(@"%@", [NSThread currentThread]);
   [self authenticateWithIndexPath:indexPath];
 #endif
 }

@@ -53,15 +53,14 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
   
   self.backgroundView = [SPXSecureKeyCellBackground viewWithTextInsets:textInsets separatorInsets:separatorInsets];
   self.selectedBackgroundView = [SPXSecureKeyCellBackground selectedViewWithTextInsets:textInsets];
-  self.backgroundView.tintColor = self.tintColor;
-  self.selectedBackgroundView.tintColor = self.tintColor;
+  self.backgroundView.tintColor = self.currentColor;
+  self.selectedBackgroundView.tintColor = self.currentColor;
 }
 
 - (UIView *)separatorView
 {
   return _separatorView ?: ({
     UIView *separatorView = [UIView new];
-    _separatorView.backgroundColor = self.tintColor;
     [self.contentView addSubview:separatorView];
     _separatorView = separatorView;
   });
@@ -73,7 +72,6 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
     UILabel *label = [UILabel new];
     label.backgroundColor = [UIColor clearColor];
     label.font = self.font;
-    label.textColor = self.tintColor;
     [self.contentView addSubview:label];
     _label = label;
   });
@@ -95,7 +93,7 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
   
   return @{
     NSFontAttributeName : [font fontWithSize:font.pointSize],
-    NSForegroundColorAttributeName : self.tintColor,
+    NSForegroundColorAttributeName : self.currentColor,
   };
 }
 
@@ -105,8 +103,20 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
   
   return @{
     NSFontAttributeName : [font fontWithSize:font.pointSize / 2],
-    NSForegroundColorAttributeName : self.tintColor,
+    NSForegroundColorAttributeName : self.currentColor,
   };
+}
+
+- (UIColor *)currentColor
+{
+  return self.viewStyle ? [UIColor whiteColor] : [UIColor blackColor];
+}
+
+- (void)setViewStyle:(SPXSecureViewStyle)viewStyle
+{
+  _viewStyle = viewStyle;
+  [self setTextInsets:self.textInsets separatorInsets:self.separatorInsets];
+  [self updateTitles];
 }
 
 - (void)setFont:(UIFont *)font
@@ -124,13 +134,6 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
   
   self.label.attributedText = string;
   self.label.lineBreakMode = NSLineBreakByTruncatingTail;
-}
-
-- (void)setTintColor:(UIColor *)tintColor
-{
-  [super setTintColor:tintColor];
-  [self setTextInsets:self.textInsets separatorInsets:self.separatorInsets];
-  [self updateTitles];
 }
 
 - (void)setSeparatorHidden:(BOOL)separatorHidden

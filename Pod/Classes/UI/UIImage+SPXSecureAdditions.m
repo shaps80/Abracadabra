@@ -31,15 +31,14 @@
 
 - (UIImage *)imageByApplyingLightEffect
 {
-  UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.3];
-  tintColor = [UIColor colorWithRed:0.153 green:0.667 blue:0.910 alpha:0.8];
-  return [self imageByApplyingBlurRadius:12 tintColor:tintColor saturationDeltaFactor:1 maskImage:nil];
+  UIColor *tintColor = [UIColor colorWithWhite:1.0 alpha:0.5];
+  return [self imageByApplyingBlurRadius:20 tintColor:tintColor saturationDeltaFactor:1 maskImage:nil];
 }
 
 - (UIImage *)imageByApplyingDarkEffect
 {
-  UIColor *tintColor = [UIColor colorWithWhite:0.06 alpha:0.73];
-  return [self imageByApplyingBlurRadius:15 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
+  UIColor *tintColor = [UIColor colorWithWhite:0.06 alpha:0.8];
+  return [self imageByApplyingBlurRadius:20 tintColor:tintColor saturationDeltaFactor:1.8 maskImage:nil];
 }
 
 - (UIImage *)imageByApplyingTintEffectWithColor:(UIColor *)tintColor

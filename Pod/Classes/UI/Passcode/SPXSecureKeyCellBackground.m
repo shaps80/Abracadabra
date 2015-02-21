@@ -51,6 +51,12 @@
   return background;
 }
 
+- (void)setTintColor:(UIColor *)tintColor
+{
+  [super setTintColor:tintColor];
+  [self setNeedsDisplay];
+}
+
 - (void)drawRect:(CGRect)frame
 {
   [super drawRect:frame];

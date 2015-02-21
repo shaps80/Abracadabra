@@ -23,10 +23,11 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <UIKit/UIKit.h>
+#import "SPXSecureDefines.h"
 
 @interface SPXSecureKeyCell : UICollectionViewCell
 
+@property (nonatomic, assign) SPXSecureViewStyle viewStyle UI_APPEARANCE_SELECTOR;
 @property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
 @property (nonatomic, assign) BOOL separatorHidden;
 

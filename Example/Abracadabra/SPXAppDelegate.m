@@ -36,11 +36,7 @@
 @implementation SPXAppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
-{
-  Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
-    NSLog(@"Success");
-  });
-  
+{  
   return YES;
 }
 

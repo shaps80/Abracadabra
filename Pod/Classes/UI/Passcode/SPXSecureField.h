@@ -23,7 +23,7 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import <UIKit/UIKit.h>
+#import "SPXSecureDefines.h"
 
 typedef NS_ENUM(NSInteger, SPXSecureFieldState)
 {
@@ -50,15 +50,14 @@ typedef NS_ENUM(NSInteger, SPXSecureFieldAnimationStyle)
 
 @property (nonatomic, weak) id <SPXSecureFieldDelegate> delegate;
 
-@property (nonatomic, readonly) SPXSecureFieldState state;
 @property (nonatomic, readonly) NSString *text;
+@property (nonatomic, readonly) SPXSecureFieldState state;
 
 @property (nonatomic, assign) CGFloat indicatorSize UI_APPEARANCE_SELECTOR;
-@property (nonatomic, strong) UIFont *placeholderFont UI_APPEARANCE_SELECTOR;
+@property (nonatomic, assign) SPXSecureViewStyle viewStyle UI_APPEARANCE_SELECTOR;
+@property (nonatomic, strong) UIFont *font UI_APPEARANCE_SELECTOR;
 
 - (void)setPlaceholderText:(NSString *)placeholder forState:(SPXSecureFieldState)state UI_APPEARANCE_SELECTOR;
-- (void)setPlaceholderColor:(UIColor *)color forState:(SPXSecureFieldState)state UI_APPEARANCE_SELECTOR;
-
 - (void)transitionToState:(SPXSecureFieldState)state animationStyle:(SPXSecureFieldAnimationStyle)animationStyle;
 
 - (void)appendText:(NSString *)text;

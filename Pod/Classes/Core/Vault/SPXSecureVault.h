@@ -28,7 +28,11 @@
 #import "SPXSecureDefines.h"
 
 
+extern NSString *const SPXSecureVaultDidFailAuthenticationPermanently;
+
+
 typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession> session);
+typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 
 
 @protocol SPXSecureVaultDelegate;
@@ -70,6 +74,8 @@ typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession
  */
 @property (nonatomic, readonly) BOOL hasCredential;
 
+@property (nonatomic, readonly) BOOL isLocked;
+
 
 /**
  *  Gets/sets whether or not an authentication method should fallback to confirmation when a id<SPXPasscodeViewController> hasn't been registered
@@ -86,6 +92,15 @@ typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession
  *  Returns a default singleton vault instance
  */
 + (instancetype)defaultVault;
+
+
+/**
+ *  Returns the vault wiht the specified name. If it doesn't exist it will be created and returned. (this method never returns nil)
+ *
+ *  @param name The name of the vault to return. This name should be unqiue and will be used to store the credential in the keychain
+ *
+ *  @return A cached vault
+ */
 + (instancetype)vaultNamed:(NSString *)name;
 
 
@@ -97,16 +112,21 @@ typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession
 /**
  *  Attempts to authenticate using the specified policy, with the given credentials. This method is useful when you don't want Abracadabra to present any UI
  *
- *  @param policy     The policy to use for this authentication
- *  @param credential The credential to use for this authentication
- *
- *  @return If a valid session exists, or the user authenticates successfully, the session is returned. nil otherwise
+ *  @param policy      The policy to use for this authentication
+ *  @param description A textual description, this will be used in an alert when policy == SPXSecurePolicyConfirmationOnly
+ *  @param completion  The block to execute when authentication has completed. If the authentication was valid, a valid session will be returned, otherwise nil
  */
-//- (void)authenticateWithPolicy:(SPXSecurePolicy)policy completion:(void (^)(id<SPXSecureSession>))completion;
-//- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id<SPXSecureCredential>)credential completion:(void (^)(id<SPXSecureSession>))completion;
-
-
 - (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
+
+
+/**
+ *  Attempts to authenticate using the specified policy, with the given credentials. This method is useful when you don't want Abracadabra to present any UI
+ *
+ *  @param policy      The policy to use for this authentication
+ *  @param description A textual description, this will be used in an alert when policy == SPXSecurePolicyConfirmationOnly
+ *  @param credential  The credential to use for this authentication
+ *  @param completion  The block to execute when authentication has completed. If the authentication was valid, a valid session will be returned, otherwise nil
+ */
 - (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id <SPXSecureCredential>)credential completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
 
 
@@ -118,10 +138,20 @@ typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession
 /**
  *  Updates the current passcode. This is similar to calling -removePasscode followed by -authenticateWithPolicy:completion: -- However this method won't dismiss the view until the procedure is complete
  *
+ *  @param completion   The block to execute when the update completes. If the update was successful, YES is returned. NO otherwise
+ */
+- (void)updateCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion;
+
+/**
+ *  Updates the current passcode. This is similar to calling -removePasscode followed by -authenticateWithPolicy:completion: -- However this method won't dismiss the view until the procedure is complete
+ *
+ *  @param existingCredential Create an equivalent credential and pass that here to perform authentication without UI
+ *  @param newCredential      The new credential to set on this vault
+ *  @param completion         The block to execute when the update completes. If the update was successful, YES is returned. NO otherwise
+ *
  *  @note If no credential currently exists, this is equivalent to calling -authenticateWithPolicy:completion: and setting up a new passcode
  */
-- (void)updateCredentialWithCompletion:(void (^)(BOOL success))completion;;
-- (void)updateCredentialWithExistingCredential:(id <SPXSecureCredential>)existingCredential newCredential:(id <SPXSecureCredential>)newCredential completion:(void (^)(BOOL success))completion;
+- (void)updateCredentialWithExistingCredential:(id <SPXSecureCredential>)existingCredential newCredential:(id <SPXSecureCredential>)newCredential completion:(SPXSecureVaultCompletionBlock)completion;
 
 
 /**
@@ -134,7 +164,16 @@ typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession
 /**
  *  Resets the current passcode. This method will call [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN] first to authenticate the user, if this is successful the passcode will then be reset
  */
-- (void)removeCredentialWithCompletion:(void (^)())completion;
+- (void)removeCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion;
+
+
+
+#pragma mark - Presentation
+
+
+
+- (UIViewController *)eventsViewController;
+- (UIViewController *)settingsViewController;
 
 
 

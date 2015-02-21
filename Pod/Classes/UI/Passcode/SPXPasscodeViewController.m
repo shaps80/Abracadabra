@@ -37,6 +37,9 @@ static CGFloat const SPXPasscodeKeyboardHeight = 300;
 static CGFloat const SPXPasscodeiPadWidth = 320;
 static CGFloat const SPXPasscodeiPadHeight = 480;
 
+static SPXSecureViewStyle __viewStyle;
+static UIColor * __tintColor;
+
 @interface SPXPasscodeViewController () <UICollectionViewDataSource, UICollectionViewDelegate, SPXSecureFieldDelegate>
 
 @property (nonatomic, strong) UIView *contentView;
@@ -59,14 +62,16 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   }
 }
 
-+ (instancetype)appearance
++ (void)setViewStyle:(SPXSecureViewStyle)style
 {
-  return [self.class new];
+  __viewStyle = style;
+  [[SPXSecureField appearance] setViewStyle:style];
+  [[SPXSecureKeyCell appearance] setViewStyle:style];
 }
 
-+ (instancetype)appearanceWhenContainedIn:(Class<UIAppearanceContainer>)ContainerClass, ...
++ (void)setTintColor:(UIColor *)color
 {
-  return [self.class new];
+  __tintColor = color;
 }
 
 - (instancetype)init
@@ -80,6 +85,8 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   self.collectionView.backgroundColor = [UIColor clearColor];
   self.collectionView.dataSource = self;
   self.collectionView.delegate = self;
+  self.collectionView.scrollEnabled = NO;
+  self.collectionView.delaysContentTouches = NO;
   
   [self.collectionView registerClass:SPXSecureKeyCell.class forCellWithReuseIdentifier:@"key"];
   
@@ -117,8 +124,6 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   [self.view addSubview:self.imageView];
   [self.view addSubview:self.contentView];
-  
-  self.secureField.tintColor = self.view.tintColor;
 }
 
 - (void)configureBackground
@@ -129,8 +134,14 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
+ 
+  if (__tintColor) {
+    image = [image imageByApplyingBlurRadius:15 tintColor:__tintColor saturationDeltaFactor:1.5 maskImage:nil];
+  } else {
+    image = __viewStyle ? [image imageByApplyingDarkEffect] : [image imageByApplyingLightEffect];
+  }
   
-  self.imageView = [[UIImageView alloc] initWithImage:[image imageByApplyingLightEffect]];
+  self.imageView = [[UIImageView alloc] initWithImage:image];
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -139,7 +150,6 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   NSArray *titles = self.keyMappings[@(indexPath.item)];
   [cell setTitle:titles[0] subtitle:titles[1]];
-  cell.tintColor = self.view.tintColor;
   
   return cell;
 }
@@ -259,7 +269,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
 
 - (UIStatusBarStyle)preferredStatusBarStyle
 {
-  return UIStatusBarStyleLightContent;
+  return (UIStatusBarStyle)__viewStyle;
 }
 
 - (CGRect)rectForContentView
