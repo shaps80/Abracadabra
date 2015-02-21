@@ -29,7 +29,7 @@ This is not just a PIN entry User Interface. In fact that part of the library is
 
 Plus if you're including the entire library in your project, you even get the optional UI elements.
 
-<img src="Abracadabra.gif" style="text-align: center">
+<p style="text-align: center"><img src="Abracadabra.gif"></p>
 
 __Introducing Abracadabra!__
 
