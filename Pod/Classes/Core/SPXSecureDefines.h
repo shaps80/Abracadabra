@@ -57,6 +57,7 @@ typedef NS_ENUM(NSInteger, SPXSecurePasscodeViewControllerState)
 {
   SPXSecurePasscodeViewControllerStateAuthenticating,
   SPXSecurePasscodeViewControllerStateInitializing,
+  SPXSecurePasscodeViewControllerStateUpdating,
 };
 
 

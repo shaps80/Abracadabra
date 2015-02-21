@@ -106,14 +106,58 @@ static inline void spx_kill_semaphore() {
 
 #pragma mark - Updating Passcode
 
-- (void)updateCredentialWithCompletion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)updateCredentialWithCompletion:(void (^)(BOOL success))completion
 {
-  [self updateCredentialWithExistingCredential:nil newCredential:nil completion:completion];
+  [self updateCredentialWithExistingCredential:self.credential newCredential:nil completion:completion];
 }
 
-- (void)updateCredentialWithExistingCredential:(id<SPXSecureCredential>)existingCredential newCredential:(id<SPXSecureCredential>)newCredential completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)updateCredentialWithExistingCredential:(id<SPXSecureCredential>)existingCredential newCredential:(id<SPXSecureCredential>)newCredential completion:(void (^)(BOOL success))completion
 {
-  // all update methods come here!
+  __weak typeof(self) weakInstance = self;
+  id <SPXSecureCredential> credential = self.credential;
+  
+  void(^promptForNewCredential)() = ^() {
+    [weakInstance authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:NO completion:^(id<SPXSecureSession> session) {
+      BOOL isValid = session.isValid;
+      !completion ?: completion(isValid);
+      
+      if (!isValid) {
+        weakInstance.credential = credential;
+      }
+    }];
+  };
+  
+  if (!self.credential && newCredential) {
+    self.credential = newCredential;
+    !completion ?: completion([SPXSecureOnceSession session]);
+    return;
+  }
+  
+  if (!self.credential && !newCredential) {
+    promptForNewCredential();
+    return;
+  }
+  
+  if (![self.credential isEqualToCredential:existingCredential]) {
+    !completion ?: completion(NO);
+    return;
+  }
+  
+  if ([self.credential isEqualToCredential:existingCredential] && newCredential) {
+    self.credential = newCredential;
+    !completion ?: completion(YES);
+    return;
+  }
+  
+  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:YES completion:^(id<SPXSecureSession> session) {
+    if (session.isValid) {
+      weakInstance.credential = nil;
+      promptForNewCredential();
+    } else {
+      weakInstance.credential = credential;
+      !completion ?: completion(NO);
+    }
+  }];
 }
 
 #pragma mark - Authentication
@@ -145,27 +189,31 @@ static inline void spx_kill_semaphore() {
     return;
   }
   
-  [self authenticateWithPolicy:policy completion:completion];
+  [self authenticateWithPolicy:policy updating:NO completion:completion];
 }
 
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy updating:(BOOL)updating completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
 {
   __weak typeof(self) weakInstance = self;
   __block id<SPXSecureSession> session = nil;
   self.completionBlock = completion;
   
   [self presentWithPresentationBlock:^{
-    id <SPXSecurePasscodeViewController> controller = [weakInstance.passcodeViewControllerClass.class new];
-    SPXCAssertTrueOrReturn([controller respondsToSelector:@selector(transitionToState:animated:completion:)]);
-    
-    UIViewController *viewController = (UIViewController *)controller;
-    viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-    viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-
     UIViewController *presentingController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    [presentingController presentViewController:viewController animated:YES completion:nil];
-
+    id <SPXSecurePasscodeViewController> controller = (id <SPXSecurePasscodeViewController>)presentingController.presentedViewController;
+    
+    if (!controller) {
+      controller = [self.passcodeViewControllerClass.class new];
+      [weakInstance.passcodeViewControllerClass.class new];
+      UIViewController *viewController = (UIViewController *)controller;
+      viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+      viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+      [presentingController presentViewController:viewController animated:YES completion:nil];
+    }
+    
+    SPXCAssertTrueOrReturn([controller respondsToSelector:@selector(transitionToState:animated:completion:)]);
     SPXSecurePasscodeViewControllerState state = (weakInstance.credential) ? SPXSecurePasscodeViewControllerStateAuthenticating : SPXSecurePasscodeViewControllerStateInitializing;
+    state = updating ? SPXSecurePasscodeViewControllerStateUpdating : state;
     
     [controller transitionToState:state animated:YES completion:^id<SPXSecureSession>(id<SPXSecureCredential> credential) {
       session = [weakInstance sessionForPolicy:policy credential:credential];
@@ -177,7 +225,7 @@ static inline void spx_kill_semaphore() {
       return session;
     }];
   } completion:^{
-    !self.completionBlock ?: self.completionBlock(session);
+    !weakInstance.completionBlock ?: weakInstance.completionBlock(session);
   }];
 }
 
@@ -191,7 +239,7 @@ static inline void spx_kill_semaphore() {
     UIView *view = [UIApplication sharedApplication].keyWindow;
     [[[UIActionSheet alloc] initWithTitle:title delegate:weakInstance cancelButtonTitle:@"Cancel" destructiveButtonTitle:description ?: @"Continue" otherButtonTitles:nil] showInView:view];
   } completion:^{
-    !self.completionBlock ?: self.completionBlock([self sessionForPolicy:SPXSecurePolicyConfirmationOnly credential:nil]);
+    !weakInstance.completionBlock ?: weakInstance.completionBlock([weakInstance sessionForPolicy:SPXSecurePolicyConfirmationOnly credential:nil]);
   }];
 }
 
@@ -240,12 +288,7 @@ static inline void spx_kill_semaphore() {
 
 - (void)actionSheet:(UIActionSheet *)actionSheet willDismissWithButtonIndex:(NSInteger)buttonIndex
 {
-  self.confirmationWasSuccessful = NO;
-  
-  if (!buttonIndex) {
-    self.confirmationWasSuccessful = YES;
-  }
-  
+  self.confirmationWasSuccessful = (!buttonIndex);
   spx_kill_semaphore();
 }
 
@@ -293,7 +336,7 @@ static inline void spx_kill_semaphore() {
   }
   
   __weak typeof(self) weakInstance = self;
-  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN completion:^(id <SPXSecureSession> session) {
+  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:NO completion:^(id <SPXSecureSession> session) {
     if (session) {
       weakInstance.credential = nil;
       weakInstance.currentRetryCount = 0;

@@ -120,8 +120,8 @@ typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession
  *
  *  @note If no credential currently exists, this is equivalent to calling -authenticateWithPolicy:completion: and setting up a new passcode
  */
-- (void)updateCredentialWithCompletion:(SPXSecureVaultAuthenticationCompletionBlock)completion;;
-- (void)updateCredentialWithExistingCredential:(id <SPXSecureCredential>)existingCredential newCredential:(id <SPXSecureCredential>)newCredential completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
+- (void)updateCredentialWithCompletion:(void (^)(BOOL success))completion;;
+- (void)updateCredentialWithExistingCredential:(id <SPXSecureCredential>)existingCredential newCredential:(id <SPXSecureCredential>)newCredential completion:(void (^)(BOOL success))completion;
 
 
 /**

@@ -174,7 +174,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
 
 - (void)secureFieldDidChange:(SPXSecureField *)field
 {
-  if (self.state == SPXSecurePasscodeViewControllerStateAuthenticating) {
+  if (self.state == SPXSecurePasscodeViewControllerStateAuthenticating || self.state == SPXSecurePasscodeViewControllerStateUpdating) {
     [self handleAuthenticationStates];
   } else {
     [self handleInitializationStates];
@@ -230,7 +230,9 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
     id <SPXSecureSession> session = self.completion(credential);
     
     if (session) {
-      [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+      if (self.state != SPXSecurePasscodeViewControllerStateUpdating) {
+        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+      }
     } else {
       [self.secureField transitionToState:SPXSecureFieldStateInvalidPasscode animationStyle:SPXSecureFieldAnimationStyleShake];
       [SPXAudio playSystemAudioType:SPXAudioTypeVibrate];
@@ -240,15 +242,18 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
 
 - (void)transitionToState:(SPXSecurePasscodeViewControllerState)state animated:(BOOL)animated completion:(id<SPXSecureSession> (^)(id<SPXSecureCredential>))completion
 {
-  _state = state;
-  self.passcode = nil;
-  
   if (state == SPXSecurePasscodeViewControllerStateInitializing) {
-    [self.secureField transitionToState:SPXSecureFieldStateSetPasscode animationStyle:SPXSecureFieldAnimationStyleNone];
+    if (self.state == SPXSecurePasscodeViewControllerStateUpdating) {
+      [self.secureField transitionToState:SPXSecureFieldStateSetPasscode animationStyle:SPXSecureFieldAnimationStylePush];
+    } else {
+      [self.secureField transitionToState:SPXSecureFieldStateSetPasscode animationStyle:SPXSecureFieldAnimationStyleNone];
+    }
   } else {
     [self.secureField transitionToState:SPXSecureFieldStateEnterPasscode animationStyle:SPXSecureFieldAnimationStyleNone];
   }
   
+  _state = state;
+  self.passcode = nil;
   self.completion = completion;
 }
 
