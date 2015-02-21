@@ -24,7 +24,7 @@ This is not just a PIN entry User Interface. In fact that part of the library is
 
 * Easily secure at the code level using convenience macros
 
-<img src="Abracadabra.gif">
+<img src="Abracadabra.gif" style="text-align: center">
 
 __Introducing Abracadabra!__
 
