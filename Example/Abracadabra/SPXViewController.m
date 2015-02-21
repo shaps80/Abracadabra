@@ -43,22 +43,42 @@
 {
   // the following implementations are mostly are identical to some of the code below and are provided here for reference only. This is the recommended implementation
   
-  Abracadabra(SPXSecurePolicyNone, NSLog(@"Success"), NSLog(@"Failed"))
-  Abracadabra(SPXSecurePolicyConfirmationOnly, NSLog(@"Success"), NSLog(@"Failed"))
+  SPXSecureVault *vault = [SPXSecureVault defaultVault];
   
-  Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
-    NSLog(@"Success");
-  }, NSLog(@"Failed"))
+  if (indexPath.section == 0) {
+    switch (indexPath.row) {
+      case 0:
+        Abracadabra(SPXSecurePolicyNone, NSLog(@"Success"), NSLog(@"Failed"))
+        break;
+      case 1:
+        Abracadabra(@"Group", @"Shutdown Server", SPXSecurePolicyConfirmationOnly, NSLog(@"Success"), NSLog(@"Failed"))
+        break;
+      case 2:
+        vault.fallbackToConfirmation = YES;
+        Abracadabra(@"Group 1", @"Restart Server", SPXSecurePolicyAlwaysWithPIN, {
+          NSLog(@"Success");
+        }, NSLog(@"Failed"))
+        break;
+      case 4:
+        vault.fallbackToConfirmation = YES;
+        [vault registerPasscodeViewControllerClass:nil];
+        
+        Abracadabra(@"Group 2", @"Restart Server", SPXSecurePolicyTimedSessionWithPIN, {
+          NSLog(@"Success");
+        })
+        break;
+      case 5:
+        Abracadabra(SPXSecurePolicyTimedSessionWithPIN, NSLog(@"Success"), NSLog(@"Failed"))
+        break;
+      default:
+        [self authenticateWithIndexPath:indexPath];
+        break;
+    }
+  }
   
-  Abracadabra(SPXSecurePolicyTimedSessionWithPIN, {
-    NSLog(@"Success");
-  }, {
-    NSLog(@"Failed");
-  })
-  
-  Abracadabra(@"Group", @"Name", SPXSecurePolicyTimedSessionWithPIN, {
-    NSLog(@"Success");
-  });
+  if (indexPath.section) {
+    [self authenticateWithIndexPath:indexPath];
+  }
 }
 
 - (void)authenticateWithIndexPath:(NSIndexPath *)indexPath
@@ -83,7 +103,7 @@
         break;
       case 2:
         vault.fallbackToConfirmation = YES;
-        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil completion:^(id<SPXSecureSession> session) {
+        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:@"Restart Server" completion:^(id<SPXSecureSession> session) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
@@ -138,12 +158,21 @@
 {
   [tableView deselectRowAtIndexPath:indexPath animated:YES];
   
-#define DISPATCH
-  
+//#define DISPATCH
 #ifdef DISPATCH
   dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_BACKGROUND, 0), ^{
-    [self authenticateWithIndexPath:indexPath];
+    [self selectIndexPath:indexPath];
   });
+#else
+  [self selectIndexPath:indexPath];
+#endif
+}
+
+- (void)selectIndexPath:(NSIndexPath *)indexPath
+{
+#define MACRO
+#ifdef MACRO
+  [self macroAuthenticationWithIndexPath:indexPath];
 #else
   [self authenticateWithIndexPath:indexPath];
 #endif

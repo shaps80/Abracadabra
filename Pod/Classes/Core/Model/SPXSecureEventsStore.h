@@ -29,7 +29,7 @@
 /**
  *  Defines a store for holding a reference to all groups and events used throughout your application
  */
-@interface SPXSecureEventsStore : NSObject <NSCoding>
+@interface SPXSecureEventsStore : NSObject
 
 
 /**

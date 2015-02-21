@@ -300,7 +300,7 @@ static inline void spx_kill_semaphore() {
 
 - (void)authenticateWithContext:(LAContext *)context policy:(SPXSecurePolicy)policy description:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
 {
-  description = description ?: @"Perform Secure Event";
+  description = description ?: @"Authenticating";
   
   __weak typeof(self) weakInstance = self;
   __block NSInteger errorCode = 0;
@@ -359,7 +359,7 @@ static inline void spx_kill_semaphore() {
       presentation();
     });
     
-    dispatch_semaphore_wait(__semaphore, DISPATCH_TIME_FOREVER);
+    dispatch_semaphore_wait(__semaphore, DISPATCH_TIME_FOREVER);  
     
     dispatch_async(dispatch_get_main_queue(), ^{
       !completion ?: completion();
