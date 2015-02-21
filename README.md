@@ -48,22 +48,6 @@ SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
 If you're happy with the default view controllers and behaviour, __that's literally it ;)__
 You don't even have to configure options, provide views, nothing! Just sit back, relax and let the magic happen. 
 
-Already got some nice conditionals setup? Don't like my syntax? Maybe you'd prefer this approach:
-
-```objc
-+ (BOOL)isAuthenticated {
-  Abracadabra(SPXSecurePolicyTimedSessionWithPIN, return YES, return NO)
-}
-```
-
-Now you can just update your current if-statements:
-
-```objc
-if ([Authenticator isAuthenticated]) { ... } else { ... }
-```
-
-This works because Abracadabra is completely synchronous and always returns on the original thread.
-
 >You may also notice semi-colons and curly-braces are entirely optional with single line entries _(in both success and failure blocks)_. Abracadabra takes care of this for you, keeping your code clutter-free ;)
 
 _You're welcome ;)_
@@ -161,7 +145,7 @@ When you create a secure event, you must specify the default policy to apply to 
 
 >All views and controllers can be replaced with your own implementations if you prefer.
 
->Abracadabra does _NOT_ use blocks! All code is guaranteed to execute on the calling thread.
+>Internally, Abracadabra is asynchronous so that we don't block the main thread, however all code you wrap is guaranteed to execute on the calling thread. So your expectations won't change. However since its asynchronous, you will need to be careful with execution order. Its recommended that you wrap everything in the current scope.
 
 ## Why should I use Abracadabra?
 
