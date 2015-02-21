@@ -42,6 +42,23 @@
 - (void)macroAuthenticationWithIndexPath:(NSIndexPath *)indexPath
 {
   // the following implementations are mostly are identical to some of the code below and are provided here for reference only. This is the recommended implementation
+  
+  Abracadabra(SPXSecurePolicyNone, NSLog(@"Success"), NSLog(@"Failed"))
+  Abracadabra(SPXSecurePolicyConfirmationOnly, NSLog(@"Success"), NSLog(@"Failed"))
+  
+  Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
+    NSLog(@"Success");
+  }, NSLog(@"Failed"))
+  
+  Abracadabra(SPXSecurePolicyTimedSessionWithPIN, {
+    NSLog(@"Success");
+  }, {
+    NSLog(@"Failed");
+  })
+  
+  Abracadabra(@"Group", @"Name", SPXSecurePolicyTimedSessionWithPIN, {
+    NSLog(@"Success");
+  });
 }
 
 - (void)authenticateWithIndexPath:(NSIndexPath *)indexPath

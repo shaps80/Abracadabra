@@ -7,18 +7,24 @@
 
 ## Updates
 
-* All security features are complete and working
 * Events controller is not yet implemented -- in progress
 * Settings controller is not yet implemented -- in progress
 * When you provide a group/name this entry will be persisted across launches and the policy is a default only. So if you change the policy across runs or allow runtime configuration, then the value might not be what you see in code. This feature is not yet working correctly -- in progress
+* TouchID is not yet implemented -- coming tomorrow
 
 ## What is it?
 
-Abracadabra was designed for a personal project of mine. An app called [Drizzle](https://itunes.apple.com/app/drizzle/id683629145?mt=8).  Drizzle is an application for managing server instances. As you can imagine this is the kind of app that requires tight control over user actions to avoid accidental shutdowns or worse. Not to mention foul play by a 3rd party.
+Abracadabra was designed for a personal project of mine. An app called [Drizzle](https://itunes.apple.com/app/drizzle/id683629145?mt=8).  Drizzle is an application for managing server instances on [Digital Ocean](http://digitalocean.com). As you can imagine this is the kind of app that requires tight control over user actions to avoid accidental shutdowns or worse. Not to mention foul play by a 3rd party.
 
 This was an existing project, so I didn't want to modify lots of existing code possibly introducing further issues and less stability. 
 
-So I set out to design a truly plug 'n' play solution that made it super easy to wrap my code and gain all the benefits of passcode security (_including TouchID_).
+So I set out to design a truly plug 'n' play solution that made it super easy to wrap my code and gain all the benefits of passcode security.
+
+This is not just a PIN entry User Interface. In fact that part of the library is completely optional and for your convenience. Abracadabra handles all of your security needs.
+
+* Easily secure at the code level using convenience macros
+
+<img src="Abracadabra.gif">
 
 __Introducing Abracadabra!__
 
