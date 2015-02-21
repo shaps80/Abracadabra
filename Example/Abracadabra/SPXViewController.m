@@ -33,6 +33,7 @@
 {
   [super viewDidLoad];
  
+  [SPXSecureVault defaultVault].delegate = self;
   [SPXPasscodeViewController setViewStyle:SPXSecureViewStyleLightContent];
 //  [SPXPasscodeViewController setTintColor:[UIColor colorWithRed:0.918 green:1.000 blue:0.580 alpha:0.700]];
 //  [SPXPasscodeViewController setTintColor:[UIColor colorWithRed:0.153 green:0.667 blue:0.910 alpha:0.75]];

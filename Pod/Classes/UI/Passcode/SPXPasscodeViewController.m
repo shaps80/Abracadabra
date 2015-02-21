@@ -124,6 +124,14 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   [self.view addSubview:self.imageView];
   [self.view addSubview:self.contentView];
+  
+  __weak typeof(self) weakInstance = self;
+  [[NSNotificationCenter defaultCenter] addObserver:weakInstance selector:@selector(dismissViewController) name:SPXSecureVaultDidFailAuthenticationPermanently object:nil];
+}
+
+- (void)dismissViewController
+{
+  [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
 - (void)configureBackground

@@ -199,7 +199,7 @@ static inline void spx_kill_semaphore() {
   
   if ([self isLocked]) {
     if ([self.delegate respondsToSelector:@selector(vault:didFailAuthenticationWithRemainingRetryCount:)]) {
-      [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.maximumRetryCount - self.currentRetryCount];
+      [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.remainingRetryCount];
     }
     
     !completion ?: completion(nil);
@@ -350,10 +350,10 @@ static inline void spx_kill_semaphore() {
   
   if (![credential isEqualToCredential:self.credential]) {
     if (self.maximumRetryCount) {
-      if (self.currentRetryCount < self.maximumRetryCount) {
-        self.currentRetryCount++;
-      } else {
+      if (self.currentRetryCount >= self.maximumRetryCount - 1) {
         [self lock];
+      } else {
+        self.currentRetryCount++;
       }
     }
     
@@ -410,38 +410,6 @@ static inline void spx_kill_semaphore() {
   [self setObject:@NO forSelector:@selector(lock)];
 }
 
-#pragma mark - NSUserDefaults Values
-
-- (void)setMaximumRetryCount:(NSUInteger)maximumRetryCount
-{
-  NSString *key = [self persistentKeyForSelector:@selector(maximumRetryCount)];
-  [[NSUserDefaults standardUserDefaults] setInteger:maximumRetryCount forKey:key];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-}
-
-- (void)setDefaultTimeoutInterval:(NSTimeInterval)defaultTimeoutInterval
-{
-  NSString *key = [self persistentKeyForSelector:@selector(defaultTimeoutInterval)];
-  [[NSUserDefaults standardUserDefaults] setDouble:MAX(defaultTimeoutInterval, 0) forKey:key];
-  [[NSUserDefaults standardUserDefaults] synchronize];
-  
-  [self.timedSession invalidate];
-}
-
-- (NSUInteger)maximumRetryCount
-{
-  NSString *key = [self persistentKeyForSelector:@selector(maximumRetryCount)];
-  NSInteger maximumRetryCount = [[NSUserDefaults standardUserDefaults] integerForKey:key];
-  return maximumRetryCount ?: 10;
-}
-
-- (NSTimeInterval)defaultTimeoutInterval
-{
-  NSString *key = [self persistentKeyForSelector:@selector(defaultTimeoutInterval)];
-  NSInteger defaultTimeoutInterval = [[NSUserDefaults standardUserDefaults] doubleForKey:key];
-  return defaultTimeoutInterval ?: 60;
-}
-
 #pragma mark - Keychain Values
 
 - (BOOL)isLocked
@@ -473,15 +441,45 @@ static inline void spx_kill_semaphore() {
 
 - (void)setCurrentRetryCount:(NSUInteger)currentRetryCount
 {
-  if (self.currentRetryCount == currentRetryCount) {
-    return;
-  }
-  
   [self setObject:@(currentRetryCount) forSelector:@selector(currentRetryCount)];
   
-  if ([self.delegate respondsToSelector:@selector(vault:didFailAuthenticationWithRemainingRetryCount:)]) {
-    [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.maximumRetryCount - self.currentRetryCount];
+  if (currentRetryCount) {
+    if ([self.delegate respondsToSelector:@selector(vault:didFailAuthenticationWithRemainingRetryCount:)]) {
+      [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.remainingRetryCount];
+    }
   }
+}
+
+- (void)setMaximumRetryCount:(NSUInteger)maximumRetryCount
+{
+  [self setObject:@(maximumRetryCount) forSelector:@selector(maximumRetryCount)];
+}
+
+- (void)setDefaultTimeoutInterval:(NSTimeInterval)defaultTimeoutInterval
+{
+  [self setObject:@(MAX(defaultTimeoutInterval, 0)) forSelector:@selector(defaultTimeoutInterval)];
+  [self.timedSession invalidate];
+}
+
+- (NSUInteger)maximumRetryCount
+{
+  NSNumber *interval = [self objectForSelector:@selector(maximumRetryCount)];
+  
+  if (!interval) {
+    return 5;
+  }
+  
+  return [[self objectForSelector:@selector(maximumRetryCount)] unsignedIntegerValue];
+}
+
+- (NSUInteger)remainingRetryCount
+{
+  return self.maximumRetryCount - self.currentRetryCount;
+}
+
+- (NSTimeInterval)defaultTimeoutInterval
+{
+  return [[self objectForSelector:@selector(defaultTimeoutInterval)] doubleValue];
 }
 
 - (id<SPXSecureCredential>)credential

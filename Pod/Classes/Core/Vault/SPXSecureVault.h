@@ -64,6 +64,12 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 
 
 /**
+ *  Returns the number of allowed retries remaining.
+ */
+@property (nonatomic, readonly) NSUInteger remainingRetryCount;
+
+
+/**
  *  Sets the default session timeout interval (in seconds). Setting this value will reset the current session. (Defaults to 60 seconds)
  *
  *  @note Pass 0 to use default. Negative values will default to 0
@@ -82,6 +88,10 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
  */
 @property (nonatomic, readonly) BOOL hasCredential;
 
+
+/**
+ *  Returns YES if the vault is currently locked, NO otherwise
+ */
 @property (nonatomic, readonly) BOOL isLocked;
 
 
