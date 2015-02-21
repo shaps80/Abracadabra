@@ -39,6 +39,11 @@
 //  [SPXPasscodeViewController setTintColor:[UIColor colorWithRed:0.153 green:0.667 blue:0.910 alpha:0.75]];
 }
 
+- (void)macroAuthenticationWithIndexPath:(NSIndexPath *)indexPath
+{
+  // the following implementations are mostly are identical to some of the code below and are provided here for reference only. This is the recommended implementation
+}
+
 - (void)authenticateWithIndexPath:(NSIndexPath *)indexPath
 {
   SPXSecureVault *vault = [SPXSecureVault defaultVault];

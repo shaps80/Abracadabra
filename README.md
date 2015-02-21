@@ -43,7 +43,7 @@ NSURLSessionDataTask *task = [session dataTaskWithRequest:request];
 We can easily secure that code now by wrapping it with Abracadabra. Magic!
 
 ```objc
-SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
+Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
   NSURLSession *session = [NSURLSession sharedSession];
   NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
   NSURLRequest *request = [NSURLRequest requestWithURL:URL];
@@ -66,7 +66,7 @@ Sometimes however, you want to provide a nice little UI to your users to allow t
 Well that's easy too, just add a group and event name to your secure code blocks and Abracadabra will handle the rest for you!
 
 ```objc
-SPXSecure(@"Servers", @"Restart Server", SPXSecurityPolicyAlwaysWithPIN, {
+Abracadabra(@"Servers", @"Restart Server", SPXSecurePolicyAlwaysWithPIN, {
   NSURLSession *session = [NSURLSession sharedSession];
   NSURL *URL = [NSURL URLWithString:@"http://api.server.com/server?id=23213&action=restart"];
   NSURLRequest *request = [NSURLRequest requestWithURL:URL];
@@ -78,21 +78,21 @@ SPXSecure(@"Servers", @"Restart Server", SPXSecurityPolicyAlwaysWithPIN, {
 In fact any of the variations below are valid statements:
 
 ```objc
-  SPXSecure(SPXSecurityPolicyNone, {
+  Abracadabra(SPXSecurePolicyNone, {
      /* this code will execute if access is allowed */
   });
   
-  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
+  Abracadabra(@"", @"", SPXSecurePolicyNone, {
      /* this code will execute if access is allowed */
   });
   
-  SPXSecure(SPXSecurityPolicyNone, {
+  Abracadabra(SPXSecurityPolicyNone, {
 	  /* this code will execute if access is allowed */
   }, { \
 	  /* this code will execute if access is disallowed */ \
   });
   
-  SPXSecure(@"", @"", SPXSecurityPolicyNone, {
+  Abracadabra(@"", @"", SPXSecurePolicyNone, {
      /* this code will execute if access is allowed */ \
   }, { \
 	  /* this code will execute if access is disallowed */ \
@@ -102,7 +102,7 @@ In fact any of the variations below are valid statements:
 Notice those second blocks? This allows you to control flow based on success or failure. In this case, `-performSecureCode` will be executed only if the policy is authenticated. Otherwise the return statement will be executed and the log statement will never be shown.
 
 ```objc
-  SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
+  Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
 	  [self performSecureCode]; \
   }, return)
   
@@ -112,7 +112,7 @@ Notice those second blocks? This allows you to control flow based on success or 
 By using optional parenthese around the return, we can now move the log statement inside the failure block too.
 
 ```objc
-  SPXSecure(SPXSecurityPolicyAlwaysWithPIN, {
+  Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
 	  [self performSecureCode]; \
   }, {
       NSLog(@"Authentication Failed.");
