@@ -42,6 +42,7 @@ static UIColor * __tintColor;
 
 @interface SPXPasscodeViewController () <UICollectionViewDataSource, UICollectionViewDelegate, SPXSecureFieldDelegate>
 
+@property (nonatomic, strong) UIVisualEffectView *effectsView;
 @property (nonatomic, strong) UIView *contentView;
 @property (nonatomic, strong) UICollectionView *collectionView;
 @property (nonatomic, strong) NSDictionary *keyMappings;
@@ -69,11 +70,6 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   [[SPXSecureKeyCell appearance] setViewStyle:style];
 }
 
-- (NSUInteger)supportedInterfaceOrientations
-{
-  return 0;
-}
-
 + (void)setTintColor:(UIColor *)color
 {
   __tintColor = color;
@@ -84,27 +80,28 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   self = [super init];
   SPXAssertTrueOrReturnNil(self);
   
-  [self configureBackground];
+  _imageView = [UIImageView new];
+  _imageView.contentMode = UIViewContentModeScaleAspectFill;
   
-  self.collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[SPXPasscodeLayout new]];
-  self.collectionView.backgroundColor = [UIColor clearColor];
-  self.collectionView.dataSource = self;
-  self.collectionView.delegate = self;
-  self.collectionView.scrollEnabled = NO;
-  self.collectionView.delaysContentTouches = NO;
+  _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:[SPXPasscodeLayout new]];
+  _collectionView.backgroundColor = [UIColor clearColor];
+  _collectionView.dataSource = self;
+  _collectionView.delegate = self;
+  _collectionView.scrollEnabled = NO;
+  _collectionView.delaysContentTouches = NO;
   
-  [self.collectionView registerClass:SPXSecureKeyCell.class forCellWithReuseIdentifier:@"key"];
+  [_collectionView registerClass:SPXSecureKeyCell.class forCellWithReuseIdentifier:@"key"];
   
-  self.secureField = [SPXSecureField new];
-  self.secureField.delegate = self;
+  _secureField = [SPXSecureField new];
+  _secureField.delegate = self;
   
-  self.contentView = [UIView new];
-  self.contentView.backgroundColor = [UIColor clearColor];
-  self.contentView.clipsToBounds = YES;
-  [self.contentView addSubview:self.collectionView];
-  [self.contentView addSubview:self.secureField];
+  _contentView = [UIView new];
+  _contentView.backgroundColor = [UIColor clearColor];
+  _contentView.clipsToBounds = YES;
+  [_contentView addSubview:_collectionView];
+  [_contentView addSubview:_secureField];
   
-  self.keyMappings = @
+  _keyMappings = @
   {
     @0  : @[ @"1",  @""       ],
     @1  : @[ @"2",  @"abc"    ],
@@ -127,6 +124,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
 {
   [super viewDidLoad];
   
+  [self updateBackground];
   [self.view addSubview:self.imageView];
   [self.view addSubview:self.contentView];
   
@@ -139,7 +137,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
 }
 
-- (void)configureBackground
+- (void)updateBackground
 {
   UIView *view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
   UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, [UIScreen mainScreen].scale);
@@ -154,7 +152,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
     image = __viewStyle ? [image imageByApplyingDarkEffect] : [image imageByApplyingLightEffect];
   }
   
-  self.imageView = [[UIImageView alloc] initWithImage:image];
+  self.imageView.image = image;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
@@ -330,6 +328,8 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   self.contentView.frame = [self rectForContentView];
   self.collectionView.frame = [self rectForCollectionView];
   self.secureField.frame = [self rectForSecureField];
+  
+  [self.collectionView.collectionViewLayout invalidateLayout];
 }
 
 @end
