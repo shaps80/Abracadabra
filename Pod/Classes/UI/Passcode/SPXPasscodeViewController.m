@@ -69,6 +69,11 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   [[SPXSecureKeyCell appearance] setViewStyle:style];
 }
 
+- (NSUInteger)supportedInterfaceOrientations
+{
+  return 0;
+}
+
 + (void)setTintColor:(UIColor *)color
 {
   __tintColor = color;
@@ -297,8 +302,15 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
 
 - (CGRect)rectForSecureField
 {
+  CGFloat statusBarHeight = CGRectGetHeight([UIApplication sharedApplication].statusBarFrame);
+  
+  if (self.prefersStatusBarHidden) {
+    statusBarHeight = 0;
+  }
+  
   CGRect rect = self.contentView.bounds;
   rect.size.height -= SPXPasscodeKeyboardHeight;
+  rect.origin.y += statusBarHeight;
   return rect;
 }
 

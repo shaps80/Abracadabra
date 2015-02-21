@@ -11,6 +11,7 @@
 * Settings controller is not yet implemented -- in progress
 * When you provide a group/name this entry will be persisted across launches and the policy is a default only. So if you change the policy across runs or allow runtime configuration, then the value might not be what you see in code. This feature is not yet working correctly -- in progress
 * TouchID is not yet implemented -- coming tomorrow
+* Abracadabra currently launches in the current orientation but doesn't support orientation changes while its being presented yet -- in progress
 
 ## What is it?
 
@@ -22,7 +23,11 @@ So I set out to design a truly plug 'n' play solution that made it super easy to
 
 This is not just a PIN entry User Interface. In fact that part of the library is completely optional and for your convenience. Abracadabra handles all of your security needs.
 
-* Easily secure at the code level using convenience macros
+* Easily secure your code using a single convenience macro (with multiple options)
+* Easily find all the Abracadabra references in your code and show them at runtime for user configuration
+* Layout support for both iPhone and iPad, including rotation
+
+Plus if you're including the entire library in your project, you even get the optional UI elements.
 
 <img src="Abracadabra.gif" style="text-align: center">
 

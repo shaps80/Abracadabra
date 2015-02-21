@@ -62,4 +62,9 @@
   return UIEdgeInsetsZero;
 }
 
+- (BOOL)shouldInvalidateLayoutForBoundsChange:(CGRect)newBounds
+{
+  return YES;
+}
+
 @end
