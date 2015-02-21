@@ -191,8 +191,8 @@ it, simply add the following line to your Podfile:
 
 To include all components:
     `pod 'Abracadabra'`
-    
-To include only the core
+ 
+To include only the core (no UI elements)
 	`pod 'Abracadabra/Core'`
 
 ## Author
