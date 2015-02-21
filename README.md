@@ -8,9 +8,9 @@
 ## Updates
 _(Sunday 20th Feb 2015)_
 
-* Events controller is not yet implemented -- in progress
+* <del>Events controller is not yet implemented</del> -- __DONE__
 * Settings controller is not yet implemented -- in progress
-* When you provide a group/name this entry will be persisted across launches and the policy is a default only. So if you change the policy across runs or allow runtime configuration, then the value might not be what you see in code. This feature is not yet working correctly -- in progress
+* <del>When you provide a group/name this entry will be persisted across launches and the policy is a default only. So if you change the policy across runs or allow runtime configuration, then the value might not be what you see in code. This feature is not yet working correctly</del> -- __DONE__
 * <del>TouchID is not yet implemented</del> -- __DONE__
 * Abracadabra currently launches in the current orientation but doesn't support orientation changes while its being presented yet -- in progress
 
