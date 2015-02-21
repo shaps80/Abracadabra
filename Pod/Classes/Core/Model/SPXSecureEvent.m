@@ -74,6 +74,11 @@
   SPXKeychain *keychain = [SPXKeychain sharedInstance];
   NSNumber *currentPolicy = keychain[identifier];
   
+  if (!currentPolicy) {
+    currentPolicy = @(policy);
+    keychain[identifier] = currentPolicy;
+  }
+  
   _currentPolicy = currentPolicy.integerValue;
   
   return self;
