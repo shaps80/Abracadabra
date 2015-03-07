@@ -46,12 +46,13 @@
 {
   [super viewDidLoad];
 
+  NSString *timeout = [NSString stringWithFormat:@"Prompt after %.0f secs", [SPXSecureVault defaultVault].defaultTimeoutInterval];
   self.policies = @
   [
-   @"SPXSecurePolicyAlwaysWithPIN",
-   @"SPXSecurePolicyTimedSessionWithPIN",
-   @"SPXSecurePolicyConfirmationOnly",
-   @"SPXSecurePolicyNone",
+   @"Always Prompt for Pascode",
+   timeout,
+   @"Confirmation Only",
+   @"Disable",
   ];
   
   self.title = @"Select a Policy";

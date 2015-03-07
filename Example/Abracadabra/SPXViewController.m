@@ -48,6 +48,11 @@
   [self presentViewController:[[SPXSecureVault defaultVault] eventsViewController] animated:YES completion:nil];
 }
 
+- (IBAction)configureVault:(id)sender
+{
+  [self presentViewController:[[SPXSecureVault defaultVault] settingsViewController] animated:YES completion:nil];
+}
+
 - (void)macroAuthenticationWithIndexPath:(NSIndexPath *)indexPath
 {
   // the following implementations are mostly are identical to some of the code below and are provided here for reference only. This is the recommended implementation

@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name             = "Abracadabra"
-  s.version          = "1.1.3"
+  s.version          = "1.1.4"
   s.summary          = "A simple and easy to use library for securing your code."
   s.homepage         = "https://github.com/shaps80/Abracadabra"
   s.license          = 'MIT'

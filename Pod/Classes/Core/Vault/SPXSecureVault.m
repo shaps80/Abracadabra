@@ -232,7 +232,7 @@ static inline void spx_kill_semaphore() {
     return;
   }
   
-  if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1) {
+  if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 && self.hasCredential) {
     LAContext *context = [LAContext new];
     [self authenticateWithContext:context policy:policy description:description completion:completion];
     return;
@@ -249,7 +249,15 @@ static inline void spx_kill_semaphore() {
   
   [self presentWithPresentationBlock:^{
     UIViewController *presentingController = [UIApplication sharedApplication].keyWindow.rootViewController;
-    id <SPXSecurePasscodeViewController> controller = (id <SPXSecurePasscodeViewController>)presentingController.presentedViewController;
+    UIViewController <SPXSecurePasscodeViewController> *controller = (UIViewController <SPXSecurePasscodeViewController>*)presentingController.presentedViewController;
+    
+    while (controller && ![controller conformsToProtocol:@protocol(SPXSecurePasscodeViewController)]) {
+      if (presentingController.presentedViewController) {
+        presentingController = presentingController.presentedViewController;
+      }
+      
+      controller = (UIViewController <SPXSecurePasscodeViewController>*)controller.presentedViewController;
+    }
     
     if (!controller) {
       controller = [self.passcodeViewControllerClass.class new];

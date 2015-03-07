@@ -187,7 +187,12 @@
                         </connections>
                     </tableView>
                     <navigationItem key="navigationItem" title="Abracadabra" id="UM0-vV-a78">
-                        <barButtonItem key="rightBarButtonItem" systemItem="action" id="EPL-OK-b6e">
+                        <barButtonItem key="leftBarButtonItem" image="settings" id="LHL-ih-BeU">
+                            <connections>
+                                <action selector="configureVault:" destination="igB-CV-gd7" id="qSH-9a-gro"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" image="thumb" id="EPL-OK-b6e">
                             <connections>
                                 <action selector="configureEvents:" destination="igB-CV-gd7" id="Cbh-PQ-BAs"/>
                             </connections>
@@ -220,6 +225,10 @@
             <point key="canvasLocation" x="493" y="1154"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="settings" width="27" height="40"/>
+        <image name="thumb" width="18" height="26"/>
+    </resources>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar"/>
         <simulatedOrientationMetrics key="orientation"/>
