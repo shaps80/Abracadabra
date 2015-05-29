@@ -1,1 +1,1 @@
-../../../SPXDataValidators/SPXDataValidator/Fields/UITextField+SPXDataValidatorAdditions.h
+../../../SPXDataValidators/Pod/Classes/Fields/UITextField+SPXDataValidatorAdditions.h

@@ -1,1 +1,1 @@
-../../../SPXDataValidators/SPXDataValidator/Validators/SPXRegexDataValidator.h
+../../../SPXDataValidators/Pod/Classes/Validators/SPXRegexDataValidator.h

@@ -49,7 +49,7 @@
   NSString *timeout = [NSString stringWithFormat:@"Prompt after %.0f secs", [SPXSecureVault defaultVault].defaultTimeoutInterval];
   self.policies = @
   [
-   @"Always Prompt for Pascode",
+   @"Always Prompt for Passcode",
    timeout,
    @"Confirmation Only",
    @"Disable",
