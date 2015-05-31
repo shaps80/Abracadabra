@@ -40,7 +40,7 @@
  *
  *  @return A new instance of this controller
  */
-- (instancetype)initWithEvent:(SPXSecureEvent *)event NS_DESIGNATED_INITIALIZER;
+- (instancetype)initWithEvent:(SPXSecureEvent *)event;
 
 
 @end
