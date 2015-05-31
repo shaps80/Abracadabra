@@ -67,6 +67,12 @@ typedef NS_ENUM(NSInteger, SPXSecurePresentationMode){
 
 
 /**
+ *  If YES, a cancel button will be shown. Otherwise it will be hidden
+ */
+@property (nonatomic, assign) BOOL allowsCancel;
+
+
+/**
  *  Specifies the preferred way the controller should be presented
  */
 @property (nonatomic, assign) SPXSecurePresentationMode preferredPresentationMode;

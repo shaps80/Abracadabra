@@ -183,8 +183,12 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   SPXSecureKeyCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"key" forIndexPath:indexPath];
   
   NSArray *titles = self.keyMappings[@(indexPath.item)];
-  [cell setTitle:titles[0] subtitle:titles[1]];
   
+  if (indexPath.item == 9 && !self.presentationConfiguration.allowsCancel) {
+    return cell;
+  }
+  
+  [cell setTitle:titles[0] subtitle:titles[1]];
   return cell;
 }
 
@@ -214,6 +218,24 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   NSString *text = [self.keyMappings[@(indexPath.item)] firstObject];
   [self.secureField appendText:text];
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (indexPath.item == 9 && !self.presentationConfiguration.allowsCancel) {
+    return NO;
+  }
+  
+  return YES;
+}
+
+- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath
+{
+  if (indexPath.item == 9 && !self.presentationConfiguration.allowsCancel) {
+    return NO;
+  }
+  
+  return YES;
 }
 
 - (void)secureFieldDidChange:(SPXSecureField *)field

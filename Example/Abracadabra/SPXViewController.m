@@ -67,7 +67,7 @@
       case 2:
         vault.presentationConfiguration.fallbackToConfirmation = YES;
         vault.presentationConfiguration.preferredPresentationMode = SPXSecurePresentationModeNavigation;
-        vault.presentationConfiguration.dismissOnCompletion = NO;
+        vault.presentationConfiguration.allowsCancel = NO;
         Abracadabra(@"Authentication", @"Authentication with Passcode", SPXSecurePolicyAlwaysWithPIN, {
           NSLog(@"Success");
         }, NSLog(@"Failed"))

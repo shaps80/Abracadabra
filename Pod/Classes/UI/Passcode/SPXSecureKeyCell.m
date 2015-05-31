@@ -128,6 +128,10 @@ static CGFloat SPXSecureKeyCellDefaultFontSize = 30;
 
 - (void)updateTitles
 {
+  if (!self.title) {
+    return;
+  }
+  
   NSMutableAttributedString *string = [NSMutableAttributedString new];
   
   [string appendAttributedString:[[NSAttributedString alloc] initWithString:self.title attributes:self.titleAttributes]];

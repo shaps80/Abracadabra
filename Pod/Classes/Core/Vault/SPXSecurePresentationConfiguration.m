@@ -37,6 +37,7 @@
   _preferredPresentationMode = SPXSecurePresentationModeModal;
   _useAlertViewForConfirmation = NO;
   _dismissOnCompletion = YES;
+  _allowsCancel = YES;
   
   return self;
 }
