@@ -122,6 +122,11 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   return self;
 }
 
+- (void)dealloc
+{
+  [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
 - (void)viewDidLoad
 {
   [super viewDidLoad];
@@ -132,6 +137,13 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   
   __weak typeof(self) weakInstance = self;
   [[NSNotificationCenter defaultCenter] addObserver:weakInstance selector:@selector(dismissViewController:) name:SPXSecureVaultDidFailAuthenticationPermanently object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(applicationDidResign) name:UIApplicationDidEnterBackgroundNotification object:nil];
+}
+
+- (void)applicationDidResign
+{
+  self.completion(nil);
+  [self dismissViewController];
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -152,7 +164,12 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   if (!self.presentationConfiguration.dismissOnCompletion && !canceled) {
     return;
   }
-  
+
+  [self dismissViewController];
+}
+
+- (void)dismissViewController
+{
   if (self.navigationController) {
     [self.navigationController popViewControllerAnimated:YES];
   } else {

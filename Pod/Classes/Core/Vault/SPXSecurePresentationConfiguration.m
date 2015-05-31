@@ -38,6 +38,7 @@
   _useAlertViewForConfirmation = NO;
   _dismissOnCompletion = YES;
   _allowsCancel = YES;
+  _presentWithAnimation = YES;
   
   return self;
 }

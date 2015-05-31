@@ -73,6 +73,12 @@ typedef NS_ENUM(NSInteger, SPXSecurePresentationMode){
 
 
 /**
+ *  If YES the presentation will be animated.
+ */
+@property (nonatomic, assign) BOOL presentWithAnimation;
+
+
+/**
  *  Specifies the preferred way the controller should be presented
  */
 @property (nonatomic, assign) SPXSecurePresentationMode preferredPresentationMode;

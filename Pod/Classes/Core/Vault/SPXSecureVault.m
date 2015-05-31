@@ -283,12 +283,12 @@ static inline void spx_kill_semaphore() {
           navController = (UINavigationController *)presentingController;
         }
         
-        [navController pushViewController:controller animated:YES];
+        [navController pushViewController:controller animated:configuration.presentWithAnimation];
       } else {
         UIViewController *viewController = (UIViewController *)controller;
         viewController.modalPresentationStyle = UIModalPresentationFullScreen;
         viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-        [presentingController presentViewController:viewController animated:YES completion:nil];
+        [presentingController presentViewController:viewController animated:configuration.presentWithAnimation completion:nil];
       }
     }
     
