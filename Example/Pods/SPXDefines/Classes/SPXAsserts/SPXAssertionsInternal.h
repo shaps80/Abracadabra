@@ -62,6 +62,14 @@ typedef NS_ENUM(NSInteger, _SPXAssertionsInternalError) {
 extern NSError *_SPXAssertionsErrorMake(NSString *message, Class klass, NSString *methodOrFunction);
 
 
+/**
+ *  Logs before the assertion on DEBUG builds only
+ *
+ *  @param message The message to log
+ */
+extern void SPXAssertLog(NSString *message);
+
+
 #pragma mark The following are for internal use only and should not be modified!
 
 
@@ -70,7 +78,9 @@ extern NSError *_SPXAssertionsErrorMake(NSString *message, Class klass, NSString
 #define _SPXInvalidConditionString(condition) (@"Invalid condition not satisfying: " #condition)
 #define _SPXGenericAssertCondition(ctype, condition) NS ## ctype ## Assert((condition), _SPXInvalidConditionString((condition)))
 #define _SPXGenericErrorMake(condition, class, func) _SPXAssertionsErrorMake(_SPXInvalidConditionString(condition), class, func)
-#define _SPXGenericAssertTrueOrPerformAction(ctype, condition, action) ({ _SPX ## ctype ## AssertCondition(condition); \
+#define _SPXGenericAssertTrueOrPerformAction(ctype, condition, action) ({ \
+if (!(condition)) { SPXAssertLog(_SPXInvalidConditionString(condition)); } \
+_SPX ## ctype ## AssertCondition(condition); \
 if (!(condition)) { _SPX ## ctype ## ErrorMake(condition); action; } })
 #define _SPXGenericAssertTrueOrReturnError(ctype, condition) {{ _SPX ## ctype ## AssertCondition(condition); \
 if (!(condition)) { return _SPX ## ctype ## ErrorMake(condition); } })

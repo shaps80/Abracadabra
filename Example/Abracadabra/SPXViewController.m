@@ -65,13 +65,15 @@
         Abracadabra(@"Authentication", @"Authenticate with Confirmation", SPXSecurePolicyConfirmationOnly, NSLog(@"Success"), NSLog(@"Failed"))
         break;
       case 2:
-        vault.fallbackToConfirmation = YES;
+        vault.presentationConfiguration.fallbackToConfirmation = YES;
+        vault.presentationConfiguration.preferredPresentationMode = SPXSecurePresentationModeNavigation;
+        vault.presentationConfiguration.dismissOnCompletion = NO;
         Abracadabra(@"Authentication", @"Authentication with Passcode", SPXSecurePolicyAlwaysWithPIN, {
           NSLog(@"Success");
         }, NSLog(@"Failed"))
         break;
       case 4:
-        vault.fallbackToConfirmation = YES;
+        vault.presentationConfiguration.fallbackToConfirmation = YES;
         [vault registerPasscodeViewControllerClass:nil];
         
         Abracadabra(@"Authentication", @"Authenticate with Fallback", SPXSecurePolicyTimedSessionWithPIN, {
@@ -97,47 +99,47 @@
   SPXSecureVault *vault = [SPXSecureVault defaultVault];
   SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:@"0000"];
   
-  vault.fallbackToConfirmation = NO;
+  vault.presentationConfiguration.fallbackToConfirmation = NO;
   [vault registerPasscodeViewControllerClass:SPXPasscodeViewController.class];
   
   if (indexPath.section == 0) {
     switch (indexPath.row) {
       case 0:
-        [vault authenticateWithPolicy:SPXSecurePolicyNone description:nil credential:nil completion:^(id<SPXSecureSession> session) {
+        [vault authenticateWithPolicy:SPXSecurePolicyNone description:nil credential:nil configuration:nil completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 1:
-        [vault authenticateWithPolicy:SPXSecurePolicyConfirmationOnly description:@"Restart Server" credential:nil completion:^(id<SPXSecureSession> session) {
+        [vault authenticateWithPolicy:SPXSecurePolicyConfirmationOnly description:@"Restart Server" credential:nil configuration:nil completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 2:
-        vault.fallbackToConfirmation = YES;
-        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:@"Restart Server" completion:^(id<SPXSecureSession> session) {
+        vault.presentationConfiguration.fallbackToConfirmation = YES;
+        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:@"Restart Server" configuration:nil completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 3:
-        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:credential completion:^(id<SPXSecureSession> session) {
+        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:credential configuration:nil completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 4:
-        vault.fallbackToConfirmation = YES;
+        vault.presentationConfiguration.fallbackToConfirmation = YES;
         [vault registerPasscodeViewControllerClass:nil];
         
-        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:nil completion:^(id<SPXSecureSession> session) {
+        [vault authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN description:nil credential:nil configuration:nil completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 5:
-        [vault authenticateWithPolicy:SPXSecurePolicyTimedSessionWithPIN description:nil credential:nil completion:^(id<SPXSecureSession> session) {
+        [vault authenticateWithPolicy:SPXSecurePolicyTimedSessionWithPIN description:nil credential:nil configuration:nil completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 6:
-        [vault authenticateWithPolicy:SPXSecurePolicyTimedSessionWithPIN description:nil credential:credential completion:^(id<SPXSecureSession> session) {
+        [vault authenticateWithPolicy:SPXSecurePolicyTimedSessionWithPIN description:nil credential:credential configuration:nil completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
           if (session.isValid) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
@@ -145,17 +147,17 @@
   } else if (indexPath.section == 1) {
     switch (indexPath.row) {
       case 0:
-        [vault updateCredentialWithCompletion:^(BOOL success) {
+        [vault updateCredentialWithConfiguration:nil completion:^(BOOL success, id <SPXSecurePasscodeViewController> controller) {
           if (success) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 1:
-        [vault updateCredentialWithExistingCredential:credential newCredential:credential completion:^(BOOL success) {
+        [vault updateCredentialWithExistingCredential:credential newCredential:credential configuration:nil completion:^(BOOL success, id <SPXSecurePasscodeViewController> controller) {
           if (success) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;
       case 2:
-        [vault removeCredentialWithCompletion:^ (BOOL success) {
+        [vault removeCredentialWithConfiguration:nil completion:^ (BOOL success, id <SPXSecurePasscodeViewController> controller) {
           if (success) { NSLog(@"Success"); } else { NSLog(@"Failed"); }
         }];
         break;

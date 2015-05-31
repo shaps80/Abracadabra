@@ -28,6 +28,7 @@
 #import "SPXSecureSession.h"
 #import "SPXSecureCredential.h"
 #import "SPXSecureDefines.h"
+#import "SPXSecurePresentationConfiguration.h"
 
 
 /**
@@ -47,7 +48,7 @@ extern NSString *const SPXSecureVaultDidFailAuthenticationPermanently;
  *
  *  @param session A valid session if authentication was successful, nil otherwise
  */
-typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession> session);
+typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller);
 
 
 /**
@@ -55,7 +56,7 @@ typedef void (^SPXSecureVaultAuthenticationCompletionBlock)(id <SPXSecureSession
  *
  *  @param success YES if the command was successful, NO otherwise
  */
-typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
+typedef void (^SPXSecureVaultCompletionBlock)(BOOL success, id <SPXSecurePasscodeViewController> controller);
 
 
 
@@ -100,12 +101,6 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 
 
 /**
- *  Gets/sets whether an alertView should be used instead of the action sheet on iPhone. iPad will always use an alertView
- */
-@property (nonatomic, assign) BOOL useAlertViewForConfirmation;
-
-
-/**
  *  Returns YES if an existing credential exists for this vault. NO otherwise.
  */
 @property (nonatomic, readonly) BOOL hasCredential;
@@ -118,9 +113,9 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 
 
 /**
- *  Gets/sets whether or not an authentication method should fallback to confirmation when a id<SPXPasscodeViewController> hasn't been registered
+ *  Gets/sets the configuration for all presentation options
  */
-@property (nonatomic, assign) BOOL fallbackToConfirmation;
+@property (nonatomic, strong) SPXSecurePresentationConfiguration *presentationConfiguration;
 
 
 
@@ -154,9 +149,10 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
  *
  *  @param policy      The policy to use for this authentication
  *  @param description A textual description, this will be used in an alert when policy == SPXSecurePolicyConfirmationOnly
+ *  @param configuration  Specifies overrides for the presentation configuration. This configuration will not be persisted. Passing nil ensures default settings are used.
  *  @param completion  The block to execute when authentication has completed. If the authentication was valid, a valid session will be returned, otherwise nil
  */
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
 
 
 /**
@@ -165,9 +161,10 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
  *  @param policy      The policy to use for this authentication
  *  @param description A textual description, this will be used in an alert when policy == SPXSecurePolicyConfirmationOnly
  *  @param credential  The credential to use for this authentication
+ *  @param configuration  Specifies overrides for the presentation configuration. This configuration will not be persisted. Passing nil ensures default settings are used.
  *  @param completion  The block to execute when authentication has completed. If the authentication was valid, a valid session will be returned, otherwise nil
  */
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id <SPXSecureCredential>)credential completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id <SPXSecureCredential>)credential configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultAuthenticationCompletionBlock)completion;
 
 
 
@@ -178,20 +175,22 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 /**
  *  Updates the current passcode. This is similar to calling -removePasscode followed by -authenticateWithPolicy:completion: -- However this method won't dismiss the view until the procedure is complete
  *
+ *  @param configuration  Specifies overrides for the presentation configuration. This configuration will not be persisted. Passing nil ensures default settings are used.
  *  @param completion   The block to execute when the update completes. If the update was successful, YES is returned. NO otherwise
  */
-- (void)updateCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion;
+- (void)updateCredentialWithConfiguration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultCompletionBlock)completion;
 
 /**
  *  Updates the current passcode. This is similar to calling -removePasscode followed by -authenticateWithPolicy:completion: -- However this method won't dismiss the view until the procedure is complete
  *
  *  @param existingCredential Create an equivalent credential and pass that here to perform authentication without UI
  *  @param newCredential      The new credential to set on this vault
+ *  @param configuration  Specifies overrides for the presentation configuration. This configuration will not be persisted. Passing nil ensures default settings are used.
  *  @param completion         The block to execute when the update completes. If the update was successful, YES is returned. NO otherwise
  *
  *  @note If no credential currently exists, this is equivalent to calling -authenticateWithPolicy:completion: and setting up a new passcode
  */
-- (void)updateCredentialWithExistingCredential:(id <SPXSecureCredential>)existingCredential newCredential:(id <SPXSecureCredential>)newCredential completion:(SPXSecureVaultCompletionBlock)completion;
+- (void)updateCredentialWithExistingCredential:(id <SPXSecureCredential>)existingCredential newCredential:(id <SPXSecureCredential>)newCredential configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultCompletionBlock)completion;
 
 
 /**
@@ -203,8 +202,11 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 
 /**
  *  Resets the current passcode. This method will call [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN] first to authenticate the user, if this is successful the passcode will then be reset
+ *
+ *  @param configuration  Specifies overrides for the presentation configuration. This configuration will not be persisted. Passing nil ensures default settings are used.
+ *  @param completion     The block to execute when the update completes. If the update was successful, YES is returned. NO otherwise
  */
-- (void)removeCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion;
+- (void)removeCredentialWithConfiguration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultCompletionBlock)completion;
 
 
 
@@ -290,4 +292,9 @@ typedef void (^SPXSecureVaultCompletionBlock)(BOOL success);
 
 @end
 
+@interface SPXSecureVault (Deprecated_Nonfunctional)
 
+@property (nonatomic, assign) BOOL useAlertViewForConfirmation DEPRECATED_MSG_ATTRIBUTE("This property has been moved to `vault.presentationConfiguration");
+@property (nonatomic, assign) BOOL fallbackToConfirmation DEPRECATED_MSG_ATTRIBUTE("This property has been moved to `vault.presentationConfiguration`");
+
+@end

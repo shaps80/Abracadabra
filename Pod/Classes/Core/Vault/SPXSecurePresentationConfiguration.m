@@ -1,5 +1,5 @@
 /*
- Copyright (c) 2014 Shaps Mohsenin. All rights reserved.
+   Copyright (c) 2015 Shaps Mohsenin. All rights reserved.
  
  Redistribution and use in source and binary forms, with or without
  modification, are permitted provided that the following conditions are met:
@@ -23,43 +23,22 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
-#import "SPXAssertionsInternal.h"
+#import "SPXSecurePresentationConfiguration.h"
+#import "SPXDefines.h"
 
-#ifndef _SPX_ASSERTION_INTERNALS_M
-#define _SPX_ASSERTION_INTERNALS_M
+@implementation SPXSecurePresentationConfiguration
 
-#ifndef _SPX_LOGGING_DEFINES_H
-#define SPXLog NSLog
-#endif
-
-
-NSError *_SPXAssertionsErrorMake(NSString *message, Class klass, NSString *methodOrFunction)
+- (instancetype)init
 {
-  NSString *identifier = nil;
+  self = [super init];
+  SPXAssertTrueOrReturnNil(self);
   
-  if (klass) {
-    identifier = [NSBundle bundleForClass:klass].bundleIdentifier;
-  }
+  _fallbackToConfirmation = NO;
+  _preferredPresentationMode = SPXSecurePresentationModeModal;
+  _useAlertViewForConfirmation = NO;
+  _dismissOnCompletion = YES;
   
-  if (!identifier) {
-    identifier = [NSBundle mainBundle].bundleIdentifier;
-  }
-  
-  NSString *className = klass ? [NSString stringWithFormat:@"%@ | ", NSStringFromClass(klass)] : @"";
-  NSString *description = [NSString stringWithFormat:@"%@ | %@ | %@%@", [identifier stringByAppendingPathExtension:@"assertion"], message, className, methodOrFunction ?: @""];
-  NSDictionary *userInfo = @{ NSLocalizedDescriptionKey : description };
-  
-  NSError *error = [NSError errorWithDomain:[identifier stringByAppendingPathExtension:@"assertion"] code:_SPXAssertionsInternalErrorCode userInfo:userInfo];
-  SPXLog(@"%@", error.localizedDescription);
-  
-  return error;
+  return self;
 }
 
-void SPXAssertLog(NSString *message) {
-#if DEBUG
-  SPXLog(@"%@", message);
-#endif
-}
-
-#endif
-
+@end

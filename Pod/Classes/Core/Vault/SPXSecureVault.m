@@ -45,10 +45,11 @@ static inline void spx_kill_semaphore() {
 @property (nonatomic, strong) SPXSecureTimedSession *timedSession;
 
 @property (nonatomic, assign) Class <SPXSecurePasscodeViewController> passcodeViewControllerClass;
+@property (nonatomic, strong) id <SPXSecurePasscodeViewController> passCodeViewController;
 @property (nonatomic, assign) Class vaultSettingsViewControllerClass;
 @property (nonatomic, assign) Class eventsViewControllerClass;
 
-@property (nonatomic, copy) void (^completionBlock)(id <SPXSecureSession> session);
+@property (nonatomic, copy) void (^completionBlock)(id <SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller);
 @property (nonatomic, strong) NSString *name;
 @property (nonatomic, assign) BOOL confirmationWasSuccessful;
 @property (nonatomic, assign) NSUInteger currentRetryCount;
@@ -62,6 +63,11 @@ static inline void spx_kill_semaphore() {
   spx_kill_semaphore();
   [self.timedSession invalidate];
   self.credential = nil;
+}
+
+- (SPXSecurePresentationConfiguration *)presentationConfiguration
+{
+  return _presentationConfiguration ?: (_presentationConfiguration = [SPXSecurePresentationConfiguration new]);
 }
 
 #pragma mark - Initializers
@@ -128,16 +134,18 @@ static inline void spx_kill_semaphore() {
 
 #pragma mark - Updating Passcode
 
-- (void)updateCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion
+- (void)updateCredentialWithConfiguration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultCompletionBlock)completion
 {
-  [self updateCredentialWithExistingCredential:self.credential newCredential:nil completion:completion];
+  [self updateCredentialWithExistingCredential:self.credential newCredential:nil configuration:configuration completion:completion];
 }
 
-- (void)updateCredentialWithExistingCredential:(id<SPXSecureCredential>)existingCredential newCredential:(id<SPXSecureCredential>)newCredential completion:(SPXSecureVaultCompletionBlock)completion
+- (void)updateCredentialWithExistingCredential:(id<SPXSecureCredential>)existingCredential newCredential:(id<SPXSecureCredential>)newCredential configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultCompletionBlock)completion
 {
+  SPXSecurePresentationConfiguration *config = configuration ?: self.presentationConfiguration;
+  
   if ([self isLocked]) {
     SPXLog(@"Unabled to update the credential. The vault has been locked.");
-    !completion ?: completion(NO);
+    !completion ?: completion(NO, self.passCodeViewController);
     return;
   }
   
@@ -145,9 +153,9 @@ static inline void spx_kill_semaphore() {
   id <SPXSecureCredential> credential = self.credential;
   
   void(^promptForNewCredential)() = ^() {
-    [weakInstance authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:NO completion:^(id<SPXSecureSession> session) {
+    [weakInstance authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:NO configuration:config completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
       BOOL isValid = session.isValid;
-      !completion ?: completion(isValid);
+      !completion ?: completion(isValid, self.passCodeViewController);
       
       if (!isValid) {
         weakInstance.credential = credential;
@@ -157,7 +165,7 @@ static inline void spx_kill_semaphore() {
   
   if (!self.credential && newCredential) {
     self.credential = newCredential;
-    !completion ?: completion(YES);
+    !completion ?: completion(YES, self.passCodeViewController);
     return;
   }
   
@@ -167,43 +175,45 @@ static inline void spx_kill_semaphore() {
   }
   
   if (![self.credential isEqualToCredential:existingCredential]) {
-    !completion ?: completion(NO);
+    !completion ?: completion(NO, self.passCodeViewController);
     return;
   }
   
   if ([self.credential isEqualToCredential:existingCredential] && newCredential) {
     self.credential = newCredential;
-    !completion ?: completion(YES);
+    !completion ?: completion(YES, self.passCodeViewController);
     return;
   }
   
-  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:YES completion:^(id<SPXSecureSession> session) {
+  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:YES configuration:config completion:^(id<SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
     if (session.isValid) {
       weakInstance.credential = nil;
       promptForNewCredential();
     } else {
       weakInstance.credential = credential;
-      !completion ?: completion(NO);
+      !completion ?: completion(NO, self.passCodeViewController);
     }
   }];
 }
 
 #pragma mark - Authentication
 
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
 {
-  [self authenticateWithPolicy:policy description:description credential:nil completion:completion];
+  [self authenticateWithPolicy:policy description:description credential:nil configuration:configuration completion:completion];
 }
 
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id<SPXSecureCredential>)credential completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy description:(NSString *)description credential:(id<SPXSecureCredential>)credential configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
 {
+  SPXSecurePresentationConfiguration *config = configuration ?: self.presentationConfiguration;
+
   if (policy == SPXSecurePolicyNone) {
-    !completion ?: completion([SPXSecureOnceSession session]);
+    !completion ?: completion([SPXSecureOnceSession session], self.passCodeViewController);
     return;
   }
   
   if (policy == SPXSecurePolicyConfirmationOnly) {
-    [self authenticateWithConfirmation:description completion:completion];
+    [self authenticateWithConfirmation:description configuration:config completion:completion];
     return;
   }
   
@@ -213,35 +223,35 @@ static inline void spx_kill_semaphore() {
       [self.delegate vault:self didFailAuthenticationWithRemainingRetryCount:self.remainingRetryCount];
     }
     
-    !completion ?: completion(nil);
+    !completion ?: completion(nil, self.passCodeViewController);
     return;
   }
   
-  if ((self.fallbackToConfirmation && !self.passcodeViewControllerClass) || (self.fallbackToConfirmation && !self.credential)) {
-    [self authenticateWithConfirmation:description completion:completion];
+  if ((config.fallbackToConfirmation && !self.passcodeViewControllerClass) || (config.fallbackToConfirmation && !self.credential)) {
+    [self authenticateWithConfirmation:description configuration:config completion:completion];
     return;
   }
   
   if (credential) {
-    !completion ?: completion([self sessionForPolicy:policy credential:credential]);
+    !completion ?: completion([self sessionForPolicy:policy credential:credential], self.passCodeViewController);
     return;
   }
   
   if (policy == SPXSecurePolicyTimedSessionWithPIN && self.timedSession.isValid) {
-    !completion ?: completion(self.timedSession);
+    !completion ?: completion(self.timedSession, self.passCodeViewController);
     return;
   }
   
   if (NSFoundationVersionNumber > NSFoundationVersionNumber_iOS_7_1 && self.hasCredential) {
     LAContext *context = [LAContext new];
-    [self authenticateWithContext:context policy:policy description:description completion:completion];
+    [self authenticateWithContext:context policy:policy description:description configuration:config completion:completion];
     return;
   }
   
-  [self authenticateWithPolicy:policy updating:NO completion:completion];
+  [self authenticateWithPolicy:policy updating:NO configuration:config completion:completion];
 }
 
-- (void)authenticateWithPolicy:(SPXSecurePolicy)policy updating:(BOOL)updating completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)authenticateWithPolicy:(SPXSecurePolicy)policy updating:(BOOL)updating configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
 {
   __weak typeof(self) weakInstance = self;
   __block id<SPXSecureSession> session = nil;
@@ -262,10 +272,24 @@ static inline void spx_kill_semaphore() {
     if (!controller) {
       controller = [self.passcodeViewControllerClass.class new];
       [weakInstance.passcodeViewControllerClass.class new];
-      UIViewController *viewController = (UIViewController *)controller;
-      viewController.modalPresentationStyle = UIModalPresentationFullScreen;
-      viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
-      [presentingController presentViewController:viewController animated:YES completion:nil];
+      weakInstance.passCodeViewController = controller;
+      controller.presentationConfiguration = configuration;
+      
+      if (configuration.preferredPresentationMode == SPXSecurePresentationModeNavigation && (presentingController.navigationController || [presentingController isKindOfClass:[UINavigationController class]])) {
+        UINavigationController *navController = nil;
+        if (presentingController.navigationController) {
+          navController = (UINavigationController *)presentingController.navigationController;
+        } else {
+          navController = (UINavigationController *)presentingController;
+        }
+        
+        [navController pushViewController:controller animated:YES];
+      } else {
+        UIViewController *viewController = (UIViewController *)controller;
+        viewController.modalPresentationStyle = UIModalPresentationFullScreen;
+        viewController.modalTransitionStyle = UIModalTransitionStyleCrossDissolve;
+        [presentingController presentViewController:viewController animated:YES completion:nil];
+      }
     }
     
     SPXCAssertTrueOrReturn([controller respondsToSelector:@selector(transitionToState:animated:completion:)]);
@@ -284,11 +308,11 @@ static inline void spx_kill_semaphore() {
       return session;
     }];
   } completion:^{
-    !weakInstance.completionBlock ?: weakInstance.completionBlock(session);
+    !weakInstance.completionBlock ?: weakInstance.completionBlock(session, self.passCodeViewController);
   }];
 }
 
-- (void)authenticateWithConfirmation:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)authenticateWithConfirmation:(NSString *)description configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
 {
   __weak typeof(self) weakInstance = self;
   self.completionBlock = completion;
@@ -296,7 +320,8 @@ static inline void spx_kill_semaphore() {
   [self presentWithPresentationBlock:^{
     NSString *title = @"Are you sure you want to perform this action?";
     
-    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad || weakInstance.useAlertViewForConfirmation) {
+    SPXSecurePresentationConfiguration *config = configuration ?: weakInstance.presentationConfiguration;
+    if ([UIDevice currentDevice].userInterfaceIdiom == UIUserInterfaceIdiomPad || config.useAlertViewForConfirmation) {
       [[[UIAlertView alloc] initWithTitle:description message:title delegate:weakInstance cancelButtonTitle:@"Cancel" otherButtonTitles:@"Continue", nil] show];
       return;
     }
@@ -304,11 +329,11 @@ static inline void spx_kill_semaphore() {
     UIView *view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
     [[[UIActionSheet alloc] initWithTitle:title delegate:weakInstance cancelButtonTitle:@"Cancel" destructiveButtonTitle:description ?: @"Continue" otherButtonTitles:nil] showInView:view];
   } completion:^{
-    !weakInstance.completionBlock ?: weakInstance.completionBlock([weakInstance sessionForPolicy:SPXSecurePolicyConfirmationOnly credential:nil]);
+    !weakInstance.completionBlock ?: weakInstance.completionBlock([weakInstance sessionForPolicy:SPXSecurePolicyConfirmationOnly credential:nil], self.passCodeViewController);
   }];
 }
 
-- (void)authenticateWithContext:(LAContext *)context policy:(SPXSecurePolicy)policy description:(NSString *)description completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
+- (void)authenticateWithContext:(LAContext *)context policy:(SPXSecurePolicy)policy description:(NSString *)description configuration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultAuthenticationCompletionBlock)completion
 {
   description = description ?: @"Authenticating";
   
@@ -334,18 +359,18 @@ static inline void spx_kill_semaphore() {
     }];
   } completion:^{
     if (errorCode == kLAErrorUserCancel) {
-      !weakInstance.completionBlock ?: weakInstance.completionBlock(nil);
+      !weakInstance.completionBlock ?: weakInstance.completionBlock(nil, self.passCodeViewController);
       return;
     }
     
     if (errorCode == kLAErrorUserFallback) {
-      [self authenticateWithPolicy:policy updating:NO completion:weakInstance.completionBlock];
+      [self authenticateWithPolicy:policy updating:NO configuration:configuration completion:weakInstance.completionBlock];
       return;
     }
     
     id <SPXSecureCredential> credential = !errorCode ? weakInstance.credential : nil;
     id <SPXSecureSession> session = [weakInstance sessionForPolicy:policy credential:credential];
-    !weakInstance.completionBlock ?: weakInstance.completionBlock(session);
+    !weakInstance.completionBlock ?: weakInstance.completionBlock(session, self.passCodeViewController);
   }];
 }
 
@@ -440,11 +465,11 @@ static inline void spx_kill_semaphore() {
 
 #pragma mark - Resets
 
-- (void)removeCredentialWithCompletion:(SPXSecureVaultCompletionBlock)completion
+- (void)removeCredentialWithConfiguration:(SPXSecurePresentationConfiguration *)configuration completion:(SPXSecureVaultCompletionBlock)completion
 {
   if ([self isLocked]) {
     SPXLog(@"Nothing to reset. The vault has been locked.");
-    !completion ?: completion(NO);
+    !completion ?: completion(NO, self.passCodeViewController);
     return;
   }
   
@@ -454,7 +479,8 @@ static inline void spx_kill_semaphore() {
   }
   
   __weak typeof(self) weakInstance = self;
-  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:NO completion:^(id <SPXSecureSession> session) {
+  SPXSecurePresentationConfiguration *config = configuration ?: self.presentationConfiguration;
+  [self authenticateWithPolicy:SPXSecurePolicyAlwaysWithPIN updating:NO configuration:config completion:^(id <SPXSecureSession> session, id <SPXSecurePasscodeViewController> controller) {
     if (session) {
       weakInstance.credential = nil;
       [weakInstance.timedSession invalidate];
@@ -462,7 +488,7 @@ static inline void spx_kill_semaphore() {
       weakInstance.currentRetryCount = 0;
     }
     
-    !completion ?: completion(session.isValid);
+    !completion ?: completion(session.isValid, self.passCodeViewController);
   }];
 }
 

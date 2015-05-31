@@ -79,6 +79,8 @@
 		54DAA36F1A94C1E600F4B938 /* SPXSecureDefines.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureDefines.h; sourceTree = "<group>"; };
 		54DAA3731A950C7100F4B938 /* SPXSecureKeyCellBackground.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecureKeyCellBackground.h; sourceTree = "<group>"; };
 		54DAA3741A950C7100F4B938 /* SPXSecureKeyCellBackground.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecureKeyCellBackground.m; sourceTree = "<group>"; };
+		54FE46A21B1B6F1F00BB900F /* SPXSecurePresentationConfiguration.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXSecurePresentationConfiguration.h; sourceTree = "<group>"; };
+		54FE46A31B1B6F1F00BB900F /* SPXSecurePresentationConfiguration.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXSecurePresentationConfiguration.m; sourceTree = "<group>"; };
 		54FE90E01A98F8FA00FD36E6 /* SPXEventsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXEventsViewController.h; sourceTree = "<group>"; };
 		54FE90E11A98F8FA00FD36E6 /* SPXEventsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SPXEventsViewController.m; sourceTree = "<group>"; };
 		54FE90E31A98F90400FD36E6 /* SPXPoliciesViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SPXPoliciesViewController.h; sourceTree = "<group>"; };
@@ -231,6 +233,8 @@
 				54DAA3521A94A90400F4B938 /* SPXSecureCredential.m */,
 				54DAA3531A94A90400F4B938 /* SPXSecureSession.h */,
 				54DAA3541A94A90400F4B938 /* SPXSecureSession.m */,
+				54FE46A21B1B6F1F00BB900F /* SPXSecurePresentationConfiguration.h */,
+				54FE46A31B1B6F1F00BB900F /* SPXSecurePresentationConfiguration.m */,
 			);
 			path = Vault;
 			sourceTree = "<group>";

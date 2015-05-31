@@ -51,11 +51,13 @@ static UIColor * __tintColor;
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, assign) SPXSecurePasscodeViewControllerState state;
 @property (nonatomic, strong) id<SPXSecureSession> (^completion)(id <SPXSecureCredential>);
-
+@property (nonatomic, assign) BOOL showNavigationBarOnDismiss;
 
 @end
 
 @implementation SPXPasscodeViewController
+
+@synthesize presentationConfiguration = _presentationConfiguration;
 
 __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(void) {
   @autoreleasepool {
@@ -129,12 +131,33 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   [self.view addSubview:self.contentView];
   
   __weak typeof(self) weakInstance = self;
-  [[NSNotificationCenter defaultCenter] addObserver:weakInstance selector:@selector(dismissViewController) name:SPXSecureVaultDidFailAuthenticationPermanently object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:weakInstance selector:@selector(dismissViewController:) name:SPXSecureVaultDidFailAuthenticationPermanently object:nil];
 }
 
-- (void)dismissViewController
+- (void)viewWillAppear:(BOOL)animated
 {
-  [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+  [super viewWillAppear:animated];
+  self.showNavigationBarOnDismiss = !self.navigationController.navigationBarHidden;
+  [self.navigationController setNavigationBarHidden:YES animated:animated];
+}
+
+- (void)viewWillDisappear:(BOOL)animated
+{
+  [super viewWillDisappear:animated];
+  [self.navigationController setNavigationBarHidden:!self.showNavigationBarOnDismiss animated:animated];
+}
+
+- (void)dismissViewController:(BOOL)canceled
+{
+  if (!self.presentationConfiguration.dismissOnCompletion && !canceled) {
+    return;
+  }
+  
+  if (self.navigationController) {
+    [self.navigationController popViewControllerAnimated:YES];
+  } else {
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+  }
 }
 
 - (void)updateBackground
@@ -175,7 +198,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
   [collectionView deselectItemAtIndexPath:indexPath animated:YES];
   
   if (indexPath.item == 9) {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    [self dismissViewController:YES];
     self.completion(nil);
     return;
   }
@@ -225,7 +248,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
     if ([self.passcode isEqualToString:self.secureField.text]) {
       SPXSecurePasscodeCredential *credential = [SPXSecurePasscodeCredential credentialWithPasscode:self.passcode];
       self.completion(credential);
-      [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+      [self dismissViewController:NO];
     } else {
       [self.secureField transitionToState:SPXSecureFieldStateMismatchPassCode animationStyle:SPXSecureFieldAnimationStyleShake];
       [SPXAudio vibrate];
@@ -252,7 +275,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
     
     if (session) {
       if (self.state != SPXSecurePasscodeViewControllerStateUpdating) {
-        [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+        [self dismissViewController:NO];
       }
     } else {
       [self.secureField transitionToState:SPXSecureFieldStateInvalidPasscode animationStyle:SPXSecureFieldAnimationStyleShake];

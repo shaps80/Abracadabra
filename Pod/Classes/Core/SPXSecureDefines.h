@@ -25,6 +25,7 @@
 
 #import "SPXSecureCredential.h"
 #import "SPXSecureSession.h"
+#import "SPXSecurePresentationConfiguration.h"
 
 
 /**
@@ -88,6 +89,12 @@ typedef NS_ENUM(NSInteger, SPXSecureViewStyle){
  *  Defines the protocol all passcode viewController's must conform to
  */
 @protocol SPXSecurePasscodeViewController <NSObject>
+
+
+/**
+ *  Gets/sets the presentation configuration for this controller
+ */
+@property (nonatomic, strong) SPXSecurePresentationConfiguration *presentationConfiguration;
 
 
 /**
