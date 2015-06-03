@@ -1,6 +1,6 @@
 {
   "name": "Abracadabra",
-  "version": "1.2.0",
+  "version": "1.3.1",
   "summary": "A simple and easy to use library for securing your code.",
   "homepage": "https://github.com/shaps80/Abracadabra",
   "license": "MIT",
@@ -9,7 +9,7 @@
   },
   "source": {
     "git": "https://github.com/shaps80/Abracadabra.git",
-    "tag": "1.2.0"
+    "tag": "1.3.1"
   },
   "social_media_url": "https://twitter.com/shaps",
   "platforms": {
@@ -21,6 +21,9 @@
 
     ],
     "SPXDataValidators": [
+
+    ],
+    "SPXKeychain": [
 
     ]
   },
