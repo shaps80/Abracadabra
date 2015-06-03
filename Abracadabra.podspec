@@ -11,6 +11,7 @@ Pod::Spec.new do |s|
   s.requires_arc = true
   s.dependency 'SPXDefines'
   s.dependency 'SPXDataValidators'
+  s.dependency 'SPXKeychain'
 
   s.subspec 'Core' do |spec|
     spec.source_files = 'Pod/Classes/Core/**/*.{h,m}'

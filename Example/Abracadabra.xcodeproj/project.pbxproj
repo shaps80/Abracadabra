@@ -52,8 +52,6 @@
 		54DAA33E1A94A90400F4B938 /* Abracadabra.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = Abracadabra.h; sourceTree = "<group>"; };
 		54DAA3401A94A90400F4B938 /* NSData+SPXSecureAdditions.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "NSData+SPXSecureAdditions.h"; sourceTree = "<group>"; };
 		54DAA3411A94A90400F4B938 /* NSData+SPXSecureAdditions.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "NSData+SPXSecureAdditions.m"; sourceTree = "<group>"; };
-		54DAA3441A94A90400F4B938 /* SPXKeychain.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXKeychain.h; sourceTree = "<group>"; };
-		54DAA3451A94A90400F4B938 /* SPXKeychain.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXKeychain.m; sourceTree = "<group>"; };
 		54DAA3471A94A90400F4B938 /* SPXSecurityInternal.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecurityInternal.h; sourceTree = "<group>"; };
 		54DAA3481A94A90400F4B938 /* SPXSecurityInternal.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = SPXSecurityInternal.m; sourceTree = "<group>"; };
 		54DAA34A1A94A90400F4B938 /* SPXSecureEvent.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = SPXSecureEvent.h; sourceTree = "<group>"; };
@@ -196,8 +194,6 @@
 			children = (
 				54DAA3401A94A90400F4B938 /* NSData+SPXSecureAdditions.h */,
 				54DAA3411A94A90400F4B938 /* NSData+SPXSecureAdditions.m */,
-				54DAA3441A94A90400F4B938 /* SPXKeychain.h */,
-				54DAA3451A94A90400F4B938 /* SPXKeychain.m */,
 			);
 			path = Helpers;
 			sourceTree = "<group>";
