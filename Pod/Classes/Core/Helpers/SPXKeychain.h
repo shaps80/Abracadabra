@@ -23,6 +23,7 @@
  ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
  */
 
+@import Foundation;
 
 /**
  *  Simple wrapper for using the keychain
