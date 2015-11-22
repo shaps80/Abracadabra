@@ -1,0 +1,30 @@
+{
+  "DVTSourceControlWorkspaceBlueprintPrimaryRemoteRepositoryKey" : "121AD31842253254D0DC5ADE4ED88D918234D88D",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyRepositoryLocationsKey" : {
+
+  },
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyStatesKey" : {
+    "8A68E04D60CA65E5280F5783E2BEB6F474AD4AC0" : 0,
+    "121AD31842253254D0DC5ADE4ED88D918234D88D" : 0
+  },
+  "DVTSourceControlWorkspaceBlueprintIdentifierKey" : "B2663260-9AB7-4D67-B584-4EFA3E8D6094",
+  "DVTSourceControlWorkspaceBlueprintWorkingCopyPathsKey" : {
+    "8A68E04D60CA65E5280F5783E2BEB6F474AD4AC0" : "SPXCore",
+    "121AD31842253254D0DC5ADE4ED88D918234D88D" : "Abracadabra"
+  },
+  "DVTSourceControlWorkspaceBlueprintNameKey" : "Abracadabra",
+  "DVTSourceControlWorkspaceBlueprintVersion" : 204,
+  "DVTSourceControlWorkspaceBlueprintRelativePathToProjectKey" : "Example\/Abracadabra.xcworkspace",
+  "DVTSourceControlWorkspaceBlueprintRemoteRepositoriesKey" : [
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:shaps80\/Abracadabra.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "121AD31842253254D0DC5ADE4ED88D918234D88D"
+    },
+    {
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryURLKey" : "github.com:shaps80\/SPXCore.git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositorySystemKey" : "com.apple.dt.Xcode.sourcecontrol.Git",
+      "DVTSourceControlWorkspaceBlueprintRemoteRepositoryIdentifierKey" : "8A68E04D60CA65E5280F5783E2BEB6F474AD4AC0"
+    }
+  ]
+}

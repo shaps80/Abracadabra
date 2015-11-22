@@ -1,0 +1,38 @@
+PODS:
+  - Abracadabra (1.3.1):
+    - Abracadabra/Core (= 1.3.1)
+    - Abracadabra/UI (= 1.3.1)
+    - SPXDataValidators
+    - SPXDefines
+    - SPXKeychain
+  - Abracadabra/Core (1.3.1):
+    - SPXDataValidators
+    - SPXDefines
+    - SPXKeychain
+  - Abracadabra/UI (1.3.1):
+    - Abracadabra/Core
+    - SPXDataValidators
+    - SPXDefines
+    - SPXKeychain
+  - Kiwi (2.3.1)
+  - SPXDataValidators (1.4.1):
+    - SPXDefines
+  - SPXDefines (1.2.4)
+  - SPXKeychain (0.1.0)
+
+DEPENDENCIES:
+  - Abracadabra (from `../`)
+  - Kiwi
+
+EXTERNAL SOURCES:
+  Abracadabra:
+    :path: "../"
+
+SPEC CHECKSUMS:
+  Abracadabra: 969589fd3ebb6afadcda4536fb66c444d624de09
+  Kiwi: f038a6c61f7a9e4d7766bff5717aa3b3fdb75f55
+  SPXDataValidators: 19124b7eb611316eabdc851daf57f74ba35c140c
+  SPXDefines: 264a8381a08080532d52b041559a6c32af19377b
+  SPXKeychain: 2305fa79f6d9eb59da803d745e461738a93ee5b4
+
+COCOAPODS: 0.37.2
