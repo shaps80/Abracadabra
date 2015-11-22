@@ -37,9 +37,8 @@ static NSMutableDictionary *__vaults;
 @interface SPXSecureVault ()
 
 @property (nonatomic, strong) id <SPXSecureCredential> credential;
-@property (nonatomic, strong) SPXSecureTimedSession *session;
-@property (nonatomic, strong) SPXSecureTimedSession *backgroundTimedSession;
 @property (nonatomic, strong) SPXSecureTimedSession *timedSession;
+@property (nonatomic, strong) SPXSecureAppSession *appSession;
 @property (nonatomic, assign) BOOL unlocked;
 
 @property (nonatomic, assign) Class <SPXSecurePasscodeViewController> passcodeViewControllerClass;
@@ -60,9 +59,6 @@ static NSMutableDictionary *__vaults;
 - (void)dealloc
 {
   dispatch_semaphore_signal(self.semaphore);
-  
-  self.backgroundTimedSession = nil;
-  self.session = nil;
   self.credential = nil;
   
   [[NSNotificationCenter defaultCenter] removeObserver:self];
@@ -94,13 +90,27 @@ static NSMutableDictionary *__vaults;
   
   __weak typeof(self) weakInstance = self;
   [[NSNotificationCenter defaultCenter] addObserver:weakInstance selector:@selector(applicationWillEnterBackground:) name:UIApplicationDidEnterBackgroundNotification object:nil];
+  [[NSNotificationCenter defaultCenter] addObserver:weakInstance selector:@selector(applicationWillEnterForeground:) name:UIApplicationWillEnterForegroundNotification object:nil];
   return self;
+}
+
+- (BOOL)isUnlocked
+{
+  return self.appSession.isValid;
+}
+
+- (void)applicationWillEnterForeground:(NSNotification *)note
+{
+  if (!self.timedSession.isValid) {
+    [self.appSession invalidate];
+  }
 }
 
 - (void)applicationWillEnterBackground:(NSNotification *)note
 {
-  self.session = [SPXSecureTimedSession sessionWithTimeoutInterval:self.defaultTimeoutInterval];
-  self.backgroundTimedSession = [SPXSecureTimedSession sessionWithTimeoutInterval:self.defaultTimeoutInterval];
+  if (self.appSession.isValid) {
+    self.timedSession = [SPXSecureTimedSession sessionWithTimeoutInterval:self.defaultTimeoutInterval];
+  }
 }
 
 + (instancetype)vaultNamed:(NSString *)name
@@ -452,7 +462,7 @@ static NSMutableDictionary *__vaults;
 
 - (id <SPXSecureSession>)sessionForPolicy:(SPXSecurePolicy)policy credential:(id <SPXSecureCredential>)credential
 {
-  if (!self.credential) {
+  if (!self.credential && credential) {
     self.credential = credential;
   }
   
@@ -473,18 +483,17 @@ static NSMutableDictionary *__vaults;
   }
   
   self.currentRetryCount = 0;
-  self.session = [SPXSecureTimedSession sessionWithTimeoutInterval:NSIntegerMax];
+  
+  if (policy == SPXSecurePolicyApplication) {
+    self.appSession = [SPXSecureAppSession session];
+    return self.appSession;
+  }
   
   if (policy == SPXSecurePolicyTimedSessionWithPIN) {
     return [SPXSecureTimedSession sessionWithTimeoutInterval:self.defaultTimeoutInterval];
   }
   
   return [SPXSecureOnceSession session];
-}
-
-- (BOOL)isUnlocked
-{
-  return self.backgroundTimedSession.isValid || self.session.isValid;
 }
 
 #pragma mark - Resets

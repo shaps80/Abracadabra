@@ -93,4 +93,35 @@
 
 @end
 
+@interface SPXSecureAppSession ()
+@property (nonatomic, assign) BOOL isValid;
+@end
+
+@implementation SPXSecureAppSession
+
++ (instancetype)session
+{
+  return [SPXSecureAppSession new];
+}
+
+- (instancetype)init
+{
+  self = [super init];
+  SPXAssertTrueOrReturnNil(self);
+  _isValid = YES;
+  return self;
+}
+
+- (void)invalidate
+{
+  self.isValid = NO;
+}
+
+- (NSString *)description
+{
+  return SPXDescription(SPXKeyPath(isValid));
+}
+
+@end
+
 

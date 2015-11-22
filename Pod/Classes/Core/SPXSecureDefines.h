@@ -45,9 +45,13 @@ typedef NS_ENUM(NSInteger, SPXSecurePolicy) {
    */
   SPXSecurePolicyConfirmationOnly,
   /**
+   *  Can be used with the vault to unlock it
+   */
+  SPXSecurePolicyApplication,
+  /**
    *  An event will be executed immediately, no confirmation or PIN will be requested
    */
-  SPXSecurePolicyNone
+  SPXSecurePolicyNone,
 };
 
 

@@ -88,3 +88,20 @@
 @end
 
 
+/**
+ *  Provides an application wide session. This session will return NO if the vaults defaultTimeoutInterval has been exceeded while the application is in the background. YES otherwise
+ */
+@interface SPXSecureAppSession : NSObject <SPXSecureSession>
+
+
+/**
+ *  Equivalent to calling [SPXSecureAppSession new]
+ *
+ *  @return A new application session
+ */
++ (instancetype)session;
+
+
+@end
+
+
