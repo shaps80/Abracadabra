@@ -39,9 +39,4 @@
   return YES;
 }
 
-- (void)applicationDidBecomeActive:(UIApplication *)application
-{
-  
-}
-
 @end
