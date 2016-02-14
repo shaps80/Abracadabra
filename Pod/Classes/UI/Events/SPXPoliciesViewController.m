@@ -46,12 +46,12 @@
 {
   [super viewDidLoad];
 
-  NSString *timeout = [NSString stringWithFormat:@"Prompt after %.0f secs", [SPXSecureVault defaultVault].defaultTimeoutInterval];
+  NSString *timeout = [NSString stringWithFormat:@"Prompt when necessary"];
   self.policies = @
   [
-   @"Always Prompt for Passcode",
+   @"Always prompt",
    timeout,
-   @"Confirmation Only",
+   @"Confirm only",
    @"Disable",
   ];
   
@@ -59,6 +59,11 @@
 }
 
 #pragma mark - Table view data source
+
+- (NSString *)tableView:(UITableView *)tableView titleForFooterInSection:(NSInteger)section
+{
+  return @"If you select 'Prompt when necessary', your passcode will only be required if your current session has expired.";
+}
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
@@ -73,8 +78,13 @@
   if (!cell) {
     cell = [[UITableViewCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:SPXSecurePolicyCellIdentifier];
   }
-  
+
   cell.accessoryType = (self.event.currentPolicy == indexPath.item) ? UITableViewCellAccessoryCheckmark : UITableViewCellAccessoryNone;
+  
+  if (self.event.currentPolicy > 2 && indexPath.item == 3) {
+    cell.accessoryType = UITableViewCellAccessoryCheckmark;
+  }
+  
   cell.textLabel.text = self.policies[indexPath.item];
  
   return cell;

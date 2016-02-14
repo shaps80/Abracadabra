@@ -462,7 +462,7 @@ static NSMutableDictionary *__vaults;
 
 - (id <SPXSecureSession>)sessionForPolicy:(SPXSecurePolicy)policy credential:(id <SPXSecureCredential>)credential
 {
-  if (!self.credential && credential) {
+  if (!self.credential) {
     self.credential = credential;
   }
   

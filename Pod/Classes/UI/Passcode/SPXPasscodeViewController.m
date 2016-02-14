@@ -180,7 +180,7 @@ __attribute__((constructor)) static void SPXPasscodeViewControllerConstructor(vo
 {
   UIView *view = [UIApplication sharedApplication].keyWindow.rootViewController.view;
   UIGraphicsBeginImageContextWithOptions(view.bounds.size, YES, [UIScreen mainScreen].scale);
-  [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:YES];
+  [view drawViewHierarchyInRect:view.bounds afterScreenUpdates:FALSE];
   
   UIImage *image = UIGraphicsGetImageFromCurrentImageContext();
   UIGraphicsEndImageContext();
