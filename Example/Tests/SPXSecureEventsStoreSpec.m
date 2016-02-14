@@ -86,8 +86,8 @@ describe(@"SPXSecureEventsStore", ^{
       [[event.identifier should] equal:@"1234"];
     });
     
-    it(@"default policy should equal 3", ^{
-      [[theValue(event.defaultPolicy) should] equal:theValue(3)];
+    it(@"default policy should equal SPXSecurePolicyNone", ^{
+      [[theValue(event.defaultPolicy) should] equal:theValue(SPXSecurePolicyNone)];
     });
     
     it(@"current policy should equal 0", ^{
