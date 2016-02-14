@@ -3,6 +3,3 @@ xcode_workspace: Example/Abracadabra.xcworkspace
 xcode_scheme: Abracadabra
 xcode_sdk: iphonesimulator9.2.1
 podfile: Example/Podfile
-
-before_install:
- - gem install cocoapods # Since Travis is not always on latest version
