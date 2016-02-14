@@ -1,10 +1,8 @@
 language: objective-c
 xcode_workspace: Example/Abracadabra.xcworkspace
 xcode_scheme: Abracadabra
-xcode_sdk: iphonesimulator8.1
+xcode_sdk: iphonesimulator9.2.1
+podfile: Example/Podfile
 
-before_install: 
-- brew update
-- brew unlink xctool
-- brew install xctool
-- pod install --project-directory=Example
+before_install:
+ - gem install cocoapods # Since Travis is not always on latest version
