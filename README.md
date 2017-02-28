@@ -5,20 +5,16 @@
 [![License](https://img.shields.io/cocoapods/l/Abracadabra.svg?style=flat)](http://cocoadocs.org/docsets/Abracadabra)
 [![Platform](https://img.shields.io/cocoapods/p/Abracadabra.svg?style=flat)](http://cocoadocs.org/docsets/Abracadabra)
 
-## Updates
-_(Sunday 21th Feb 2015)_
+> Note: I'm sure you're no longer using this -- but in any case. I am unable to update the Pod for this since a lot has changed since this was released and its dependencies would also require updating. However the project does run so if you DO need this project still -- I now recommend dragging the files into your own project manually.
+I will NO LONGER be providing any support for this library. Thank you for using my code.
 
-* Settings controller is not yet implemented -- in progress
-* <del>Abracadabra currently launches in the current orientation but doesn't support orientation changes while its being presented yet</del> -- __DONE__
-* <del>Events controller is not yet implemented</del> -- __DONE__
-* <del>When you provide a group/name this entry will be persisted across launches and the policy is a default only. So if you change the policy across runs or allow runtime configuration, then the value might not be what you see in code. This feature is not yet working correctly</del> -- __DONE__
-* <del>TouchID is not yet implemented</del> -- __DONE__
+---
 
 ## What is it?
 
 Abracadabra was designed for a personal project of mine. An app called [Drizzle](https://itunes.apple.com/app/drizzle/id683629145?mt=8).  Drizzle is an application for managing server instances on [Digital Ocean](http://digitalocean.com). As you can imagine this is the kind of app that requires tight control over user actions to avoid accidental shutdowns or worse. Not to mention foul play by a 3rd party.
 
-This was an existing project, so I didn't want to modify lots of existing code possibly introducing further issues and less stability. 
+This was an existing project, so I didn't want to modify lots of existing code possibly introducing further issues and less stability.
 
 So I set out to design a truly plug 'n' play solution that made it super easy to wrap my code and gain all the benefits of passcode security.
 
@@ -100,7 +96,7 @@ Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
 ```
 
 If you're happy with the default view controllers and behaviour, __that's literally it ;)__
-You don't even have to configure options, provide views, nothing! Just sit back, relax and let the magic happen. 
+You don't even have to configure options, provide views, nothing! Just sit back, relax and let the magic happen.
 
 Its recommended that you always provide a group and name even if you don't plan to implement the viewController in-app because this is also used for providing better textual feedback for confirmation dialogs, etc...
 
@@ -130,17 +126,17 @@ In fact any of the variations below are valid statements:
   Abracadabra(SPXSecurePolicyNone, {
      /* this code will execute if access is allowed */
   });
-  
+
   Abracadabra(@"", @"", SPXSecurePolicyNone, {
      /* this code will execute if access is allowed */
   });
-  
+
   Abracadabra(SPXSecurityPolicyNone, {
 	  /* this code will execute if access is allowed */
   }, { \
 	  /* this code will execute if access is disallowed */ \
   });
-  
+
   Abracadabra(@"", @"", SPXSecurePolicyNone, {
      /* this code will execute if access is allowed */ \
   }, { \
@@ -154,7 +150,7 @@ Notice those second blocks? This allows you to control flow based on success or 
   Abracadabra(SPXSecurePolicyAlwaysWithPIN, {
 	  [self performSecureCode]; \
   }, return)
-  
+
   NSLog(@"Authentication Failed.");
 ```
 
@@ -179,7 +175,7 @@ __So how does this work?__
 
 This part of the code is actually based on an idea I got from [FBTweaks](https://github.com/facebook/Tweaks). Facebook demonstrated a great implementation whereby you can store some data in the binary at compile time.
 
-Abracadabra uses the Mach-O Runtime to find this data and automatically construct a store of events. The view controllers can then simply query this store to present some user interface for configuring their policies. 
+Abracadabra uses the Mach-O Runtime to find this data and automatically construct a store of events. The view controllers can then simply query this store to present some user interface for configuring their policies.
 
 Policies for each event are then stored in `NSUserDefaults`, which allows us to persist changes across launches of the application.
 
@@ -193,13 +189,13 @@ When you create a secure event, you must specify the default policy to apply to 
 
 Many applications or even 3rd party libraries exists with some form of Passcode based integration. However most of these are using baked-in -- and often incomplete -- implementations.
 
-Providing a passcode in your application isn't just about showing PIN entry form inside your view. This just gives your users a false sense of security around their actions and/or data. 
+Providing a passcode in your application isn't just about showing PIN entry form inside your view. This just gives your users a false sense of security around their actions and/or data.
 
 Also, many open source implementations rely on the implementer to perform unneccary checks, this includes Apples high level solution regarding TouchID.
 
-Abracadabra was designed to remove almost all 'security' code from your project. This allows you to focus on your features and build application logic, leaving security as an after thought. 
+Abracadabra was designed to remove almost all 'security' code from your project. This allows you to focus on your features and build application logic, leaving security as an after thought.
 
->Note I'm not advocating the idea of __NOT__ considering security! However if you're not going to, at least use Abracadabra to make your life easier and your code more secure. 
+>Note I'm not advocating the idea of __NOT__ considering security! However if you're not going to, at least use Abracadabra to make your life easier and your code more secure.
 
 The design choices I've made exist to make it easier for you to implement in your code, increasing the chance that you'll spend time securing your applications.
 
@@ -212,7 +208,7 @@ it, simply add the following line to your Podfile:
 
 To include all components:
     `pod 'Abracadabra'`
- 
+
 To include only the core (no UI elements)
 	`pod 'Abracadabra/Core'`
 
@@ -223,4 +219,3 @@ Shaps Mohsenin, [@shaps](http://twitter.com/shaps)
 ## License
 
 Abracadabra is available under the MIT license. See the LICENSE file for more info.
-
