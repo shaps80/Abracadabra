@@ -28,6 +28,7 @@
 #define _ABRACADABRA_H
 
 #import "SPXSecurityInternal.h"
+#import <SPXDefines/SPXDefinesCommon.h>
 
 
 /**
