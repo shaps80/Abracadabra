@@ -1,0 +1,6 @@
+framework module Abracadabra {
+  umbrella header "Abracadabra-umbrella.h"
+
+  export *
+  module * { export * }
+}

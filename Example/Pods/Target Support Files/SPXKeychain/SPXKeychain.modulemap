@@ -1,0 +1,6 @@
+framework module SPXKeychain {
+  umbrella header "SPXKeychain-umbrella.h"
+
+  export *
+  module * { export * }
+}

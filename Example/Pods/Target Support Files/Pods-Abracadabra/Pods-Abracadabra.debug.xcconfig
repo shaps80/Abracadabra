@@ -1,5 +1,8 @@
+FRAMEWORK_SEARCH_PATHS = $(inherited) "$PODS_CONFIGURATION_BUILD_DIR/Abracadabra" "$PODS_CONFIGURATION_BUILD_DIR/SPXDataValidators" "$PODS_CONFIGURATION_BUILD_DIR/SPXDefines" "$PODS_CONFIGURATION_BUILD_DIR/SPXKeychain"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
-HEADER_SEARCH_PATHS = $(inherited) "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/Abracadabra" "${PODS_ROOT}/Headers/Public/Kiwi" "${PODS_ROOT}/Headers/Public/SPXDataValidators" "${PODS_ROOT}/Headers/Public/SPXDefines" "${PODS_ROOT}/Headers/Public/SPXKeychain"
-OTHER_CFLAGS = $(inherited) -isystem "${PODS_ROOT}/Headers/Public" -isystem "${PODS_ROOT}/Headers/Public/Abracadabra" -isystem "${PODS_ROOT}/Headers/Public/Kiwi" -isystem "${PODS_ROOT}/Headers/Public/SPXDataValidators" -isystem "${PODS_ROOT}/Headers/Public/SPXDefines" -isystem "${PODS_ROOT}/Headers/Public/SPXKeychain"
-OTHER_LDFLAGS = $(inherited) -ObjC -l"Abracadabra" -l"SPXDataValidators" -l"SPXDefines" -l"SPXKeychain"
+LD_RUNPATH_SEARCH_PATHS = $(inherited) '@executable_path/Frameworks' '@loader_path/Frameworks'
+OTHER_CFLAGS = $(inherited) -iquote "$PODS_CONFIGURATION_BUILD_DIR/Abracadabra/Abracadabra.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SPXDataValidators/SPXDataValidators.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SPXDefines/SPXDefines.framework/Headers" -iquote "$PODS_CONFIGURATION_BUILD_DIR/SPXKeychain/SPXKeychain.framework/Headers"
+OTHER_LDFLAGS = $(inherited) -framework "Abracadabra" -framework "SPXDataValidators" -framework "SPXDefines" -framework "SPXKeychain"
+PODS_BUILD_DIR = $BUILD_DIR
+PODS_CONFIGURATION_BUILD_DIR = $PODS_BUILD_DIR/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)
 PODS_ROOT = ${SRCROOT}/Pods

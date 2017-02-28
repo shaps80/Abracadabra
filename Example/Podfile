@@ -1,11 +1,12 @@
 source 'https://github.com/CocoaPods/Specs.git'
 
-target 'Abracadabra', :exclusive => true do
+use_frameworks!
+
+target 'Abracadabra' do
   pod "Abracadabra", :path => "../"
 end
 
-target 'Tests', :exclusive => true do
+target 'Tests' do
   pod "Abracadabra", :path => "../"
-
   pod 'Kiwi'
 end
